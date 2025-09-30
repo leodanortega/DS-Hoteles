@@ -1,0 +1,5 @@
+commit 3f94b6bc0a8f9bc3505f9fa4bf182ec0384a4f62
+Author: leodanortega <leonardo.ortega.teoba@gmail.com>
+Date:   Tue Sep 30 11:45:54 2025 -0600
+
+    GitIgnore update
