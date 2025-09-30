@@ -1,5 +1,5 @@
 .DS_Store
 Thumbs.db
-
 # Asciidoc
 build/
+/workspaces/DS-Hoteles/contribucion.txt

@@ -1,0 +1,12 @@
+== Introducción
+Este sistema tiene como objetivo centralizar y optimizar el proceso de reservaciones en todos los hoteles de la cadena, mediante una plataforma tecnológica escalable, segura y de alto rendimiento. Se busca mejorar la eficiencia operativa, ofrecer una experiencia consistente al cliente y facilitar la administración desde una única interfaz. La solución propuesta permitirá integrar múltiples servicios, adaptarse a distintos entornos y crecer conforme lo haga la red hotelera.
+
+
+== Contexto
+El sistema se desarrollará para centralizar y gestionar las reservaciones de todos los hoteles pertenecientes a la cadena. Su implementación abarcará desde la recepción de reservas hasta la administración de disponibilidad, permitiendo una operación unificada en múltiples ubicaciones. Se contempla la integración con sistemas existentes y la adaptación a distintos entornos tecnológicos dentro de los hoteles.
+
+== Visión del sistema
+
+== Alcance
+El sistema incluirá funcionalidades como registro de huéspedes, gestión de habitaciones, control de disponibilidad, procesamiento de pagos, generación de reportes y administración de usuarios. No contempla módulos externos como contabilidad o recursos humanos. Su uso estará limitado a personal autorizado dentro de la cadena hotelera, y se diseñará para escalar conforme crezca la red de hoteles.
+== Audiencia del documento

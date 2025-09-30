@@ -1,0 +1,17 @@
+
+== Versión
+
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.0.1
+|30/09/2025
+|Leonardo Daniel, Martín Velázquez, Carlos Castillo
+|Marcos generales para la entrega
+
+|===
