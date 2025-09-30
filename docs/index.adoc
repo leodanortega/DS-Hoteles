@@ -1,0 +1,25 @@
+
+= Descripción de la Arquitectura de Software para un Sistema de Reservaciones de una cadena hotelera
+
+*Leonardo Daniel Ortega Teoba- Martín Velázquez González - Castillo Barradas*
+
+:doctype: book
+:toc: left
+:sectnums:
+:icons: font
+:source-highlighter: highlight.js
+:imagesdir: images
+:lang: es
+
+:chapter-label: Capítulo
+:appendix-caption: Apéndice
+:part-signifier: Parte
+:figure-caption: Figura
+:table-caption: Tabla
+:example-caption: Ejemplo
+:listing-caption: Listado
+:caution-caption: Precaución
+:important-caption: Importante
+:note-caption: Nota
+:tip-caption: Consejo
+:warning-caption: Advertencia
