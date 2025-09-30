@@ -1,0 +1,27 @@
+= Justificación del Proyecto
+
+== Situación actual
+En la actualidad, cada hotel de la cadena utiliza soluciones locales e independientes para gestionar sus reservaciones. 
+Esta fragmentación genera inconsistencias en la información, errores frecuentes en las reservas (como dobles cargos o dobles confirmaciones) 
+y dificulta el control centralizado del inventario y las tarifas. 
+Además, la curva de aprendizaje de los sistemas actuales es pronunciada, lo que afecta la eficiencia operativa, especialmente en la recepción.  
+
+== Problema a resolver
+La falta de un sistema centralizado ocasiona:  
+* Dificultad para mantener la coherencia de datos entre hoteles.  
+* Problemas de sobreventa y gestión deficiente de inventario en escenarios de alta concurrencia.  
+* Falta de control unificado sobre tarifas, políticas y disponibilidad.  
+* Experiencias negativas para el cliente final debido a errores en la reserva y procesos poco intuitivos.  
+
+== Oportunidad de negocio
+La implementación de un sistema centralizado de reservaciones representa la posibilidad de transformar la gestión hotelera 
+de un costo operativo a una ventaja competitiva. Con este sistema unificado se podrá:  
+
+* Garantizar reservas confiables en tiempo real, eliminando dobles cobros y errores.  
+* Implementar precios dinámicos y políticas de ocupación avanzadas, lo que incrementa los ingresos.  
+* Optimizar las operaciones diarias en más de 5,000 hoteles y 1,000,000 de habitaciones.  
+* Mejorar la satisfacción de los clientes gracias a una experiencia de reserva más fluida y consistente.  
+* Fortalecer el control centralizado de la cadena hotelera, permitiendo decisiones estratégicas basadas en datos unificados.  
+
+En síntesis, este proyecto no solo resuelve un problema operativo, 
+sino que abre la puerta a nuevas formas de generar valor y competitividad en la industria hotelera.
