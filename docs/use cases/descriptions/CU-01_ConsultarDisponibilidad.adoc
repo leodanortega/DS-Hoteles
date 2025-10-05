@@ -1,0 +1,85 @@
+== CU-01: Consultar Disponibilidad de Habitaciones
+
+[width="100%", cols="1,4", options="header"]
+|===
+
+|ID
+|CU-01
+
+|Nombre
+|Consultar Disponibilidad
+
+|Autor
+|Carlos Castillo Barradas
+
+|Fecha de actualización
+|04-oct-2025
+
+|Descripción
+|El huésped busca habitaciones disponibles en uno o varios hoteles de la cadena, filtrando por fechas, tipo de habitación y ubicación, para evaluar opciones antes de una posible reservación.
+
+|Actor(es)
+|Huésped
+
+|Disparador
+|Clic en el botón "Habitaciones".
+
+|Precondiciones
+|PRE-01: Debe existir al menos una habitación disponible.
+
+|Flujo Normal
+|
+1. El sistema muestra una interfaz de búsqueda optimizada, solicitando: Hotel/Destino, Fecha de Entrada, Fecha de Salida y Número de Huéspedes y los botones "Buscar" y "Regresar".
+
+2. El huésped ingresa los criterios de búsqueda y da clic en "Buscar". (Ver FA 2.a) (Ver FA 2.b).
+
+3. El sistema muestra los resultados en una interfaz, presentando las habitaciones disponibles, sus tarifas, y fotos. Además de un botón "Regresar" (Ver EX-01) (Ver EX-02).
+
+4. El huésped selecciona una opción para ver más detalles o iniciar el proceso de reserva. (Ver FA 2.a).
+
+5. El sistema muestra una interfaz con los detalles de la habitación y los botones "Reservar" y "Regresar".
+
+5. Termina el Caso de Uso.
+
+|Flujos Alternos
+|
+
+*FA 2.a: El huésped da clic en "Regresar".*
+
+1. El sistema muestra la interfaz anterior y regresa al paso del flujo normal de esa interfaz.
+
+*FA 2.b: El huésped ingresa datos inválidos.*
+
+1. El sistema muestra un mensaje de error "Los datos ingresados no son correctos, por favor corrígelos" y resalta los campos a corregir.
+
+2. Se regresa al paso 2 del Flujo Normal.
+
+|Excepciones
+|
+*EX-01: El servicio de inventario no responde.*
+
+1. Para garantizar la disponibilidad, el sistema muestra los resultados desde la última caché válida con un aviso de que las habitaciones disponibles pueden no estar actualizadas.
+
+2. Termina el caso de uso.
+
+*EX-02: El huésped no encuentra resultados.*
+
+1. La consulta no arroja habitaciones disponibles, el sistema muestra el mensaje: "Lo sentimos, no hay habitaciones disponibles para los criterios seleccionados" además sugiere fechas alternativas o tipos de habitación cercanos.
+
+2. Se regresa al paso 1 del Flujo Normal.
+
+|Postcondiciones
+|
+POST-01: El huésped ha visualizado las opciones de habitaciones y tarifas disponibles.
+
+|Reglas de negocio
+|
+RN-01: Los precios mostrados deben incluir impuestos para garantizar la transparencia.
+
+|Incluye
+|Ninguno.
+
+|Extiende
+|CU-02 Reservar Habitación.
+
+|===

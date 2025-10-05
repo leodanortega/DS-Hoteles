@@ -1,0 +1,91 @@
+== CU-07: Recibir Notificaciones
+
+[width="100%", cols="1,4", options="header"]
+|===
+|Atributo |Descripción
+
+|ID
+|CU-07
+
+|Nombre
+|Recibir Notificaciones
+
+|Autor
+|Carlos Castillo Barradas
+
+|Fecha de actualización
+|04-oct-2025
+
+|Descripción
+|El sistema envía comunicaciones automáticas y en tiempo real al huésped para mantenerlo informado sobre el estado de sus reservas. Esto incluye la confirmación inicial (voucher digital).
+
+|Actor(es)
+|Huésped
+
+|Disparador
+|Un evento en el sistema (reservación creada, modificada, cancelada, recordatorio de check-in) activa el servicio de notificaciones.
+
+|Precondiciones
+|
+PRE-08: El huésped ha proporcionado un correo electrónico válido y ha aceptado recibir notificaciones.
+
+|Flujo Normal
+|
+
+1. Un evento de negocio se registra en el sistema.
+
+2. El sistema de gestión hotelera publica un mensaje en una cola de notificaciones.
+
+3. Un microservicio de notificaciones procesa el mensaje y envía la notificación a través del canal (app y correo). (Ver FA 3.a) (Ver FA 3.b).
+
+4. El huésped recibe la notificación en su dispositivo.
+
+4. Termina el Caso de Uso.
+
+|Flujos Alternos
+|
+*FA 3.a: El correo electrónico del huésped rebota.*
+
+1. El proveedor de correo informa al sistema del fallo en la entrega.
+
+2. El sistema marca el correo del huésped como inválido y notifica a soporte.
+
+3. Termina el caso de uso.
+
+*FA 3.b: El huésped ha desactivado las notificaciones push.*
+
+1. El servicio de notificaciones registra el estado para no realizar futuros intentos a ese dispositivo.
+
+2. El sistema muestra el mensaje "Haz desactivado las notificaciones, para recibirlas actívalas en configuración" y el botón "Activar notificaciones".
+
+3. El huésped da clic en "Activar notificaciones".
+
+3. El sistema redirecciona al huésped a su configuración de notificaciones.
+
+4. Termina el caso de uso
+
+|Excepciones
+|
+*EX-01: El servicio de notificaciones externo no está disponible.*
+
+1. El sistema muestra el mensaje "Nuestro servicio de notificaciones no está disponible, te avisaremos cuando lo esté".
+
+2. El sistema notifica al huésped cuando estén disponibles las notificaciones. Si el fallo persiste, se genera una alerta para el equipo de operaciones.
+
+|Postcondiciones
+|
+POST-10: El huésped ha sido informado de un evento relevante relacionado con su reservación.
+
+|Reglas de negocio
+|
+RN-11: La confirmación de reserva debe enviarse en menos de 1 minuto tras el pago exitoso.
+
+RN-12: Los recordatorios de check-in se envían 24 horas antes de la fecha de llegada.
+
+|Incluye
+|Ninguno.
+
+|Extiende
+|Ninguno.
+
+|===

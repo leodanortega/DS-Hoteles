@@ -1,0 +1,92 @@
+== CU-06: Modificar Reservación
+
+[width="100%", cols="1,4", options="header"]
+|===
+|Atributo |Descripción
+
+|ID
+|CU-06
+
+|Nombre
+|Modificar Reservación
+
+|Autor
+|Carlos Castillo Barradas
+
+|Fecha de actualización
+|04-oct-2025
+
+|Descripción
+|El huésped solicita un cambio en una reservación confirmada, como las fechas o la habitación. El sistema valida si el cambio es permitido por las políticas actuales y calcula cualquier diferencia de tarifa.
+
+|Actor(es)
+|Huésped
+
+|Disparador
+|El huésped selecciona la opción "Modificar Reservación" en una de sus reservaciones confirmadas desde su perfil en la sección "Mis Reservaciones".
+
+|Precondiciones
+|
+PRE-07: Existe una reservación con  estado "Confirmada" asociada al huésped y está dentro del período permitido para modificaciones según las políticas.
+
+|Flujo Normal
+|
+
+1. El sistema recupera los detalles de la reservación y las políticas de modificación aplicables y muestra una interfaz que permite cambiar las fechas o la habitación. (Extiende CU-08).
+
+2. El huésped selecciona los nuevos criterios.
+
+3. El sistema realiza una consulta de disponibilidad y tarifa en tiempo real y muestra la diferencia de precio (si existe) y solicita confirmación. (Ver FA 3.a) (Ver FA 3.b).
+
+4. El huésped confirma el cambio.
+
+5. Si hay un costo adicional, se redirige al CU-03. Si hay un reembolso, se procesa automáticamente.
+
+6. El sistema actualiza la reservación con los nuevos datos y envía una notificación de modificación al huésped (Extiende CU-07).
+
+7. Termina el Caso de Uso.
+
+|Flujos Alternos
+|
+*FA 3.a: No hay disponibilidad para los nuevos criterios.*
+
+1. El sistema muestra el mensaje "No hay disponibilidad para las fechas o la habitación seleccionada." Permite al huésped intentar con otros criterios.
+
+2. Se regresa al paso 3 del Flujo Normal.
+
+*FA 3.b: La política de la tarifa no permite modificaciones.*
+
+1. El sistema deshabilita las opciones de cambio y muestra un mensaje informativo explicando la restricción.
+
+2. Termina el caso de uso.
+
+|Excepciones
+|
+*EX-01: Falla el cálculo de la nueva tarifa.*
+
+1. El sistema muestra el mensaje de error "no se pudo calcular la diferencia de las tarifas, por favor contacta con soporte".
+
+2. Termina el caso de uso.
+
+|Postcondiciones
+|
+POST-08: La reservación ha sido actualizada con nueva información.
+
+POST-09: El inventario de habitaciones se ha ajustado para reflejar las fechas antiguas y nuevas.
+
+|Reglas de negocio
+|
+RN-09: Cualquier modificación está sujeta a la disponibilidad y a las políticas de la tarifa original.
+
+RN-10: Las modificaciones pueden incurrir en costos adicionales o reembolsos.
+
+|Incluye
+|Ninguno.
+
+|Extiende
+|
+CU-07 Recibir Notificaciones.
+
+CU-08 Acceder a Políticas de Tarifas y Cancelación.
+
+|===

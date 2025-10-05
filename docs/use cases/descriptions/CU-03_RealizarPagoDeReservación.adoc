@@ -1,0 +1,86 @@
+== CU-03: Realizar Pago de Reservación
+
+[width="100%", cols="1,4", options="header"]
+|===
+|Atributo |Descripción
+
+|ID
+|CU-03
+
+|Nombre
+|Realizar Pago de Reservación
+
+|Autor
+|Carlos Castillo Barradas
+
+|Fecha de actualización
+|04-oct-2025
+
+|Descripción
+|Como parte del flujo de reserva, el huésped introduce su información de pago en una pasarela segura para completar la transacción y confirmar su estancia.
+
+|Actor(es)
+|Huésped
+
+|Disparador
+|El huésped llega al paso de pago durante el flujo del CU-02 "Reservar Habitación".
+
+|Precondiciones
+|
+PRE-03: El huésped ha proporcionado sus datos personales y ha confirmado los detalles de la reserva.
+PRE-04: Existe un bloqueo temporal sobre la habitación seleccionada en el inventario.
+
+|Flujo Normal
+|
+1. El sistema presenta la interfaz segura de la pasarela de pagos, mostrando el monto total a pagar y los métodos de pago aceptados (Tarjeta de crédito, Tarjeta de débito, PayPal, etc.) y los botones "Pagar" y "Regresar".
+
+2. El huésped selecciona un método e introduce sus datos de pago (Nombre de la tarjeta, número de la tarjeta, fecha de vencimiento, CVV) y da clic en "Pagar". (Ver FA 2.a) (Ver FA 2.b).
+
+3. La pasarela de pago procesa la solicitud, realiza la validación y ejecuta el cobro único. Además devuelve una respuesta de "transacción aprobada" al sistema de gestión hotelera. (Ver EX-01).
+
+4. El sistema guarda en la base de datos la relación entre el comprobante de pago y la reservación. (Ver EX-02).
+
+5. Termina el caso de uso y retorna al paso 4 del flujo normal del CU-02.
+
+|Flujos Alternos
+|
+*FA 2.a: El huésped da clic en "Regresar"*
+
+1. El sistema muestra la interfaz anterior y regresa al paso del flujo normal de esa interfaz.
+
+*FA 2.b: Datos inválidos.*
+
+1. La interfaz de la pasarela muestra un error en tiempo real indicando el campo incorrecto y muestra el mensaje "Por favor verifica que tus datos sean correctos".
+
+2. Se regresa al paso 1 del Flujo Normal.
+
+|Excepciones
+|
+*EX-01: El proveedor de la pasarela de pagos no está disponible.*
+
+1. El sistema muestra el mensaje "El servicio de pago no está disponible. Por favor, intente más tarde".
+
+2. El sistema mantiene el bloqueo de la habitación y permite al usuario reintentar el pago 5 minutos más de los 10 ya establecitos.
+
+*EX-02: No hay conexión con la base de datos.*
+
+1. El sistema muestra el mensaje "Sus datos no se pudieron guardar, por favor inténtelo más tarde".
+
+2. Termina el caso de uso.
+
+|Postcondiciones
+|POST-04: Se ha procesado exitosamente un pago y se ha generado un identificador de transacción.
+
+|Reglas de negocio
+|
+RN-03: El sistema no debe almacenar nunca datos sensibles de tarjetas de crédito (número completo, CVV).
+
+RN-04: Solo se aceptarán los métodos de pago configurados por la administración.
+
+|Incluye
+|Ninguno.
+
+|Extiende
+|Ninguno.
+
+|===

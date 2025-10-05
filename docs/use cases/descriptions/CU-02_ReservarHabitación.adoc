@@ -1,0 +1,89 @@
+== CU-02: Reservar Habitación
+
+[width="100%", cols="1,4", options="header"]
+|===
+|Atributo |Descripción
+
+|ID
+|CU-02
+
+|Nombre
+|Reservar Habitación
+
+|Autor
+|Carlos Castillo Barradas
+
+|Fecha de actualización
+|04-oct-2025
+
+|Descripción
+|El huésped, tras haber seleccionado una habitación, completa los pasos para asegurar la reserva, proporcionando sus datos personales y realizando el pago correspondiente.
+
+|Actor(es)
+|Huésped
+
+|Disparador
+|El huésped hace clic en el botón "Reservar" desde la pantalla de disponibilidad (CU-01).
+
+|Precondiciones
+|
+PRE-02: Existe al menos una habitación disponible que cumple con los criterios del huésped.
+
+|Flujo Normal
+|
+1. El sistema muestra un resumen de la selección (hotel, habitación(es), fechas, desglose de tarifa) y un formulario para ingresar datos del huésped (nombre, correo, teléfono). Bloquea temporalmente la habitación seleccionada en el inventario por 10 minutos para evitar dobles reservas y garantizar la consistencia. Además de mostrar los botones "Continuar al pago" y "Regresar". Y las políticas de reservación (Extiende CU-08).
+
+2. El huésped ingresa sus datos personales y da clic en "Continuar al pago". Los datos del huésped se guardan en la base de datos para la comunicación. (Ver FA 2.a) (Ver FA 2.b) (Ver EX-01).
+
+3. El sistema redirige al huésped a la pasarela de pago (CU-03).
+
+4. El sistema muestra una interfaz donde se detalla que la reservación se ha creado exitosamente y notifica al huésped, además del botón "Salir". (Extiende CU.07)
+
+5. El huésped da clic en el botón "Salir".
+
+6. Termina el Caso de Uso.
+
+|Flujos Alternos
+|
+*FA 2.a: El huésped da clic en "Regresar".*
+
+1. El sistema muestra la interfaz anterior y regresa al paso del flujo normal de esa interfaz.
+
+*FA 2.b: La habitación deja de estar disponible.*
+
+1. Si justo antes de confirmar, la habitación es reservada por otro huésped, el sistema muestra un mensaje informando la situación.
+
+2. El sistema sugiere habitaciones similares o regresar a la búsqueda.
+
+3. El huésped da clic en "Regresar a la búsqueda".
+
+3. Se regresa al paso 1 de CU-01.
+
+|Excepciones
+|
+*EX-01: No hay conexión con la base de datos.*
+
+1. El sistema muestra el mensaje "Sus datos no se pudieron guardar, por favor inténtelo más tarde".
+
+2. Termina el caso de uso.
+
+|Postcondiciones
+|
+POST-02: Una nueva reserva es creada y registrada en el sistema.
+
+POST-03: La disponibilidad del inventario de habitaciones es actualizada.
+
+|Reglas de negocio
+|
+RN-02: Un huésped no autenticado debe proporcionar un correo electrónico válido para la comunicación.
+
+|Incluye
+|CU-03 Realizar Pago de Reservación.
+
+|Extiende
+|
+CU-4 Cancelar Reservación.
+
+CU-07 Recibir Notificaciones.
+
+|===

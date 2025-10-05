@@ -1,0 +1,88 @@
+== CU-04: Cancelar Reservación
+
+[width="100%", cols="1,4", options="header"]
+|===
+|Atributo |Descripción
+
+|ID
+|CU-04
+
+|Nombre
+|Cancelar Reservación
+
+|Autor
+|Carlos Castillo Barradas
+
+|Fecha de actualización
+|04-oct-2025
+
+|Descripción
+|El huésped, a través de su cuenta personal, solicita la cancelación de una reserva activa, la cual se procesa de acuerdo con las políticas y plazos vigentes.
+
+|Actor(es)
+|Huésped
+
+|Disparador
+|El huésped selecciona la opción "Cancelar" en una de sus reservaciones confirmadas desde su perfil en la sección "Mis Reservaciones".
+
+|Precondiciones
+|
+PRE-05: Existe al menos una reservación con estado "Confirmada" asociada al huésped y está dentro del período permitido para cancelaciones según las políticas.
+
+|Flujo Normal
+|
+1. El sistema recupera los detalles de la reservación y las políticas de cancelación aplicables. Además del mensaje "¿Estás seguro de que quieres cancelar esta reservación?" y los botones "Sí, cancelar" y "No, regresar". (Extiende CU-08).
+
+2. El huésped hace clic en "Sí, cancelar". (Ver FA 2.a) (Ver FA 2.b).
+
+3. El sistema actualiza el estado de la reservación a "Cancelada" y libera la habitación en el inventario, actualizando la disponibilidad de la habitación en tiempo real. (Ver EX-01).
+
+4. Si aplica un reembolso, el sistema inicia automáticamente el proceso con la pasarela de pago.
+
+5. Se envía una notificación de cancelación al huésped. (Extiende CU-07).
+
+6. Termina el Caso de Uso.
+
+|Flujos Alternos
+|
+*FA 2.a: El huésped da clic en "No, regresar".*
+
+1. El sistema anula el proceso de cancelación.
+
+2. Se regresa al paso 1 del flujo normal.
+
+*FA 2.b: La política no permite la cancelación.*
+
+1. El sistema muestra un mensaje claro explicando por qué la reserva no puede ser cancelada, siguiendo las políticas de cancelación actuales.
+
+2. Termina el caso de uso.
+
+|Excepciones
+|
+*EX-01: Falla el sistema de inventario en la base de datos.*
+
+1. El sistema muestra el mensaje "No hemos podido procesar tu solicitud en este momento. Por favor, intenta de nuevo más tarde".
+
+2. Termina el caso de uso
+
+|Postcondiciones
+|
+POST-05: El estado de la reserva se actualiza a "Cancelada".
+POST-06: La habitación asociada a la reserva vuelve a estar disponible en el inventario.
+
+|Reglas de negocio
+|
+RN-05: Las cancelaciones deben ser procesadas de acuerdo con la política de tarifas adjunta a la reservación original.
+
+RN-06: Toda cancelación debe quedar registrada en el historial del huésped y en los logs de auditoría.
+
+|Incluye
+|Ninguno.
+
+|Extiende
+|
+CU-07 Recibir Notificaciones.
+
+CU-08 Acceder a Políticas de Tarifas y Cancelación.
+
+|===

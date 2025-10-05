@@ -1,0 +1,80 @@
+== CU-05: Consultar Reservaciones
+
+[width="100%", cols="1,4", options="header"]
+|===
+|Atributo |Descripción
+
+|ID
+|CU-05
+
+|Nombre
+|Consultar Reservas+ciones
+
+|Autor
+|Carlos Castillo Barradas
+
+|Fecha de actualización
+|04-oct-2025
+
+|Descripción
+|El huésped accede a su perfil personal para visualizar un listado de sus próximas estancias (reservaciones confirmadas), reservaciones canceladas y su historial de reservaciones pasadas (completadas).
+
+|Actor(es)
+|Huésped
+
+|Disparador
+|El huésped hace clic en la sección "Mis Reservaciones" dentro de su perfil.
+
+|Precondiciones
+|
+PRE-06: El huésped debe estar autenticado en el sistema.
+
+|Flujo Normal
+|
+
+1. El sistema muestra primero las reservaciones confirmadas, debajo las canceladas y utiliza un scroll para cargar el historial de sus reservaciones pasadas (completadas). La interfaz muestra tarjetas de resumen para cada reserva con la información relevante: nombre del hotel, habitación(es), fechas y estado (Confirmada, Completada, Cancelada), además muestra el botón "Regresar". (Ver FA 2.a).
+
+2. El huésped da clic en una reservación para ver el detalle completo (voucher digital). (Extiende CU-04) (Extiende CU-06).
+
+3. Termina el caso de uso.
+
+|Flujos Alternos
+|
+*FA 2.a: El huésped no tiene ninguna reserva.*
+
+1. El sistema muestra el mensaje "Aún no tienes reservas. ¡Encuentra tu próxima aventura!" con un botón que lleva al buscador de habitaciones.
+
+2. Termina el caso de uso.
+
+*FA 2.b: El huésped utiliza filtros para buscar.*
+
+1. La interfaz proporciona opciones para filtrar por estado (activas, pasadas, canceladas) o buscar por nombre de hotel.
+
+2. El sistema ejecuta una nueva consulta con los filtros aplicados.
+
+3. Se regresa al paso 2 del flujo normal.
+
+|Excepciones
+|
+*EX-01: No hay conexión con la base de datos.*
+
+1. El sistema muestra el mensaje "No se pudieron encontrar sus reservaciones, por favor inténtelo más tarde".
+
+2. Termina el caso de uso.
+
+|Postcondiciones
+|POST-07: El huésped ha visualizado su historial de reservas.
+
+|Reglas de negocio
+|
+RN-08: Solo se deben mostrar las reservaciones asociadas directamente a la cuenta del huésped autenticado.
+
+|Incluye
+|Ninguno.
+
+|Extiende
+|CU-04 Cancelar Reservación.
+
+CU-06 Modificar Reservación.
+
+|===

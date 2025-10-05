@@ -1,0 +1,59 @@
+== CU-08: Acceder a Políticas de Tarifas y Cancelación
+
+[width="100%", cols="1,4", options="header"]
+|===
+|Atributo |Descripción
+
+|ID
+|CU-08
+
+|Nombre
+|Acceder a Políticas de Tarifas y Cancelación
+
+|Autor
+|Carlos Castillo Barradas
+
+|Fecha de actualización
+|04-oct-2025
+
+|Descripción
+|El huésped consulta la información detallada sobre las condiciones de una tarifa específica, incluyendo las reglas de cancelación, cambios y posibles penalizaciones, para tomar una decisión informada.
+
+|Actor(es)
+|Huésped
+
+|Disparador
+|El huésped hace clic en un enlace de "Ver detalles de la tarifa" o "Política de cancelación" durante el proceso de búsqueda o reservación.
+
+|Flujo Normal
+|
+
+1. El sistema muestra la información en una una página dedicada de forma clara y legible, además del botón "Salir". (Ver EX-01).
+
+2. El huésped lee la información y da clic en "Salir" para continuar con su flujo.
+
+3. Termina el Caso de Uso.
+
+|Flujos Alternos
+|
+Sin flujos alternos, es un caso de uso de solo lectura.
+
+|Excepciones
+|
+*EX-01: El texto de la política no está disponible.*
+
+1. El sistema muestra el mensaje "Las políticas no están disponibles. Por favor contacto con soporte".
+
+2. Termina el caso de uso.
+
+|Postcondiciones
+|
+POST-11: El huésped ha sido informado sobre las políticas de su interés.
+
+|Reglas de negocio
+|
+RN-13: El texto de las políticas debe estar disponible en múltiples idiomas.
+
+RN-14: La información mostrada debe ser siempre la versión vigente de la política al momento de la consulta.
+
+|===
