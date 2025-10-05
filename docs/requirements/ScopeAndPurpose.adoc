@@ -1,0 +1,56 @@
+= Alcance y propósito del diseño
+
+== Interesados y sus Preocupaciones
+
+=== Interesados Clave
+
+Huésped::
+Cliente de la cadena, su interés es encontrar alojamiento de forma fácil, conveniente y satisfactoria, pagar con seguridad y poder hacer modificaciones a su reservación o estancia.
+
+Personal de Recepción::
+Encargados de recibir y atender las necesidades de los huéspedes. El sistema deberá apoyarlos a realizar las tareas de gestión de estancia y servicio al cliente con eficiencia y eficacia.
+
+Administración::
+Administradores de la sucursal, se encargan de llevar el control del inventario del hotel y de administrar al Personal de Recepción.
+
+Auditor::
+Se encargan de supervisar las actividades financieras, verificar que los registros sean precisos y que se sigan todos los protocolos y normativas establecidas.
+
+=== Preocupaciones (Concerns)
+
+[width="100%", cols="2,3,5", options="header"]
+|===
+|Preocupación (Concern) |Interesados Afectados |Impacto en el Negocio y Justificación
+
+|Coherencia de Precios Mostrados
+|Huésped, Administración de la Cadena
+|Es crítico respetar el precio mostrado al cliente desde el inicio hasta el final de la transacción para evitar insatisfacción, reclamaciones legales y daño a la reputación. El sistema debe garantizar que el precio de una habitación no cambie a mitad de un flujo de reserva.
+
+|Confirmación de Pagos (Idempotencia)
+|Huésped, Administración de la Cadena
+|Los pagos deben procesarse una sola vez. Los cobros dobles, incluso por errores técnicos, comprometen la satisfacción del cliente, la imagen de la cadena y consumen recursos en devoluciones y aclaraciones.
+
+|Privacidad y Protección de la Información
+|Huésped, Administración de la Cadena
+|El sistema debe cumplir estrictamente con las regulaciones de privacidad de datos (personales y de pago). El incumplimiento resulta en multas costosas, demandas, pérdida de confianza y daño reputacional irreparable.
+
+|Manejo de Picos de Demanda
+|Huésped, Administración de la Cadena
+|El sistema debe ser tolerante a aumentos de demanda, evitando caídas totales y operando en modo degradado de forma predecible. La indisponibilidad se traduce en pérdida de ventas directas y desvío de clientes a la competencia.
+
+|Facilidad de Operación
+|Huésped, Personal de Recepción, Administración del Hotel
+|Una experiencia de usuario intuitiva (flujo de reserva en <= 5 pasos) es fundamental para la captación y retención de huéspedes. Para el personal, la eficiencia operativa reduce costos de capacitación y minimiza errores.
+
+|Optimización del Sistema
+|Huésped, Administración del Hotel
+|El sistema debe ser accesible desde equipos con recursos limitados para maximizar el alcance a usuarios y reducir la inversión en hardware por parte de la cadena hotelera.
+
+|Gestión de Inventario bajo Concurrencia
+|Huésped, Administración del Hotel
+|Es imperativo evitar dobles reservas, especialmente en alta demanda. Un cliente que llega al hotel y no tiene habitación disponible representa una falla catastrófica en el servicio y un daño severo a la marca.
+
+|Integridad y Trazabilidad de Reservaciones
+|Auditor
+|Todas las operaciones deben generar un registro detallado, preciso e inmutable. La capacidad de rastrear y verificar cada transacción es fundamental para fines de auditoría, cumplimiento y resolución de disputas.
+|===
