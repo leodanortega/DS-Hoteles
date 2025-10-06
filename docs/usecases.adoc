@@ -6,7 +6,18 @@ image::images/CU_Huesped.png[Use Case Diagram, width=600, align=center]
 .Casos de uso del Recepcionista
 image::images/CU_Recepcionista.png[Use Case Diagram, width=600, align=center]
 
+.Casos de uso del Administrador
+image::images/CU_Administrador.png[Use Case Diagram, width=600, align=center]
+
 ---
 
 === Descripciones de caso de uso
 
+include::useCases/descriptions/CU-01_ConsultarDisponibilidad.adoc[]
+include::useCases/descriptions/CU-02_ReservarHabitación.adoc[]
+include::useCases/descriptions/CU-03_RealizarPagoDeReservación.adoc[]
+include::useCases/descriptions/CU-04_CancelarReservación.adoc[]
+include::useCases/descriptions/CU-05_ConsultarReservaciones.adoc[]
+include::useCases/descriptions/CU-06_ModificarReservación.adoc[]
+include::useCases/descriptions/CU-07_RecibirNotificaciones.adoc[]
+include::useCases/descriptions/CU-08_AccederAPolíticasDeTarifasYCancelación.adoc[]

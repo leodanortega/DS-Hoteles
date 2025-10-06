@@ -1,4 +1,4 @@
-== CU-01: Consultar Disponibilidad de Habitaciones
+==== CU-01: Consultar Disponibilidad de Habitaciones
 
 [width="100%", cols="1,4", options="header"]
 |===
