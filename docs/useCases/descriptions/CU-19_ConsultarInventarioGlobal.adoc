@@ -1,0 +1,69 @@
+*CU-19: Consultar Inventario Global*
+
+[width="100%", cols="1,4", options="header"]
+|===
+|Atributo |Descripción
+
+|ID
+|CU-19
+
+|Nombre
+|Consultar Inventario Global
+
+|Autor
+|Leonardo Daniel
+
+|Fecha de actualización
+|05-oct-2025
+
+|Descripción
+|El administrador accede al módulo de inventario para visualizar el estado consolidado de habitaciones, servicios y disponibilidad en todas las sucursales de la cadena hotelera. Esta consulta permite tomar decisiones estratégicas sobre asignación de recursos, redistribución de habitaciones y planificación operativa.
+
+|Actor(es)
+|Administrador
+
+|Disparador
+|El administrador selecciona la opción "Inventario global" desde el panel de administración.
+
+|Flujo Normal
+|
+
+1. El sistema muestra un resumen del inventario por sucursal, incluyendo habitaciones disponibles, ocupadas, en mantenimiento y bloqueadas.
+
+2. El administrador puede filtrar por ubicación, tipo de habitación, estado o fecha.
+
+3. El sistema actualiza la vista según los filtros aplicados.
+
+4. El administrador revisa la información y toma decisiones operativas o estratégicas.
+
+5. Termina el Caso de Uso.
+
+|Flujos Alternos
+|
+*FA-01: El administrador no aplica filtros y consulta el inventario completo.*
+
+1. El sistema muestra todos los datos disponibles sin segmentación.
+
+2. Termina el caso de uso.
+
+|Excepciones
+|
+*EX-01: Error de conexión con el servidor de inventario.*
+
+1. El sistema muestra el mensaje "No se pudo cargar el inventario. Intente más tarde o contacte a soporte".
+
+2. Termina el caso de uso.
+
+|Postcondiciones
+|
+POST-19: El administrador ha accedido a la información consolidada del inventario en tiempo real.
+
+|Reglas de negocio
+|
+RN-33: El inventario debe actualizarse en tiempo real con cada operación de check-in, check-out o mantenimiento.
+
+RN-34: Solo los administradores con permisos globales pueden acceder al inventario completo de la cadena.
+
+RN-35: Los datos deben estar disponibles para exportación en formatos estándar para análisis externo.
+
+|===

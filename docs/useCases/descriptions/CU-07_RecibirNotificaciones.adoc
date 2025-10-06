@@ -1,4 +1,4 @@
-==== CU-07: Recibir Notificaciones
+*CU-07: Recibir Notificaciones*
 
 [width="100%", cols="1,4", options="header"]
 |===

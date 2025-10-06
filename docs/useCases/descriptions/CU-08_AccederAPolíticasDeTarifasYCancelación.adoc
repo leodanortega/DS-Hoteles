@@ -1,4 +1,4 @@
-==== CU-08: Acceder a Políticas de Tarifas y Cancelación
+*CU-08: Acceder a Políticas de Tarifas y Cancelación*
 
 [width="100%", cols="1,4", options="header"]
 |===

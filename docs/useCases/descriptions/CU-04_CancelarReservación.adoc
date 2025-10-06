@@ -1,4 +1,4 @@
-==== CU-04: Cancelar Reservación
+*CU-04: Cancelar Reservación*
 
 [width="100%", cols="1,4", options="header"]
 |===

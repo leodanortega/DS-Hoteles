@@ -1,0 +1,69 @@
+*CU-20: Monitorear Ocupación*
+
+[width="100%", cols="1,4", options="header"]
+|===
+|Atributo |Descripción
+
+|ID
+|CU-20
+
+|Nombre
+|Monitorear Ocupación
+
+|Autor
+|Leonardo Daniel
+
+|Fecha de actualización
+|05-oct-2025
+
+|Descripción
+|El administrador accede al módulo de monitoreo para visualizar en tiempo real el nivel de ocupación de cada hotel de la cadena. Esta funcionalidad permite identificar tendencias, anticipar sobreocupación o baja demanda, y tomar decisiones operativas como ajustes de tarifas, activación de promociones o redistribución de recursos.
+
+|Actor(es)
+|Administrador
+
+|Disparador
+|El administrador selecciona la opción "Monitoreo de ocupación" desde el panel de control.
+
+|Flujo Normal
+|
+
+1. El sistema muestra un tablero con el porcentaje de ocupación por hotel y tipo de habitación.
+
+2. El administrador puede aplicar filtros por fecha, ubicación o categoría de habitación.
+
+3. El sistema actualiza la visualización según los filtros aplicados.
+
+4. El administrador analiza los datos y toma decisiones operativas o estratégicas.
+
+5. Termina el Caso de Uso.
+
+|Flujos Alternos
+|
+*FA-01: El administrador no aplica filtros y consulta la ocupación general.*
+
+1. El sistema muestra todos los datos disponibles sin segmentación.
+
+2. Termina el caso de uso.
+
+|Excepciones
+|
+*EX-01: Error de conexión con el servidor de ocupación.*
+
+1. El sistema muestra el mensaje "No se pudo cargar la información de ocupación. Intente más tarde o contacte a soporte".
+
+2. Termina el caso de uso.
+
+|Postcondiciones
+|
+POST-20: El administrador ha accedido a la información actualizada sobre la ocupación de los hoteles.
+
+|Reglas de negocio
+|
+RN-36: Los datos de ocupación deben actualizarse en tiempo real con cada operación de check-in y check-out.
+
+RN-37: El sistema debe permitir exportar los datos para análisis externo.
+
+RN-38: Las alertas de sobreocupación deben activarse automáticamente si se supera el 95% de ocupación en cualquier categoría.
+
+|===
