@@ -47,3 +47,18 @@
 |Refinamiento de requerimientos y introducción. Agregado diagramas de CU
 
 |===
+
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.0.4
+|05/10/2025
+|Leonardo Daniel
+|Se añadió el utility tree
+
+|===
