@@ -1,5 +1,5 @@
 
-== Versión
+== Control de Versiones
 
 [cols="1,1,1,1"]
 
@@ -29,5 +29,21 @@
 |30/09/2025
 |Carlos Castillo
 |Se agregó el diagrama de contexto
+
+|===
+
+
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.0.3
+|05/10/2025
+|Leonardo Daniel
+|Refinamiento de requerimientos y introducción. Agregado diagramas de CU
 
 |===

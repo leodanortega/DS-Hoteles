@@ -1,0 +1,17 @@
+==== Glosario
+*Huésped:* Persona que contrata el servicio de alojamiento en un hotel, departamento o casa vacacional. Su experiencia abarca desde el proceso de reserva hasta su salida, incluyendo todas las interacciones con el personal y los servicios ofrecidos por el establecimiento.
+
+*Recepcionista:* Encargado de recibir y atender a los huéspedes en su llegada, gestionar el check-in y check-out, entregar llaves, realizar reservas por distintos medios (teléfono, correo electrónico o sistema interno), emitir comprobantes de pago y atender cualquier solicitud, queja o inconveniente que surja durante la estancia.
+
+*Administrador:* Profesional con habilidades técnicas y sociales que lidera la operación del hotel. Su rol incluye coordinar los servicios, resolver conflictos, garantizar el cumplimiento de normas internas y externas, y mantener la calidad operativa. Representa la imagen institucional del establecimiento ante clientes y colaboradores.
+
+*Auditor:* Responsable de revisar y validar los procesos financieros del hotel. Evalúa informes contables, gastos, ingresos y transacciones para asegurar el cumplimiento de normativas fiscales y políticas internas. Además, analiza indicadores financieros, detecta irregularidades y asesora a la administración en la toma de decisiones estratégicas.
+
+*Auditor nocturno:* Opera durante el turno nocturno, combinando funciones administrativas y contables. Atiende consultas de huéspedes, gestiona reservas fuera del horario habitual y prepara los reportes financieros y operativos que resumen las actividades del día, asegurando una transición ordenada hacia el siguiente turno.
+
+*Habitación:* Espacio privado dentro del hotel destinado al alojamiento de huéspedes. Está equipada con cama, baño y servicios básicos que permiten descansar, asearse y disfrutar de una estancia confortable.
+
+*Reservación:* Proceso mediante el cual un huésped solicita alojamiento por un periodo determinado. Incluye la asignación de habitaciones, confirmación de disponibilidad y pago anticipado o garantizado según las políticas del hotel.
+
+*Sistema de pago:* Plataforma tecnológica que permite realizar transacciones económicas entre el huésped y el hotel. Incluye métodos como tarjetas bancarias, transferencias electrónicas, pagos móviles y otros mecanismos que aseguran la eficiencia y seguridad en el cobro de servicios.
+

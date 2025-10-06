@@ -1,0 +1,12 @@
+=== Digramas de caso de uso
+
+.Casos de uso del Huesped
+image::images/CU_Huesped.png[Use Case Diagram, width=600, align=center]
+
+.Casos de uso del Recepcionista
+image::images/CU_Recepcionista.png[Use Case Diagram, width=600, align=center]
+
+---
+
+=== Descripciones de caso de uso
+
