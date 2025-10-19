@@ -1,0 +1,32 @@
+= Preocupaciones (Concerns)
+
+Las siguientes son las áreas de interés o metas críticas que la arquitectura debe abordar para satisfacer las necesidades de los interesados y garantizar el éxito del sistema.
+
+[cols="1,2,4", options="header"]
+|===
+|Identificador |Preocupación |Objetivo
+
+|CRN-01 |Seguridad Defensiva |Implementar múltiples capas de seguridad para proteger el sistema contra amenazas comunes como inyección SQL, Cross-Site Scripting (XSS), y ataques de denegación de servicio (DoS).
+
+|CRN-02 |Alta Disponibilidad y Resiliencia |Diseñar una arquitectura tolerante a fallos que garantice una disponibilidad del 99.95% para el portal de reservas y que pueda soportar la caída de un componente o zona de disponibilidad sin interrumpir el servicio.
+
+|CRN-03 |Consistencia del Inventario en Concurrencia |Garantizar que el estado de las habitaciones sea consistente y preciso en todo momento, incluso cuando múltiples usuarios y sistemas intenten reservar o modificar la misma habitación simultáneamente.
+
+|CRN-04 |Rendimiento Bajo Carga |Asegurar tiempos de respuesta rápidos (<2 segundos para búsquedas, <500ms para APIs críticas) tanto en condiciones normales como durante picos de demanda estacionales o campañas de marketing.
+
+|CRN-05 |Escalabilidad Elástica y de Costo-Eficiencia |El sistema debe poder escalar sus recursos de cómputo y base de datos de forma automática para manejar picos de demanda, y desescalar para optimizar costos durante períodos de baja actividad.
+
+|CRN-06 |Auditabilidad y No Repudio |Todas las acciones que impliquen una transacción financiera o una modificación de datos sensibles deben ser registradas en un log inmutable que permita saber quién, qué, cuándo y dónde se realizó la acción.
+
+|CRN-07 |Mantenibilidad y Despliegue Ágil |La arquitectura debe ser modular para permitir que los equipos puedan desarrollar, probar y desplegar nuevas funcionalidades de forma independiente y frecuente (CI/CD) con un riesgo mínimo.
+
+|CRN-08 |Observabilidad del Sistema |Implementar un sistema robusto de monitoreo, logging y trazabilidad distribuida que permita al equipo de operaciones detectar, diagnosticar y resolver problemas proactivamente.
+
+|CRN-09 |Recuperación ante Desastres (DR) |Definir y probar un plan de recuperación ante desastres que garantice que el sistema pueda ser restaurado en una región geográfica diferente en caso de un fallo mayor, cumpliendo con los objetivos de tiempo (RTO) y punto de recuperación (RPO) definidos por el negocio.
+
+|CRN-10 |Experiencia de Usuario Fluida |Minimizar la cantidad de pasos y la fricción en los flujos de trabajo clave, como la reserva de una habitación o el proceso de check-in, para maximizar la conversión de clientes y la eficiencia del personal.
+
+|CRN-11 |Inteligencia de Negocio (BI) |La arquitectura debe facilitar la extracción de datos para su análisis, permitiendo a la administración obtener insights sobre patrones de reserva, comportamiento del cliente y rendimiento de los hoteles.
+
+|CRN-12 |Interoperabilidad Futura |Diseñar las APIs del sistema de forma que sea sencillo integrarlo en el futuro con sistemas externos, como canales de distribución global (GDS), agencias de viajes online (OTAs) o sistemas de gestión de reputación.
+|===

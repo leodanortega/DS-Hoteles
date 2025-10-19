@@ -1,0 +1,28 @@
+= Restricciones (Constraints)
+
+Las siguientes son decisiones o condiciones impuestas que no son negociables y deben ser respetadas por la arquitectura del sistema.
+
+[cols="1,3,2", options="header"]
+|===
+|Identificador |Restricción |Origen
+
+|CON-01 |Stack Tecnológico Estandarizado: El backend debe desarrollarse utilizando el stack tecnológico corporativo (Java/Spring Boot) y el frontend con la librería autorizada (React). |Técnico
+
+|CON-02 |Proveedor de Nube Designado: Toda la infraestructura debe desplegarse sobre el proveedor de nube pública con el que la corporación mantiene un acuerdo empresarial, utilizando los servicios y regiones aprobadas. |Negocio
+
+|CON-03 |Pasarela de Pagos Certificada: Todas las transacciones con tarjeta de crédito/débito deben ser procesadas a través del Proveedor de Servicios de Pago (PSP) certificado por la empresa, que ya está integrado en otros sistemas corporativos. |Negocio / Técnico
+
+|CON-04 |Cumplimiento Normativo de Datos: El sistema debe cumplir con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP) de México y con el estándar de seguridad de datos para la industria de tarjetas de pago (PCI DSS). |Legal
+
+|CON-05 |Autenticación Centralizada: La autenticación de todo el personal (Recepción, Administración, Auditoría) debe realizarse a través del Proveedor de Identidad (IdP) corporativo, que utiliza el protocolo SAML 2.0. |Técnico / Seguridad
+
+|CON-06 |Integración con ERP: El sistema debe sincronizar la información de cierre de día (facturación, ocupación) con el sistema ERP corporativo existente a través de una API interna predefinida. |Técnico
+
+|CON-07 |Fecha Límite de Puesta en Producción: La fase 1 del sistema (reservas online y check-in/out) debe estar en producción antes del inicio de la temporada alta de verano (1 de junio de 2026) para no afectar los ingresos proyectados. |Negocio
+
+|CON-08 |Accesibilidad Web: El portal de reservas para huéspedes debe cumplir con las Pautas de Accesibilidad para el Contenido Web (WCAG) 2.1 en su nivel AA, para garantizar el acceso a personas con discapacidades. |Legal / Negocio
+
+|CON-09 |Idioma y Localización Inicial: La primera versión del sistema solo dará soporte al idioma español (México) y a pagos en pesos mexicanos (MXN). |Negocio
+
+|CON-10 |Equipo de Desarrollo Interno: El desarrollo y mantenimiento del sistema debe ser realizado por el equipo de ingeniería interno, sin recurrir a proveedores externos para el desarrollo de software. |Negocio
+|===
