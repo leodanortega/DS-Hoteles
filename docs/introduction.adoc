@@ -2,11 +2,19 @@
 Este sistema tiene como objetivo centralizar y optimizar el proceso de reservaciones en todos los hoteles de la cadena, mediante una plataforma tecnológica escalable, segura y de alto rendimiento. Se busca mejorar la eficiencia operativa, ofrecer una experiencia consistente al cliente y facilitar la administración desde una única interfaz. La solución propuesta permitirá integrar múltiples servicios, adaptarse a distintos entornos y crecer conforme lo haga la red hotelera.
 
 
-== Contexto
+=== Contexto y Alcance del Sistema
 El sistema se desarrollará para centralizar y gestionar las reservaciones de todos los hoteles pertenecientes a la cadena. Su implementación abarcará desde la recepción de reservas hasta la administración de disponibilidad, permitiendo una operación unificada en múltiples ubicaciones. Se contempla la integración con sistemas existentes y la adaptación a distintos entornos tecnológicos dentro de los hoteles.
 
-== Visión del sistema
+==== Visión del Sistema
+Para los huéspedes, el equipo administrativo y operativo de la cadena hotelera, que requieren una solución centralizada para gestionar inventario, reservaciones, estancias y servicios, el Sistema de Reservaciones tiene como propósito modernizar la experiencia de alojamiento mediante una plataforma en línea con pago anticipado. Esta plataforma permitirá realizar reservaciones de forma rápida, intuitiva, segura y satisfactoria.
 
-== Alcance
+Además, incluirá un sistema integral de gestión hotelera que facilite el control de inventario de habitaciones, registro de entradas y salidas (check-in/check-out), asignación y cambio de habitaciones, cargos por servicios adicionales y consumos del huésped, así como la configuración de políticas como tarifas de cancelación o modificación de reservas. Finalmente, el sistema proporcionará métricas de rendimiento y trazabilidad de cada transacción para respaldar los procesos de auditoría.
+
+A diferencia de las soluciones actuales utilizadas por la cadena, que presentan problemas de compatibilidad, errores frecuentes y una curva de aprendizaje elevada, nuestra propuesta ofrece una administración unificada de inventario y operaciones. Esto garantiza la consistencia de los datos, reduce los errores en la gestión de estancias y facilita la implementación de políticas comerciales, lo que se traduce en una mayor eficiencia operativa, incremento en los ingresos por ocupación, mejor respuesta ante cambios del mercado y una experiencia superior para el huésped.
+
+==== Alcance
 El sistema incluirá funcionalidades como registro de huéspedes, gestión de habitaciones, control de disponibilidad, procesamiento de pagos, generación de reportes y administración de usuarios. No contempla módulos externos como contabilidad o recursos humanos. Su uso estará limitado a personal autorizado dentro de la cadena hotelera, y se diseñará para escalar conforme crezca la red de hoteles.
-== Audiencia del documento
+
+==== Audiencia del documento
+Este documento está dirigido a los desarrolladores del sistema de gestión hotelera, así como a cualquier persona interesada en comprender el funcionamiento y alcance de la solución propuesta.
+

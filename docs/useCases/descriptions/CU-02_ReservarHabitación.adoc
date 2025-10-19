@@ -1,4 +1,4 @@
-== CU-02: Reservar Habitación
+*CU-02: Reservar Habitación*
 
 [width="100%", cols="1,4", options="header"]
 |===

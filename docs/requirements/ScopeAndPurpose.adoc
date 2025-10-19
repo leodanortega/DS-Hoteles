@@ -1,8 +1,8 @@
-= Alcance y propósito del diseño
+=== Alcance y propósito del diseño
 
-== Interesados y sus Preocupaciones
+==== Interesados y sus Preocupaciones
 
-=== Interesados Clave
+==== Interesados Clave
 
 Huésped::
 Cliente de la cadena, su interés es encontrar alojamiento de forma fácil, conveniente y satisfactoria, pagar con seguridad y poder hacer modificaciones a su reservación o estancia.
@@ -16,7 +16,7 @@ Administradores de la sucursal, se encargan de llevar el control del inventario 
 Auditor::
 Se encargan de supervisar las actividades financieras, verificar que los registros sean precisos y que se sigan todos los protocolos y normativas establecidas.
 
-=== Preocupaciones (Concerns)
+==== Preocupaciones (Concerns)
 
 [width="100%", cols="2,3,5", options="header"]
 |===
@@ -54,3 +54,5 @@ Se encargan de supervisar las actividades financieras, verificar que los registr
 |Auditor
 |Todas las operaciones deben generar un registro detallado, preciso e inmutable. La capacidad de rastrear y verificar cada transacción es fundamental para fines de auditoría, cumplimiento y resolución de disputas.
 |===
+
+

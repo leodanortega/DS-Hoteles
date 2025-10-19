@@ -1,0 +1,23 @@
+=== Planteamiento del problema
+
+==== Situación actual
+
+En la actualidad, cada hotel de la cadena opera con su propio sistema local para gestionar las reservaciones y estancias. Esta falta de un sistema unificado genera inconsistencias, errores operativos y dificulta la administración centralizada de la cadena hotelera.
+
+==== Problemas del Negocio
+
+* Los huéspedes deben aprender a utilizar diferentes plataformas de reservación según el hotel, lo que puede generar frustración y llevarlos a preferir opciones más familiares ofrecidas por la competencia.
+* El personal necesita capacitarse en el sistema específico de cada sucursal, lo que incrementa los costos de formación y complica la transferencia de empleados entre hoteles.
+* El manejo del inventario varía entre sucursales, lo que obliga a convertir los reportes a un formato común, generando pérdida de tiempo y aumentando el riesgo de errores que afectan la calidad de los datos.
+* La gestión de reservaciones también se realiza de forma distinta en cada hotel, lo que retrasa la consolidación de datos y limita la capacidad de la administración para responder oportunamente a la demanda.
+* La ausencia de procesos y formatos estandarizados complica el trabajo de los auditores, ralentizando las inspecciones y afectando la eficiencia del control interno.
+
+==== Oportunidad de Negocio
+
+* Modernizar el proceso de reservación mediante un portal web y una aplicación que permitan a los huéspedes reservar de forma ágil, segura y satisfactoria.
+** Eliminar por completo los casos de doble reserva y doble cobro.
+* Unificar la gestión de estancias, facilitando la capacitación del personal, reduciendo errores operativos y promoviendo la movilidad entre sucursales.
+** El 90% de los recepcionistas novatos logran realizar el check-in y check-out por sí mismos en el primer intento, tras solo 10 minutos de instrucción.
+* Centralizar la administración de la cadena hotelera, mejorando el control de inventario, la facturación de servicios, la aplicación de precios dinámicos y las políticas de reservación y cancelación.
+** Optimizar las operaciones diarias en más de *5,000* hoteles que suman más de *1,000,000* habitaciones.
+** Aplicar una política de overbooking del 10% por tipo de habitación sin incurrir en sobreventas accidentales.

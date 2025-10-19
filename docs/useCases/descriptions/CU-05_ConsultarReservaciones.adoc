@@ -1,4 +1,4 @@
-== CU-05: Consultar Reservaciones
+*CU-05: Consultar Reservaciones*
 
 [width="100%", cols="1,4", options="header"]
 |===

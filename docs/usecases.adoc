@@ -1,0 +1,32 @@
+=== Digramas de caso de uso
+
+.Casos de uso del Huesped
+image::useCases/diagrams/Huésped.jpg[Use Case Diagram, width=600, align=center]
+
+.Casos de uso del Recepcionista
+image::images/CU_Recepcionista.png[Use Case Diagram, width=600, align=center]
+
+.Casos de uso del Administrador
+image::images/CU_Administrador.png[Use Case Diagram, width=600, align=center]
+
+---
+
+=== Descripciones de caso de uso
+
+include::useCases/descriptions/CU-01_ConsultarDisponibilidad.adoc[]
+include::useCases/descriptions/CU-02_ReservarHabitación.adoc[]
+include::useCases/descriptions/CU-03_RealizarPagoDeReservación.adoc[]
+include::useCases/descriptions/CU-04_CancelarReservación.adoc[]
+include::useCases/descriptions/CU-05_ConsultarReservaciones.adoc[]
+include::useCases/descriptions/CU-06_ModificarReservación.adoc[]
+include::useCases/descriptions/CU-07_RecibirNotificaciones.adoc[]
+include::useCases/descriptions/CU-08_AccederAPolíticasDeTarifasYCancelación.adoc[]
+include::useCases/descriptions/CU-15_GestionarCatálogoDeHotelesYHabitaciones.adoc[]
+include::useCases/descriptions/CU-16_GestionarTarifasDiarias.adoc[]
+include::useCases/descriptions/CU-17_DefinirYAplicarPolíticasDeOverbooking.adoc[]
+include::useCases/descriptions/CU-18_DefinirPolíticasDeCancelaciónYCambios.adoc[]
+include::useCases/descriptions/CU-19_ConsultarInventarioGlobal.adoc[]
+include::useCases/descriptions/CU-19_ConsultarInventarioGlobal.adoc[]
+include::useCases/descriptions/CU-20_MonitorearOcupación.adoc[]
+include::useCases/descriptions/CU-21_ConsultarReporteDeIngresos.adoc[]
+include::useCases/descriptions/CU-22_GestionarPromocionesUOfertas.adoc[]
