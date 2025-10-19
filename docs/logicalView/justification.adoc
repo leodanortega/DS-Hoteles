@@ -1,0 +1,60 @@
+= Vista Lógica
+
+Esta vista describe la estructura estática del sistema y la organización de sus responsabilidades funcionales. Se enfoca en la descomposición del sistema en sus elementos lógicos principales (paquetes o subsistemas), la responsabilidad asignada a cada uno y las relaciones más importantes entre ellos.
+
+El estilo arquitectónico de microservicios, seleccionado para satisfacer impulsores clave como la Mantenibilidad (CRN-07), Escalabilidad (CRN-05) y Disponibilidad (CRN-02), dicta la descomposición principal del sistema. En lugar de una estructura en capas monolítica, el sistema se organiza como una colección de servicios cohesivos y débilmente acoplados, cada uno enfocado en una capacidad de negocio específica.
+
+El diagrama adjunto ilustra la descomposición lógica del sistema en los siguientes paquetes principales:
+
+=== Descripción de Paquetes Principales
+
+[cols="1,3", options="header"]
+|===
+|Paquete Lógico |Responsabilidades Asignadas
+
+|Clientes (Frontends)
+|Contiene las aplicaciones orientadas al usuario final. Siguiendo la decisión de usar el patrón BFF, este paquete se subdivide en:
+
+Portal de Huéspedes (SPA): Interfaz para consulta de disponibilidad, reservas, pagos y gestión de perfil.
+
+Sistema de Recepción: Interfaz para el personal del hotel para realizar check-in, check-out y gestionar estancias.
+
+Panel de Administración: Interfaz para administradores para configurar catálogos, tarifas y consultar reportes.
+
+|Capa de Acceso (Gateways & BFFs)
+|Actúa como la fachada principal del sistema. Su responsabilidad es exponer una API unificada y segura para los clientes.
+
+API Gateway: Punto único de entrada. Gestiona el enrutamiento, la autenticación, la seguridad (rate limiting, WAF) y el balanceo de carga inicial.
+
+Backends for Frontend (BFFs): APIs especializadas que orquestan llamadas a los servicios de negocio y adaptan los datos para cada tipo de cliente, simplificando la lógica en el frontend.
+
+|Capa de Negocio (Microservicios)
+|Representa el corazón del sistema, donde reside la lógica de negocio principal. Cada sub-paquete es un microservicio independiente con su propia base de datos.
+
+Servicio de Inventario: Gestiona el catálogo de hoteles, tipos de habitación y su disponibilidad en tiempo real. Es la fuente de verdad para la ocupación.
+
+Servicio de Reservaciones: Orquesta el ciclo de vida de una reserva (creación, modificación, cancelación) y aplica las políticas de negocio correspondientes.
+
+Servicio de Pagos: Se integra con la pasarela de pagos certificada (CON-03) para procesar cobros y reembolsos.
+
+Servicio de Notificaciones: Gestiona el envío de comunicaciones (emails, notificaciones push) de forma asíncrona.
+
+Servicio de Administración: Expone operaciones para la gestión de tarifas, promociones y políticas de la cadena.
+
+|Infraestructura
+|Proporciona capacidades técnicas compartidas que son utilizadas por múltiples servicios de negocio.
+
+Bus de Mensajes: Implementa la comunicación asíncrona entre servicios (ej. para el patrón Saga y notificaciones).
+
+Servicio de Identidad y Acceso: Se integra con el IdP corporativo (CON-05) y emite tokens de sesión para los usuarios.
+
+Servicio de Observabilidad: Centraliza logs, métricas y trazas de todos los componentes para el monitoreo y diagnóstico de problemas.
+|===
+
+=== Relaciones y Dependencias Clave
+
+Los paquetes Clientes dependen exclusivamente de la Capa de Acceso. No tienen conocimiento directo de los microservicios internos.
+
+La Capa de Acceso (específicamente los BFFs) depende de los servicios en la Capa de Negocio para orquestar las operaciones.
+
+Los servicios de la Capa de Negocio son en su mayoría independientes entre sí, comunicándose de forma asíncrona a través de la Infraestructura para mantener la cohesión y minimizar el acoplamiento.

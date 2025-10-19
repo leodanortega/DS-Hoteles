@@ -1,0 +1,96 @@
+= Método de Diseño Arquitectónico
+
+A continuación se describe el proceso racional, iterativo e incremental seguido para derivar la arquitectura del Sistema de Gestión Hotelera (SGH) a partir de sus impulsores. Este enfoque garantiza que cada decisión de diseño esté directamente justificada por su contribución a los objetivos de negocio y a los atributos de calidad.
+
+== 1. Proceso Híbrido: Attribute-Driven Design (ADD) y CBSE
+
+Para la creación de la arquitectura del SGH, se adoptó un proceso híbrido que combina la guía estratégica del método Attribute-Driven Design (ADD) con las prácticas de especificación del Component-Based Software Engineering (CBSE), siguiendo el enfoque de Cheesman & Daniels.
+
+El método ADD se utilizó como el marco principal para la toma de decisiones. Este enfoque asegura que la arquitectura sea moldeada por sus impulsores más críticos: los atributos de calidad (refinados a partir de las preocupaciones), las restricciones y los requisitos funcionales. El proceso de ADD nos obliga a justificar cada decisión importante en función de cómo ayuda a satisfacer uno o más de estos impulsores, evitando así un diseño arbitrario. Partimos de los impulsores de más alta prioridad para realizar una descomposición inicial del sistema, eligiendo patrones y tácticas arquitectónicas que los satisfagan.
+
+Una vez que ADD nos proporciona una descomposición de alto nivel, utilizamos el proceso de especificación de CBSE para refinar y detallar los componentes identificados:
+
+Identificación: A partir de los casos de uso y el modelo de dominio del negocio (Hoteles, Habitaciones, Reservaciones, Huéspedes), identificamos los componentes de negocio candidatos que encapsulan la lógica y los datos relacionados.
+
+Interacción: Modelamos cómo estos componentes interactúan para realizar las operaciones del sistema (ej. ReservarHabitación). Esto nos permite refinar sus responsabilidades y definir las interfaces preliminares que necesitarán para colaborar.
+
+Este ciclo de descomposición (ADD) y especificación (CBSE) se repite en cada iteración, permitiendo un diseño incremental y refinado.
+
+== 2. Ejecución del Diseño por Iteraciones
+
+El diseño se ejecutó en dos iteraciones principales, cada una con un objetivo claro y enfocada en un conjunto de impulsores priorizados.
+
+=== Iteración 1: Núcleo Transaccional y de Disponibilidad
+
+El objetivo primordial de esta primera iteración fue diseñar el esqueleto arquitectónico del sistema, enfocado en los flujos de negocio más críticos y los atributos de calidad más desafiantes: la consulta de disponibilidad y la creación de una reserva. La meta era asegurar que el núcleo del sistema fuera robusto, seguro, escalable y consistente desde su concepción.
+
+La alta prioridad de impulsores como la Consistencia del Inventario (CRN-03), la Alta Disponibilidad (CRN-02) y el Rendimiento Bajo Carga (CRN-04) nos llevó a tomar la decisión fundamental de adoptar un estilo arquitectónico de microservicios. Esta decisión, aunque introduce complejidad, es una táctica que nos permite abordar múltiples preocupaciones simultáneamente: permite que los componentes escalen de forma independiente (CRN-05), que un fallo en un servicio no afecte a todo el sistema (CRN-02) y fomenta la mantenibilidad a largo plazo (CRN-07).
+
+Para la consistencia del inventario (CRN-03), se decidió utilizar una combinación de tácticas. Se optó por un bloqueo optimista en la base de datos del servicio de inventario. Cuando un usuario inicia una reserva, el sistema verifica la versión del registro de la habitación; si al momento de confirmar la reserva la versión ha cambiado, significa que otro proceso la modificó, la transacción falla y se le notifica al usuario. Para transacciones que abarcan múltiples servicios (reserva, pago, notificación), se adoptará el patrón Saga para gestionar la consistencia distribuida y asegurar que una reserva fallida pueda ser revertida limpiamente en todos los sistemas implicados.
+
+Para garantizar la disponibilidad (CRN-02) y el rendimiento (CRN-04), se diseñó el despliegue con redundancia de componentes, con múltiples instancias de cada microservicio corriendo detrás de un balanceador de carga. Además, se introdujo una capa de caché distribuida (táctica de rendimiento) para las consultas de disponibilidad, reduciendo la carga sobre la base de datos principal y mejorando drásticamente los tiempos de respuesta para las búsquedas comunes.
+
+Finalmente, para la seguridad (CRN-01) y la gestión centralizada de las interacciones, se adoptó el patrón API Gateway. Este componente actúa como el único punto de entrada para todas las solicitudes del cliente, encargándose de la autenticación (CON-05), la autorización, el enrutamiento a los servicios internos y la aplicación de políticas de limitación de tasa (rate limiting) para prevenir abusos.
+
+=== Cierre de la Iteración 1
+[cols="1,3", options="header"]
+|===
+|Elemento |Descripción
+
+|Drivers Atendidos
+|
+
+Primarios: CRN-01 (Seguridad), CRN-02 (Disponibilidad), CRN-03 (Consistencia), CRN-04 (Rendimiento).
+
+Secundarios: CRN-06 (Auditabilidad - sentando las bases), CON-01 (Stack Tecnológico), CON-02 (Nube), CON-03 (Pasarela de Pagos), CON-05 (Autenticación).
+
+|Decisiones Registradas
+|
+
+Adopción del estilo arquitectónico de Microservicios como macro-patrón.
+
+Implementación de un API Gateway para centralizar la seguridad y el enrutamiento.
+
+Uso de bloqueo optimista para la gestión de concurrencia en el inventario.
+
+Adopción del patrón Saga para transacciones distribuidas.
+
+Diseño de despliegue con redundancia de componentes y balanceo de carga.
+
+Introducción de una caché distribuida para optimizar las consultas de disponibilidad.
+|===
+
+
+=== Iteración 2: Experiencia de Usuario y Operaciones del Hotel
+
+Con el núcleo transaccional definido, la segunda iteración se centró en la Experiencia de Usuario (CRN-10) y la Mantenibilidad (CRN-07) de las aplicaciones cliente y los servicios de soporte operativo.
+
+El impulsor de ofrecer una experiencia de usuario fluida (CRN-10) y la restricción de usar React (CON-01) nos llevaron a diseñar el portal de huéspedes como una Single-Page Application (SPA). Esta táctica mejora la percepción del rendimiento al evitar recargas completas de la página, comunicándose con el backend a través de llamadas asíncronas.
+
+Al analizar los flujos de trabajo del personal de recepción y de los administradores, se hizo evidente que sus necesidades de datos y funcionalidades eran muy diferentes a las de un huésped. Para evitar la creación de una API monolítica y compleja, y para fomentar la mantenibilidad (CRN-07), se adoptó el patrón Backend for Frontend (BFF). Se diseñaron tres APIs distintas: una para el frontend de huéspedes, una para el sistema de recepción y otra para el panel de administración. Cada BFF es responsable de agregar y adaptar los datos de los microservicios del backend para servir eficientemente a su cliente específico.
+
+Finalmente, para la gestión de notificaciones (confirmaciones de reserva, cancelaciones, etc.), y para mejorar la escalabilidad (CRN-05) y la resiliencia (CRN-02), se decidió desacoplar este proceso. Se introdujo un broker de mensajes (táctica de comunicación asíncrona). Cuando ocurre un evento como "reserva_confirmada", el servicio de reservas publica un mensaje en una cola. Un servicio de notificaciones, separado e independiente, consume este mensaje y se encarga de enviar el correo o la notificación push. Si el servicio de notificaciones falla, los mensajes permanecen en la cola y pueden ser procesados más tarde, sin afectar el flujo de reserva principal.
+
+=== Cierre de la Iteración 2
+[cols="1,3", options="header"]
+|===
+|Elemento |Descripción
+
+|Drivers Atendidos
+|
+
+Primarios: CRN-10 (Experiencia de Usuario), CRN-07 (Mantenibilidad).
+
+Secundarios: CRN-05 (Escalabilidad), CRN-08 (Observabilidad - al desacoplar flujos), CRN-12 (Interoperabilidad - mediante APIs bien definidas).
+
+|Decisiones Registradas
+|
+
+Diseño del portal de huéspedes como una Single-Page Application (SPA).
+
+Adopción del patrón Backend for Frontend (BFF) para crear APIs especializadas.
+
+Uso de un broker de mensajes para la comunicación asíncrona y el desacoplamiento de notificaciones.
+
+Separación de las aplicaciones frontend en al menos tres bases de código distintas: Huésped, Recepción y Administración.
+|===

@@ -62,3 +62,18 @@
 |Se añadió el utility tree
 
 |===
+
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.0.5
+|19/10/2025
+|Carlos Castillo
+|Se añaden las Vistas Arquitectónicas: Vista Lógica (diagrama de paquetes) y Modelo de Conceptos de Negocio
+
+|===

@@ -1,0 +1,44 @@
+= Modelo de Conceptos de Negocio
+
+Esta sección clarifica y define las entidades principales del dominio del problema. Sirve como un vocabulario común para todos los interesados y actúa como la fuente de verdad para el diseño de la capa de negocio, la identificación de componentes CBSE y la posterior vista de datos. El modelo es puramente conceptual, omitiendo detalles de implementación como métodos.
+
+=== Descripción de Conceptos Principales
+
+[cols="1,3", options="header"]
+|===
+|Concepto |Descripción
+
+|Hotel
+|Representa una sucursal física de la cadena. Contiene información como nombre, dirección y un conjunto de habitaciones.
+
+|Habitación
+|Es una instancia física de un cuarto en un hotel, caracterizada por un número o identificador único. Pertenece a un Tipo de Habitación.
+
+|Tipo de Habitación
+|Define una categoría de habitación según sus características (ej. "Doble", "Suite Presidencial"), como capacidad, amenidades y descripción. Las tarifas se asocian a este concepto.
+
+|Huésped
+|Es la persona que realiza y se beneficia de una reserva. Contiene sus datos personales de contacto.
+
+|Reservación
+|Es el concepto central que formaliza el acuerdo de alojamiento. Vincula a un Huésped con un Hotel y un Tipo de Habitación para un período específico. Se le asocian un Pago, una Tarifa y una Política.
+
+|Pago
+|Representa una transacción financiera asociada a una reserva. Incluye el monto, la fecha y el estado del pago.
+
+|Tarifa
+|Define el precio de un Tipo de Habitación para un período de tiempo determinado (ej. tarifa de fin de semana, tarifa de temporada alta).
+
+|Política
+|Establece las reglas de negocio que aplican a una reserva, principalmente las condiciones de cancelación y modificación.
+|===
+
+=== Relaciones y Dependencias Clave
+
+Un Hotel está compuesto por una o más Habitaciones (Composición).
+
+Cada Habitación es de un solo Tipo de Habitación. Varios cuartos pueden ser del mismo tipo.
+
+Un Huésped puede realizar cero o muchas Reservas. Cada Reserva pertenece a un solo Huésped.
+
+Una Reserva se realiza sobre un Tipo de Habitación en un Hotel específico y está asociada a una Tarifa, un Pago y una Política para darle contexto completo.
