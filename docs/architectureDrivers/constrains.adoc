@@ -1,4 +1,4 @@
-= Restricciones (Constraints)
+== Restricciones (Constraints)
 
 Las siguientes son decisiones o condiciones impuestas que no son negociables y deben ser respetadas por la arquitectura del sistema.
 

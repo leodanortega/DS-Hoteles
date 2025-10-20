@@ -1,4 +1,4 @@
-= Preocupaciones (Concerns)
+== Preocupaciones (Concerns)
 
 Las siguientes son las áreas de interés o metas críticas que la arquitectura debe abordar para satisfacer las necesidades de los interesados y garantizar el éxito del sistema.
 

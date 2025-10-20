@@ -77,3 +77,17 @@
 |Se añaden las Vistas Arquitectónicas: Vista Lógica (diagrama de paquetes) y Modelo de Conceptos de Negocio
 
 |===
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.0.6
+|19/10/2025
+|Leonardo Daniel
+|Se actualizó el documento principal y se añadió las vistas arquitectónicas y sus diagramas
+
+|===
