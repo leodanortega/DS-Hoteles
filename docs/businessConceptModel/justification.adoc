@@ -1,4 +1,4 @@
-= Modelo de Conceptos de Negocio
+== Modelo de Conceptos de Negocio
 
 Esta sección clarifica y define las entidades principales del dominio del problema. Sirve como un vocabulario común para todos los interesados y actúa como la fuente de verdad para el diseño de la capa de negocio, la identificación de componentes CBSE y la posterior vista de datos. El modelo es puramente conceptual, omitiendo detalles de implementación como métodos.
 
@@ -42,3 +42,7 @@ Cada Habitación es de un solo Tipo de Habitación. Varios cuartos pueden ser de
 Un Huésped puede realizar cero o muchas Reservas. Cada Reserva pertenece a un solo Huésped.
 
 Una Reserva se realiza sobre un Tipo de Habitación en un Hotel específico y está asociada a una Tarifa, un Pago y una Política para darle contexto completo.
+
+
+.Diagrama de Negocios
+image::../images/businessConceptModel.jpg[Business Concept Model, width=600, align=center]

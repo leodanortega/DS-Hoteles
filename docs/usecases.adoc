@@ -1,13 +1,13 @@
 === Digramas de caso de uso
 
 .Casos de uso del Huesped
-image::useCases/diagrams/Huésped.jpg[Use Case Diagram, width=600, align=center]
+image::../images/Huesped.jpg[Use Case Diagram, width=600, align=center]
 
 .Casos de uso del Recepcionista
-image::images/CU_Recepcionista.png[Use Case Diagram, width=600, align=center]
+image::../images/packageDiagram.jpg[Use Case Diagram, width=600, align=center]
 
 .Casos de uso del Administrador
-image::images/CU_Administrador.png[Use Case Diagram, width=600, align=center]
+image::../images/CU_Administrador.png[Use Case Diagram, width=600, align=center]
 
 ---
 

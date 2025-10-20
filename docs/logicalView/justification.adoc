@@ -1,4 +1,4 @@
-= Vista Lógica
+== Vista Lógica
 
 Esta vista describe la estructura estática del sistema y la organización de sus responsabilidades funcionales. Se enfoca en la descomposición del sistema en sus elementos lógicos principales (paquetes o subsistemas), la responsabilidad asignada a cada uno y las relaciones más importantes entre ellos.
 
@@ -51,10 +51,14 @@ Servicio de Identidad y Acceso: Se integra con el IdP corporativo (CON-05) y emi
 Servicio de Observabilidad: Centraliza logs, métricas y trazas de todos los componentes para el monitoreo y diagnóstico de problemas.
 |===
 
-=== Relaciones y Dependencias Clave
+== Relaciones y Dependencias Clave
 
 Los paquetes Clientes dependen exclusivamente de la Capa de Acceso. No tienen conocimiento directo de los microservicios internos.
 
 La Capa de Acceso (específicamente los BFFs) depende de los servicios en la Capa de Negocio para orquestar las operaciones.
 
 Los servicios de la Capa de Negocio son en su mayoría independientes entre sí, comunicándose de forma asíncrona a través de la Infraestructura para mantener la cohesión y minimizar el acoplamiento.
+
+
+.Diagrama de Paquetes
+image::../images/packageDiagram.jpg[Package Diagram, width=600, align=center]

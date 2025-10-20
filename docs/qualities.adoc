@@ -83,4 +83,5 @@
 
 == Utility tree
 
-image::utilitytree/UtilityTree.png[]
+.Utility tree
+image::../images/UtilityTree.png[Utility tree, width=600, align=center]

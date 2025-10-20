@@ -1,4 +1,4 @@
-= Método de Diseño Arquitectónico
+== Método de Diseño Arquitectónico
 
 A continuación se describe el proceso racional, iterativo e incremental seguido para derivar la arquitectura del Sistema de Gestión Hotelera (SGH) a partir de sus impulsores. Este enfoque garantiza que cada decisión de diseño esté directamente justificada por su contribución a los objetivos de negocio y a los atributos de calidad.
 
