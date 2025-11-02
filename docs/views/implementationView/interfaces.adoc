@@ -5,7 +5,7 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 
 === Componente: Inventario
 ==== Interfaz: IInventario
-link:..https://github.com/leodanortega/DS-Hoteles/blob/main/docs/images/interfaceDiagrams/IInventario.jpeg[Diagrama IInventario]
+link:..DS-Hoteles/blob/main/docs/images/interfaceDiagrams/IInventario.jpeg[Diagrama IInventario]
 [options="header", cols="1,2,2"]
 |===
 |Operación |Precondición(es) |Postcondición(es)
