@@ -40,29 +40,44 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 
 | *hacerReservacion(DatosReservacionDTO): Reservacion*
 | 1. Los datos del cliente son válidos.
++
 2. Se ha obtenido un bloqueo de habitación exitoso y activo desde IInventario.
++
 3. Se ha recibido una Transaccion "APROBADA" desde IPago.
 | 1. Se crea una nueva entidad Reservacion en la BD con estado "CONFIRMADA".
++
 2. Se solicita a IInventario que confirme el bloqueo de la habitación.
++
 3. Se solicita una notificación a INotificaciones.
++
 4. Retorna el objeto Reservacion creado.
 
 | *cancelarReservacion(int): boolean*
 | 1. El idReserva debe existir y estar en estado "CONFIRMADA".
++
 2. La política de cancelación (obtenida de ITarifas) debe permitir la operación.
 | 1. El estado de la Reservacion se actualiza a "CANCELADA".
++
 2. Se solicita una liberación de inventario a IInventario.
++
 3. Se solicita un reembolso (si aplica) a IPago.
++
 4. Se solicita una notificación de cancelación a INotificaciones.
++
 5. Retorna true.
 
 | *modificarReservacion(int, DatosModificacionDTO): Reservacion*
 | 1. El idReserva debe existir y estar "CONFIRMADA".
++
 2. La política (de ITarifas) permite modificaciones.
++
 3. Existe disponibilidad en IInventario para los nuevos criterios (si aplican).
++
 4. (Si hay costo extra) Se ha procesado un pago adicional vía IPago.
 | 1. La Reservacion es actualizada con los nuevos datos.
++
 2. Se actualiza el inventario (liberando fechas antiguas, bloqueando nuevas).
++
 3. Retorna la Reservacion actualizada.
 |===
 
@@ -90,17 +105,24 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 
 | *procesarCobro(DatosPagoDTO, float): Transaccion*
 | 1. Los DatosPagoDTO contienen campos válidos (formato de tarjeta, fecha de expiración futura).
++
 2. El monto es mayor que cero.
++
 3. La conexión con el PSP (CON-03) está activa.
 | 1. Se envía la solicitud al PSP externo.
++
 2. Se registra la Transaccion en la BD (sin datos sensibles RN-03).
++
 3. Retorna la Transaccion con estado "APROBADA" o "RECHAZADA".
 
 | *procesarReembolso(string, float): Transaccion*
 | 1. El idTransaccionOriginal existe y está en estado "APROBADA".
++
 2. El monto a reembolsar es mayor que cero y menor o igual al monto original.
 | 1. Se envía la solicitud de reembolso al PSP.
++
 2. Se registra una nueva Transaccion (tipo "REEMBOLSO").
++
 3. Retorna la Transaccion con estado "PROCESADO" o "FALLIDO".
 |===
 
@@ -132,21 +154,29 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 | *registrarCambioHabitacion(int, int): boolean*
 | idEstancia debe estar activa. idNuevaHabitacion debe existir y estar "DISPONIBLE" (verificado por IInventario).
 | 1. Se actualiza idHabitacionAsignada en la Estancia.
++
 2. Se actualiza el estado de la habitación antigua a "DISPONIBLE" y la nueva a "OCUPADA" (via IInventario).
 
 | *registrarCheckIn(int): Estancia*
 | 1. El idReserva existe (verificado por IConsultaReserva) y está "CONFIRMADA".
++
 2. La fecha actual es la fechaInicio de la reserva.
 | 1. Se crea un nuevo registro de Estancia con estado "ACTIVA".
++
 2. Se actualiza el estado de la habitación a "OCUPADA" (via IInventario).
++
 3. Retorna la Estancia creada.
 
 | *registrarCheckOut(int): Factura*
 | 1. El idEstancia existe y está "ACTIVA".
++
 2. (Si hay cargos pendientes) Se ha procesado el pago de extras (via IPago).
 | 1. El estado de la Estancia se actualiza a "COMPLETADA".
++
 2. El estado de la Reservacion se actualiza a "COMPLETADA".
++
 3. El estado de la habitación se actualiza a "MANTENIMIENTO" (via IInventario).
++
 4. Retorna la Factura final.
 |===
 
