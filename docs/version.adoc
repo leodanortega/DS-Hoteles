@@ -91,3 +91,17 @@
 |Se actualizó el documento principal y se añadió las vistas arquitectónicas y sus diagramas
 
 |===
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.0.7
+|02/11/2025
+|Carlos Castillo
+|Se añaden las Vistas Arquitectónicas: Vista de Implementación (diagramas de componentes y de interfaces).
+
+|===
