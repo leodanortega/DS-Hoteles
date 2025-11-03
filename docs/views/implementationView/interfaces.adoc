@@ -10,23 +10,23 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 |Operación |Precondición(es) |Postcondición(es)
 
 | *actualizarEstadoHabitacion(int, string): boolean*
-| El *idHabitacion* debe existir en el sistema. El *nuevoEstado* debe ser un valor válido (ej. "DISPONIBLE", "OCUPADA", "MANTENIMIENTO").
-| El estado de la habitación se actualiza en la base de datos de inventario. Retorna *true*.
+| El idHabitacion debe existir en el sistema. El nuevoEstado debe ser un valor válido (ej. "DISPONIBLE", "OCUPADA", "MANTENIMIENTO").
+| El estado de la habitación se actualiza en la base de datos de inventario. Retorna true.
 
 | *consultarDisponibilidad(CriteriosDisponibilidadDTO): TipoHabitacion[]*
-| El *CriteriosDisponibilidadDTO* no es nulo y contiene fechas válidas (*fechaInicio* < *fechaFin*) y un *idHotel* existente.
-| Retorna una lista (posiblemente vacía) de *TipoHabitacion* que cumplen los criterios y tienen al menos una habitación disponible en el rango de fechas.
+| El CriteriosDisponibilidadDTO no es nulo y contiene fechas válidas (fechaInicio < fechaFin) y un idHotel existente.
+| Retorna una lista (posiblemente vacía) de TipoHabitacion que cumplen los criterios y tienen al menos una habitación disponible en el rango de fechas.
 
 | *consultarInventarioGlobal(): InventarioGlobalDTO[]*
-| El usuario debe tener permisos de Administrador (verificado por *IAutenticacion*).
+| El usuario debe tener permisos de Administrador (verificado por IAutenticacion).
 | Retorna una lista que consolida el estado de todos los tipos de habitación en todos los hoteles de la cadena.
 
 | *gestionarCatalogo(string, TipoHabitacion): boolean*
-| El usuario debe tener permisos de Administrador. La *operacion* es válida (ej. "CREAR"). La entidad *TipoHabitacion* u *Hotel* tiene datos válidos.
-| La entidad se crea, modifica o elimina en el catálogo maestro. Retorna *true*.
+| El usuario debe tener permisos de Administrador. La operacion es válida (ej. "CREAR"). La entidad TipoHabitacion u Hotel tiene datos válidos.
+| La entidad se crea, modifica o elimina en el catálogo maestro. Retorna true.
 
 | *monitorearOcupacion(int): OcupacionDTO*
-| El usuario debe tener permisos de Administrador. El *idHotel* debe existir.
+| El usuario debe tener permisos de Administrador. El idHotel debe existir.
 | Retorna un DTO con el porcentaje de ocupación actual para el hotel especificado.
 |===
 
@@ -40,30 +40,30 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 
 | *hacerReservacion(DatosReservacionDTO): Reservacion*
 | 1. Los datos del cliente son válidos.
-2. Se ha obtenido un bloqueo de habitación exitoso y activo desde *IInventario*.
-3. Se ha recibido una *Transaccion* "APROBADA" desde *IPago*.
-| 1. Se crea una nueva entidad *Reservacion* en la BD con estado "CONFIRMADA".
-2. Se solicita a *IInventario* que confirme el bloqueo de la habitación.
-3. Se solicita una notificación a *INotificaciones*.
-4. Retorna el objeto *Reservacion* creado.
+2. Se ha obtenido un bloqueo de habitación exitoso y activo desde IInventario.
+3. Se ha recibido una Transaccion "APROBADA" desde IPago.
+| 1. Se crea una nueva entidad Reservacion en la BD con estado "CONFIRMADA".
+2. Se solicita a IInventario que confirme el bloqueo de la habitación.
+3. Se solicita una notificación a INotificaciones.
+4. Retorna el objeto Reservacion creado.
 
 | *cancelarReservacion(int): boolean*
-| 1. El *idReserva* debe existir y estar en estado "CONFIRMADA".
-2. La política de cancelación (obtenida de *ITarifas*) debe permitir la operación.
-| 1. El estado de la *Reservacion* se actualiza a "CANCELADA".
-2. Se solicita una liberación de inventario a *IInventario*.
-3. Se solicita un reembolso (si aplica) a *IPago*.
-4. Se solicita una notificación de cancelación a *INotificaciones*.
-5. Retorna *true*.
+| 1. El idReserva debe existir y estar en estado "CONFIRMADA".
+2. La política de cancelación (obtenida de ITarifas) debe permitir la operación.
+| 1. El estado de la Reservacion se actualiza a "CANCELADA".
+2. Se solicita una liberación de inventario a IInventario.
+3. Se solicita un reembolso (si aplica) a IPago.
+4. Se solicita una notificación de cancelación a INotificaciones.
+5. Retorna true.
 
 | *modificarReservacion(int, DatosModificacionDTO): Reservacion*
-| 1. El *idReserva* debe existir y estar "CONFIRMADA".
-2. La política (de *ITarifas*) permite modificaciones.
-3. Existe disponibilidad en *IInventario* para los nuevos criterios (si aplican).
-4. (Si hay costo extra) Se ha procesado un pago adicional vía *IPago*.
-| 1. La *Reservacion* es actualizada con los nuevos datos.
+| 1. El idReserva debe existir y estar "CONFIRMADA".
+2. La política (de ITarifas) permite modificaciones.
+3. Existe disponibilidad en IInventario para los nuevos criterios (si aplican).
+4. (Si hay costo extra) Se ha procesado un pago adicional vía IPago.
+| 1. La Reservacion es actualizada con los nuevos datos.
 2. Se actualiza el inventario (liberando fechas antiguas, bloqueando nuevas).
-3. Retorna la *Reservacion* actualizada.
+3. Retorna la Reservacion actualizada.
 |===
 
 ==== Interfaz: IConsultaReservacion
@@ -72,12 +72,12 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 |Operación |Precondición(es) |Postcondición(es)
 
 | *buscarReservacionesPorCliente(int): Reservacion[]*
-| El *idCliente* debe corresponder al cliente autenticado o el solicitante debe ser personal autorizado (*CU-05*).
-| Retorna una lista (posiblemente vacía) de *Reservacion* asociadas al *idCliente*.
+| El idCliente debe corresponder al cliente autenticado o el solicitante debe ser personal autorizado (CU-05).
+| Retorna una lista (posiblemente vacía) de Reservacion asociadas al idCliente.
 
 | *buscarReservacionPorID(int): ReservacionDetalladaDTO*
-| El *idReserva* existe. El solicitante está autorizado para verla.
-| Retorna el *ReservacionDetalladaDTO* con toda la información de la reserva, cliente, hotel y pago.
+| El idReserva existe. El solicitante está autorizado para verla.
+| Retorna el ReservacionDetalladaDTO con toda la información de la reserva, cliente, hotel y pago.
 |===
 
 ---
@@ -89,19 +89,19 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 |Operación |Precondición(es) |Postcondición(es)
 
 | *procesarCobro(DatosPagoDTO, float): Transaccion*
-| 1. Los *DatosPagoDTO* contienen campos válidos (formato de tarjeta, fecha de expiración futura).
-2. El *monto* es mayor que cero.
-3. La conexión con el PSP (*CON-03*) está activa.
+| 1. Los DatosPagoDTO contienen campos válidos (formato de tarjeta, fecha de expiración futura).
+2. El monto es mayor que cero.
+3. La conexión con el PSP (CON-03) está activa.
 | 1. Se envía la solicitud al PSP externo.
-2. Se registra la *Transaccion* en la BD (sin datos sensibles *RN-03*).
-3. Retorna la *Transaccion* con estado "APROBADA" o "RECHAZADA".
+2. Se registra la Transaccion en la BD (sin datos sensibles RN-03).
+3. Retorna la Transaccion con estado "APROBADA" o "RECHAZADA".
 
 | *procesarReembolso(string, float): Transaccion*
-| 1. El *idTransaccionOriginal* existe y está en estado "APROBADA".
-2. El *monto* a reembolsar es mayor que cero y menor o igual al monto original.
+| 1. El idTransaccionOriginal existe y está en estado "APROBADA".
+2. El monto a reembolsar es mayor que cero y menor o igual al monto original.
 | 1. Se envía la solicitud de reembolso al PSP.
-2. Se registra una nueva *Transaccion* (tipo "REEMBOLSO").
-3. Retorna la *Transaccion* con estado "PROCESADO" o "FALLIDO".
+2. Se registra una nueva Transaccion (tipo "REEMBOLSO").
+3. Retorna la Transaccion con estado "PROCESADO" o "FALLIDO".
 |===
 
 ---
@@ -113,12 +113,12 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 |Operación |Precondición(es) |Postcondición(es)
 
 | *enviarAvisoCancelacion(InfoNotificacionDTO): boolean*
-| *InfoNotificacionDTO* contiene un *correoCliente* válido. El servicio externo *IServicioEmail* está disponible.
-| El mensaje se encola para envío asíncrono. Retorna *true* si se encoló exitosamente (no garantiza la entrega).
+| InfoNotificacionDTO contiene un correoCliente válido. El servicio externo IServicioEmail está disponible.
+| El mensaje se encola para envío asíncrono. Retorna true si se encoló exitosamente (no garantiza la entrega).
 
 | *enviarConfirmacionReservacion(InfoNotificacionDTO): boolean*
-| *InfoNotificacionDTO* contiene un *correoCliente* válido. El servicio externo *IServicioEmail* está disponible.
-| El mensaje se encola para envío asíncrono. Retorna *true* si se encoló exitosamente.
+| InfoNotificacionDTO contiene un correoCliente válido. El servicio externo IServicioEmail está disponible.
+| El mensaje se encola para envío asíncrono. Retorna true si se encoló exitosamente.
 |===
 
 ---
@@ -130,24 +130,24 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 |Operación |Precondición(es) |Postcondición(es)
 
 | *registrarCambioHabitacion(int, int): boolean*
-| *idEstancia* debe estar activa. *idNuevaHabitacion* debe existir y estar "DISPONIBLE" (verificado por *IInventario*).
-| 1. Se actualiza *idHabitacionAsignada* en la *Estancia*.
-2. Se actualiza el estado de la habitación antigua a "DISPONIBLE" y la nueva a "OCUPADA" (via *IInventario*).
+| idEstancia debe estar activa. idNuevaHabitacion debe existir y estar "DISPONIBLE" (verificado por IInventario).
+| 1. Se actualiza idHabitacionAsignada en la Estancia.
+2. Se actualiza el estado de la habitación antigua a "DISPONIBLE" y la nueva a "OCUPADA" (via IInventario).
 
 | *registrarCheckIn(int): Estancia*
-| 1. El *idReserva* existe (verificado por *IConsultaReserva*) y está "CONFIRMADA".
-2. La fecha actual es la *fechaInicio* de la reserva.
-| 1. Se crea un nuevo registro de *Estancia* con estado "ACTIVA".
-2. Se actualiza el estado de la habitación a "OCUPADA" (via *IInventario*).
-3. Retorna la *Estancia* creada.
+| 1. El idReserva existe (verificado por IConsultaReserva) y está "CONFIRMADA".
+2. La fecha actual es la fechaInicio de la reserva.
+| 1. Se crea un nuevo registro de Estancia con estado "ACTIVA".
+2. Se actualiza el estado de la habitación a "OCUPADA" (via IInventario).
+3. Retorna la Estancia creada.
 
 | *registrarCheckOut(int): Factura*
-| 1. El *idEstancia* existe y está "ACTIVA".
-2. (Si hay cargos pendientes) Se ha procesado el pago de extras (via *IPago*).
-| 1. El estado de la *Estancia* se actualiza a "COMPLETADA".
-2. El estado de la *Reservacion* se actualiza a "COMPLETADA".
-3. El estado de la habitación se actualiza a "MANTENIMIENTO" (via *IInventario*).
-4. Retorna la *Factura* final.
+| 1. El idEstancia existe y está "ACTIVA".
+2. (Si hay cargos pendientes) Se ha procesado el pago de extras (via IPago).
+| 1. El estado de la Estancia se actualiza a "COMPLETADA".
+2. El estado de la Reservacion se actualiza a "COMPLETADA".
+3. El estado de la habitación se actualiza a "MANTENIMIENTO" (via IInventario).
+4. Retorna la Factura final.
 |===
 
 ---
@@ -159,14 +159,14 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 |Operación |Precondición(es) |Postcondición(es)
 
 | *gestionarPromocion(Promocion): boolean*
-| El usuario está autenticado como Administrador. Los datos de la *Promocion* son válidos (ej. fechas de vigencia).
-| La *Promocion* se crea o actualiza en la base de datos. Retorna *true*.
+| El usuario está autenticado como Administrador. Los datos de la Promocion son válidos (ej. fechas de vigencia).
+| La Promocion se crea o actualiza en la base de datos. Retorna true.
 
 | *gestionarTarifaDiaria(Tarifa): boolean*
-| El usuario está autenticado como Administrador. La *Tarifa* es válida y está asociada a un *idTipoHabitacion* existente.
-| La *Tarifa* se crea o actualiza en la base de datos. Retorna *true*.
+| El usuario está autenticado como Administrador. La Tarifa es válida y está asociada a un idTipoHabitacion existente.
+| La Tarifa se crea o actualiza en la base de datos. Retorna true.
 
 | *obtenerTarifaCalculada(CriteriosTarifaDTO): TarifaCalculadaDTO*
-| Los *CriteriosTarifaDTO* son válidos. *idTipoHabitacion* y las fechas existen.
+| Los CriteriosTarifaDTO son válidos. idTipoHabitacion y las fechas existen.
 | Retorna un DTO con el precio final calculado, aplicando las tarifas diarias y las promociones vigentes.
 |===
