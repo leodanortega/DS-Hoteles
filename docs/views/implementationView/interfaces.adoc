@@ -3,8 +3,23 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 
 ---
 
+.Diagrama de arquitectura de componentes
+image::../images/components/ComponentArchitectureDiagram.jpeg[Diagrama de Arquitectura de componentes, width=600, align=center]
+
+
+
 === Componente: Inventario
+
+.Diagrama de Componente de Inventario
+image::../images/components/Inventario.jpeg[Diagrama de componente de Inventario, width=600, align=center]
+
 ==== Interfaz: IInventario
+
+.Diagrama de Interfaz de Inventario
+image::../images/interfaceDiagrams/IInventario.jpeg[Diagrama de Interfaz de Inventario, width=600, align=center]
+
+
+
 [options="header", cols="1,2,2"]
 |===
 |Operación |Precondición(es) |Postcondición(es)
@@ -30,10 +45,33 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 | Retorna un DTO con el porcentaje de ocupación actual para el hotel especificado.
 |===
 
+.Diagrama de comunicación actualizarEstadoHabitación
+image::../images/comunication/actualizarEstadoHabitacion.png[Diagrama de comunicación Actualizar estado de habitación, width=600, align=center]
+
+.Diagrama de comunicación consultarDisponibilidad
+image::../images/comunication/consultarDisponibilidad.png[Diagrama de comunicación Consultar disponibilidad, width=600, align=center]
+
+.Diagrama de comunicación consultarInventarioGlobal
+image::../images/comunication/consultarInventarioGlobal.png[Diagrama de comunicación Consultar inventario global, width=600, align=center]
+
+.Diagrama de comunicación gestionarCatalogo
+image::../images/comunication/gestionarCatalogo.png[Diagrama de comunicación Gestionar catálogo, width=600, align=center]
+
+.Diagrama de comunicación monitorearOcupacion
+image::../images/comunication/monitorearOcupacion.png[Diagrama de comunicación Monitorear ocupación, width=600, align=center]
+
 ---
 
 === Componente: Reservaciones
+
+.Diagrama de Componente de Reservaciones
+image::../images/components/Reservaciones.jpeg[Diagrama de componente de Reservaciones, width=600, align=center]
+
 ==== Interfaz: IGestionReservacion
+
+.Diagrama de Interfaz de Gestión de reservaciones
+image::../images/interfaceDiagrams/IGestionReservacion.jpeg[Diagrama de interfaz de Gestión de Reservaciones, width=600, align=center]
+
 [options="header", cols="1,2,2"]
 |===
 |Operación |Precondición(es) |Postcondición(es)
@@ -66,7 +104,20 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 3. Retorna la Reservacion actualizada.
 |===
 
+.Diagrama de comunicación hacerReservacion
+image::../images/comunication/hacerReservacion.png[Diagrama de comunicación Hacer reservación, width=600, align=center]
+
+.Diagrama de comunicación cancelarReservacion
+image::../images/comunication/cancelarReservacion.png[Diagrama de comunicación Cancelar reservación, width=600, align=center]
+
+.Diagrama de comunicación modificarReservacion
+image::../images/comunication/modificarReservacion.png[Diagrama de comunicación Modificar reservación, width=600, align=center]
+
 ==== Interfaz: IConsultaReservacion
+
+.Diagrama de Interfaz de Consulta de reservaciones
+image::../images/interfaceDiagrams/IConsultaReservacion.jpeg[Diagrama de interfaz de Consulta de Reservaciones, width=600, align=center]
+
 [options="header", cols="1,2,2"]
 |===
 |Operación |Precondición(es) |Postcondición(es)
@@ -80,10 +131,24 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 | Retorna el ReservacionDetalladaDTO con toda la información de la reserva, cliente, hotel y pago.
 |===
 
+.Diagrama de comunicación buscarReservacionesPorCliente
+image::../images/comunication/buscarReservacionesPorCliente.png[Diagrama de comunicación Buscar reservaciones por cliente, width=600, align=center]
+
+.Diagrama de comunicación buscarReservacionesPorID
+image::../images/comunication/buscarReservacionesPorID.png[Diagrama de comunicación Buscar reservaciones por ID, width=600, align=center]
+
 ---
 
 === Componente: Pagos
+
+.Diagrama de Componente de Pagos
+image::../images/components/Pagos.jpeg[Diagrama de componente de Pagos, width=600, align=center]
+
 ==== Interfaz: IPago
+
+.Diagrama de Interfaz de Pagos
+image::../images/interfaceDiagrams/IPago.jpeg[Diagrama de interfaz de Pagos, width=600, align=center]
+
 [options="header", cols="1,2,2"]
 |===
 |Operación |Precondición(es) |Postcondición(es)
@@ -104,10 +169,24 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 3. Retorna la Transaccion con estado "PROCESADO" o "FALLIDO".
 |===
 
+.Diagrama de comunicación procesarCobro
+image::../images/comunication/procesarCobro.png[Diagrama de comunicación Procesar cobro, width=600, align=center]
+
+.Diagrama de comunicación procesarReembolso
+image::../images/comunication/procesarReembolso.png[Diagrama de comunicación Procesar reembolso, width=600, align=center]
+
 ---
 
 === Componente: Notificaciones
+
+.Diagrama de Componente de Notificaciones
+image::../images/components/Notificaciones.jpeg[Diagrama de componente de Notificaciones, width=600, align=center]
+
 ==== Interfaz: INotificaciones
+
+.Diagrama de Interfaz de Notificaciones
+image::../images/interfaceDiagrams/INotificaciones.jpeg[Diagrama de interfaz de Notificaciones, width=600, align=center]
+
 [options="header", cols="1,2,2"]
 |===
 |Operación |Precondición(es) |Postcondición(es)
@@ -121,10 +200,24 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 | El mensaje se encola para envío asíncrono. Retorna true si se encoló exitosamente.
 |===
 
+.Diagrama de comunicación enviarAvisoCancelacion
+image::../images/comunication/enviarAvisoCancelacion.png[Diagrama de comunicación Enviar aviso de cancelación, width=600, align=center]
+
+.Diagrama de comunicación enviarConfirmacionReservacion
+image::../images/comunication/enviarConfirmacionReservacion.png[Diagrama de comunicación Enviar confirmación de reservación, width=600, align=center]
+
 ---
 
 === Componente: GestionEstancias
+
+.Diagrama de Componente de Gestión de Estancias
+image::../images/components/GestionEstancias.jpeg[Diagrama de componente de Gestión de Estancias, width=600, align=center]
+
 ==== Interfaz: IGestionEstancia
+
+.Diagrama de Interfaz de Gestión de Estancias
+image::../images/interfaceDiagrams/IGestionEstancia.jpeg[Diagrama de interfaz de Gestión de Estancias, width=600, align=center]
+
 [options="header", cols="1,2,2"]
 |===
 |Operación |Precondición(es) |Postcondición(es)
@@ -150,10 +243,27 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 4. Retorna la Factura final.
 |===
 
+.Diagrama de comunicación registrarCambioHabitacion
+image::../images/comunication/registrarCambioHabitacion.png[Diagrama de comunicación Registrar cambio de habitación, width=600, align=center]
+
+.Diagrama de comunicación registrarCheckIn
+image::../images/comunication/registrarCheckIn.png[Diagrama de comunicación Registrar Check In, width=600, align=center]
+
+.Diagrama de comunicación registrarCheckOut
+image::../images/comunication/registrarCheckOut.png[Diagrama de comunicación Registrar Check Out, width=600, align=center]
+
 ---
 
 === Componente: AdministracionCentral
+
+.Diagrama de Componente de Administración Central
+image::../images/components/Administracion.jpeg[Diagrama de componente de Administración, width=600, align=center]
+
 ==== Interfaz: ITarifas
+
+.Diagrama de Interfaz de Tarifas
+image::../images/interfaceDiagrams/ITarifas.jpeg[Diagrama de interfaz de Tarifas, width=600, align=center]
+
 [options="header", cols="1,2,2"]
 |===
 |Operación |Precondición(es) |Postcondición(es)
@@ -170,3 +280,12 @@ A continuación, se especifican los contratos formales para cada interfaz de los
 | Los CriteriosTarifaDTO son válidos. idTipoHabitacion y las fechas existen.
 | Retorna un DTO con el precio final calculado, aplicando las tarifas diarias y las promociones vigentes.
 |===
+
+.Diagrama de comunicación gestionarPromocion
+image::../images/comunication/gestionarPromocion.png[Diagrama de comunicación Gestionar Promoción, width=600, align=center]
+
+.Diagrama de comunicación gestionarTarifaDiaria
+image::../images/comunication/gestionarTarifaDiaria.png[Diagrama de comunicación Gestionar tarifa diaria, width=600, align=center]
+
+.Diagrama de comunicación obtenerTarifaCalculada
+image::../images/comunication/obtenerTarifaCalculada.png[Diagrama de comunicación Obtener tarifa calculada, width=600, align=center]
