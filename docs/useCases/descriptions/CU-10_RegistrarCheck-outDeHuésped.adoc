@@ -1,0 +1,91 @@
+*CU-10: Registrar check-out de huésped*
+
+[width="100%", cols="1,4", options="header"]
+|===
+
+|ID
+|CU-10
+
+|Nombre
+|Registrar check-out de huésped
+
+|Autor
+|Carlos Castillo Barradas
+
+|Fecha de actualización
+|05-oct-2025
+
+|Descripción
+|El recepcionista finaliza la estancia de un huésped, calcula los cargos finales (si existen), procesa el pago y libera la habitación en el sistema para limpieza. |Actor(es) |Recepcionista
+
+|Disparador
+|El huésped informa en recepción que desea realizar su check-out.
+
+|Precondiciones
+|PRE-12: El recepcionista está autenticado en el sistema.
+
+PRE-13: Existe una Estancia en estado "ACTIVA" asociada al huésped.
+
+|Flujo Normal
+|
+
+1. El recepcionista busca la estancia activa del huésped y selecciona "Registrar Check-out".
+
+2. El sistema recupera los detalles de la estancia y verifica si hay cargos pendientes (bar, servicios extra).
+
+3. (Si hay cargos pendientes) El sistema muestra el monto a pagar y solicita el pago.
+
+4. El recepcionista confirma el check-out, asumiendo que los cargos están saldados. (Ver EX-01). (Ver FA 4.a). (Incluye CU-03).
+
+5. El sistema actualiza el estado de la Estancia a "COMPLETADA" y la Reservacion a "COMPLETADA" y actualiza el estado de la habitación a "MANTENIMIENTO" (para limpieza).
+
+6. El sistema genera la Factura final y la muestra para imprimir o enviar por correo.
+
+7. Termina el caso de uso.
+
+|Flujos Alternos
+|
+
+*FA 4.a: El huésped solicita un 'Late Check-out'.*
+
+1. El sistema detecta que la hora es posterior a la permitida.
+
+2. Muestra el mensaje "¿Desea aplicar cargos por 'Late Check-out'?".
+
+3. El recepcionista confirma (o no) el cargo.
+
+4. Se regresa al paso 3 del Flujo Normal.
+
+|Excepciones
+|
+*EX-01: El huésped tiene cargos pendientes y no puede pagar.*
+
+1. El sistema muestra los cargos.
+
+2. El recepcionista informa al huésped, pero el huésped no puede saldar la cuenta.
+
+3. El recepcionista marca la factura como "Pendiente de pago" y el sistema registra una deuda.
+
+4. El check-out se completa, pero se genera una alerta administrativa.
+
+5. Se regresa al paso 5 del Flujo Normal.
+
+|Postcondiciones
+|
+POST-15: El estado de la Estancia se actualiza a "COMPLETADA".
+
+POST-16: El estado de la Habitacion se actualiza a "MANTENIMIENTO".
+
+POST-17: Se genera una Factura final.
+
+|Reglas de negocio
+|
+RN-16: Al realizar el check-out, la habitación debe pasar a "MANTENIMIENTO" (limpieza), no a "DISPONIBLE".
+
+|Incluye
+|CU-03 Realizar pago de reservación.
+
+|Extiende
+|CU-12 Consultar reservaciones.
+
+|===

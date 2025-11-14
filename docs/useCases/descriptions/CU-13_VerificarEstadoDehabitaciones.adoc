@@ -1,0 +1,80 @@
+*CU-13: Verificar estado de habitaciones*
+
+[width="100%", cols="1,4", options="header"]
+|===
+
+|ID
+|CU-13
+
+|Nombre
+|Verificar estado de habitaciones
+
+|Autor
+|Carlos Castillo Barradas
+
+|Fecha de actualización
+|05-oct-2025
+
+|Descripción
+|El recepcionista consulta el estado actual de una o varias habitaciones para gestionar asignaciones, check-ins o cambios.
+
+|Actor(es)
+|Recepcionista
+
+|Disparador
+|El recepcionista selecciona la opción "Estado de Habitaciones".
+
+|Precondiciones
+|PRE-17: El recepcionista está autenticado.
+
+|Flujo Normal
+|
+
+1. El sistema muestra una cuadrícula o lista de todas las habitaciones del hotel, agrupadas por tipo o piso, cada habitación muestra su estado actual ("Disponible", "Ocupada", "Mantenimiento", "Bloqueada").
+
+2. El recepcionista filtra la lista ("Mostrar solo Mantenimiento").
+
+3. El sistema actualiza la lista.
+
+4. El recepcionista selecciona una habitación en "Mantenimiento" y cambia su estado a "Disponible" (tras confirmación de limpieza). (Ver FA 4.a).
+
+5. El sistema actualiza el estado de la habitación.
+
+6. Termina el caso de uso.
+
+|Flujos Alternos
+|
+
+*FA 4.a: El recepcionista intenta marcar como "Disponible" una habitación "Ocupada".*
+
+1. El recepcionista selecciona una habitación "Ocupada" e intenta cambiar el estado.
+
+2. El sistema muestra el error "No se puede cambiar el estado de una habitación ocupada. Realice el Check-out primero."
+
+3. Se regresa al paso 1 del Flujo Normal.
+
+|Excepciones
+|
+*EX-01: Falla la conexión con el servicio de Inventario.*
+
+1. El sistema muestra el error "No se pudo cargar el estado de las habitaciones. Intente de nuevo."
+
+2. Termina el caso de uso.
+
+|Postcondiciones
+|POST-22: El recepcionista ha visualizado el estado del inventario de habitaciones. 
+
+POST-23: El estado de una habitación se ha actualizado.
+
+|Reglas de negocio
+|RN-19: El recepcionista no puede cambiar una habitación de "Ocupada" a "Disponible".
+
+RN-20: El cambio de "Mantenimiento" a "Disponible" debe ser usado tras la inspección física de la habitación.
+
+|Incluye
+|Ninguno.
+
+|Extiende
+|Ninguno.
+
+|===

@@ -1,0 +1,76 @@
+*CU-12: Consultar reservaciones (del día o semana)*
+
+[width="100%", cols="1,4", options="header"]
+|===
+
+|ID
+|CU-12
+
+|Nombre
+|Consultar reservaciones (del día o semana)
+
+|Autor
+|Carlos Castillo Barradas
+
+|Fecha de actualización
+|05-oct-2025
+
+|Descripción
+|El recepcionista accede a una vista del sistema para consultar las reservaciones programadas (llegadas), las estancias activas (check-in) y las salidas (check-out) esperadas para un rango de fechas (día, semana).
+
+|Actor(es)
+|Recepcionista
+
+|Disparador
+|El recepcionista selecciona la opción "Consultar Reservaciones".
+
+|Precondiciones
+|PRE-16: El recepcionista está autenticado.
+
+|Flujo Normal
+|
+
+1. El sistema muestra por defecto un panel con tres listas: "Llegadas de Hoy", "Huéspedes en Estancia" y "Salidas de Hoy". Además ofrece filtros para buscar por fechas (ej. "Próximos 7 días") o por nombre/ID de reserva.
+
+2. El recepcionista aplica un filtro.
+
+3. El sistema actualiza las listas mostrando las reservaciones que coinciden.
+
+4. El recepcionista selecciona una reservación de la lista para ver detalles.
+
+5. El sistema muestra los detalles y las acciones disponibles.
+
+6. Termina el caso de uso.
+
+|Flujos Alternos
+|
+
+*FA 2.a: Búsqueda específica.*
+
+1. El recepcionista utiliza la barra de búsqueda para encontrar una reserva por ID o nombre de huésped.
+
+2. El sistema ejecuta la consulta.
+
+3. Se regresa al paso 3 del Flujo Normal.
+
+|Excepciones
+|
+*EX-01: Falla la conexión con la base de datos de reservaciones.*
+
+1. El sistema muestra el error "No se pudo cargar la lista de reservaciones. Intente de nuevo."
+
+2. Termina el caso de uso.
+
+|Postcondiciones
+|POST-21: El recepcionista ha visualizado la lista de reservaciones solicitada.
+
+|Reglas de negocio
+|RN-18: El recepcionista solo puede ver reservaciones de su hotel asignado.
+
+|Incluye
+|Ninguno.
+
+|Extiende
+|Ninguno.
+
+|===

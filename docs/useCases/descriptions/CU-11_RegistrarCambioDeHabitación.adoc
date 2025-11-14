@@ -1,0 +1,88 @@
+*CU-11: Registrar cambio de habitación*
+
+[width="100%", cols="1,4", options="header"]
+|===
+
+|ID
+|CU-11
+
+|Nombre
+|Registrar cambio de habitación
+
+|Autor
+|Carlos Castillo Barradas
+
+|Fecha de actualización
+|05-oct-2025
+
+|Descripción
+|El recepcionista gestiona la solicitud de un huésped (con estancia activa) para moverse de una habitación a otra, actualizando el inventario y el registro de la estancia.
+
+|Actor(es)
+|Recepcionista
+
+|Disparador
+|Un huésped con check-in realizado solicita un cambio de habitación (por quejas, preferencias, etc.).
+
+|Precondiciones
+|PRE-14: El recepcionista está autenticado.
+
+PRE-15: El huésped tiene una Estancia en estado "ACTIVA".
+
+|Flujo Normal
+|
+
+1. El recepcionista busca la estancia activa del huésped y selecciona "Cambiar Habitación".
+
+2. El sistema muestra la habitación actual y solicita al recepcionista buscar una nueva habitación, mostrando disponibles (Extiende CU-13).
+
+3. El recepcionista selecciona la Habitación nueva, que debe estar "DISPONIBLE" y limpia. Y confirma el cambio.
+
+4. El sistema actualiza la Estancia para reflejar el id de la habitación nuevo. Además actualiza el estado de la Habitación antigua a "MANTENIMIENTO" (para limpieza/revisión). También actualiza el estado de la Habitación nueva a "OCUPADA". Por último informa "Cambio realizado" al recepcionista. (Ver FA 4.a).
+
+5. Termina el caso de uso.
+
+|Flujos Alternos
+|
+
+*FA 4.a: El cambio de habitación implica un costo extra.*
+
+1. La Habitación nueva seleccionada es de una categoría superior a la Habitación antigua.
+
+2. El sistema calcula la diferencia de tarifa y solicita confirmación del cargo extra.
+
+3. El recepcionista acepta.
+
+4. El cargo se añade a la cuenta de la estancia.
+
+5. Se regresa al paso 4 del Flujo Normal.
+
+|Excepciones
+|
+*EX-01: No hay habitaciones disponibles para el cambio.*
+
+1. La búsqueda del paso 2 no arroja resultados "DISPONIBLES" adecuados.
+
+2. El sistema muestra el mensaje "No hay habitaciones disponibles que cumplan los criterios".
+
+3. El recepcionista informa al huésped.
+
+4. Termina el caso de uso.
+
+|Postcondiciones
+|POST-18: La Estancia del huésped se actualiza con el idHabitacionAsignada nuevo.
+
+POST-19: La habitación antigua se marca como "MANTENIMIENTO".
+
+POST-20: La habitación nueva se marca como "OCUPADA".
+
+|Reglas de negocio
+|RN-17: Un cambio solo puede realizarse a una habitación con estado "DISPONIBLE".
+
+|Incluye
+|Ninguno.
+
+|Extiende
+|CU-13 Verificar estado de habitaciones.
+
+|===

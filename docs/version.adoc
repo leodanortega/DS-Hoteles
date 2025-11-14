@@ -105,3 +105,18 @@
 |Se añaden las Vistas Arquitectónicas: Vista de Implementación (diagramas de componentes y de interfaces).
 
 |===
+
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.0.8
+|14/11/2025
+|Carlos Castillo
+|Se refactorizan y corrigen algunas descripciones de casos de uso, así como la corrección de los respectivos diagramas.
+
+|===

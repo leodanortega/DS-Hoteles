@@ -1,0 +1,94 @@
+*CU-09: Registrar check-in de huésped*
+
+[width="100%", cols="1,4", options="header"]
+|===
+|Atributo |Descripción
+
+|ID
+|CU-09
+
+|Nombre
+|Registrar check-in de huésped
+
+|Autor
+|Carlos Castillo Barradas
+
+|Fecha de actualización
+|05-oct-2025
+
+|Descripción
+|El recepcionista localiza la reservación del huésped que llega y la activa en el sistema, asigna una habitación específica y registra la entrada oficial (check-in). |Actor(es) |Recepcionista
+
+|Disparador
+|El huésped llega a recepción y proporciona sus datos de reservación.
+
+|Precondiciones
+|PRE-10: El recepcionista debe estar autenticado en el sistema de recepción. PRE-11: Debe existir una reservación con estado "Confirmada" a nombre del huésped para el día actual.
+
+|Flujo Normal
+|
+
+1. El recepcionista inicia este caso de uso desde CU-12 "Consultar reservaciones" al seleccionar la opción "Registrar Check-in" en una reserva "Confirmada".
+
+2. El sistema valida que la fecha actual coincide con la fechaInicio de la reserva.
+
+3. El sistema solicita la asignación de una habitación específica (si no está ya asignada) del tipo reservado, mostrando las disponibles. (Ver FA 3.a).
+
+4. El recepcionista confirma la habitación.
+
+5. El sistema crea un registro de Estancia con estado "ACTIVA".
+
+6. El sistema actualiza el estado de la habitación asignada a "OCUPADA".
+
+7. El sistema informa "Check-in realizado exitosamente".
+
+8. Termina el caso de uso.
+
+|Flujos Alternos
+|
+
+*FA 3.a: El huésped llega antes (Early check-in).*
+
+1. El sistema detecta que la fecha/hora es anterior a la permitida.
+
+2. Muestra el mensaje "La reserva es para una fecha futura. ¿Desea procesar un 'Early Check-in'?" (Puede tener costo extra, ref. CU-08).
+
+3. El recepcionista confirma.
+
+4. El sistema recalcula la tarifa.
+
+5. Se regresa al paso 3 del Flujo Normal.
+
+|Excepciones
+|
+*EX-01: No hay habitaciones disponibles del tipo reservado (Overbooking).*
+
+1. El sistema (vía IInventario) no encuentra habitaciones "Disponibles" del tipo de habitación de la reserva.
+
+2. El sistema muestra una alerta "¡SOBREVENTA! No hay habitaciones disponibles. Busque una alternativa."
+
+3. (Extiende CU-11 Registrar cambio de habitación).
+
+Termina el caso de uso.
+
+|Postcondiciones
+|
+POST-12: Se ha creado una Estancia en estado "ACTIVA".
+
+POST-13: El estado de la Reservacion se actualiza a "ACTIVA".
+
+POST-14: El estado de la Habitacion asignada se actualiza a "OCUPADA".
+
+|Reglas de negocio
+|
+RN-15: El check-in solo puede realizarse en reservas "Confirmadas" para el día actual.
+
+|Incluye
+|Ninguno.
+
+|Extiende
+|CU-11 Registrar cambio de habitación.
+
+CU-12 Consultar reservaciones.
+
+|===

@@ -1,0 +1,86 @@
+*CU-14: Registrar reservación (En persona o Vía telefónica)*
+
+[width="100%", cols="1,4", options="header"]
+|===
+
+|ID
+|CU-14
+
+|Nombre
+|Registrar reservación
+
+|Autor
+|Carlos Castillo Barradas
+
+|Fecha de actualización
+|05-oct-2025
+
+|Descripción
+|El recepcionista crea una nueva reservación en el sistema para un huésped que se presenta en el hotel o que llama por teléfono.
+
+|Actor(es)
+|Recepcionista
+
+|Disparador
+|Un huésped solicita crear una reservación directamente en recepción o por teléfono.
+
+|Precondiciones
+|PRE-18: El recepcionista está autenticado.
+
+|Flujo Normal
+|
+
+1. El recepcionista selecciona la opción "Nueva Reservación".
+
+2. El sistema muestra la interfaz de consulta de disponibilidad.
+
+3. El recepcionista ingresa las fechas, tipo de habitación y número de huéspedes.
+
+4. El sistema muestra las habitaciones y tarifas disponibles.
+
+5. El recepcionista selecciona la tarifa y habitación deseada.
+
+6. El sistema solicita los datos del huésped (nombre, correo, teléfono). Además de un método de pago o garantía.
+
+7. El recepcionista ingresa los datos de pago.
+
+8. El sistema registra la reservación y realiza el cargo. Y muestra el mensaje "Reservación Creada Exitosamente" con el ID de confirmación. Por último envía la notificación al huésped.
+
+9. Termina el caso de uso.
+
+|Flujos Alternos
+|
+
+*FA 8.a: El huésped fue en persona y se hace check-in inmediato.*
+
+1. Tras el paso 8, el sistema pregunta: "¿Desea registrar el Check-in ahora?".
+
+2. El recepcionista confirma.
+
+3. (Extiende CU-09 Registrar check-in de huésped).
+
+|Excepciones
+|
+*EX-01: El pago es rechazado.*
+
+1. La pasarela de pago devuelve "RECHAZADA".
+
+2. El sistema informa "El pago fue rechazado. Solicite otro método de pago."
+
+3. Se regresa al paso 6 del Flujo Normal.
+
+|Postcondiciones
+|POST-24: Se crea una nueva Reservacion con estado "CONFIRMADA".
+
+POST-25: Se ha procesado un pago.
+
+|Reglas de negocio
+|RN-21: Las reservaciones creadas por recepción deben seguir las mismas políticas de tarifas y cancelación que las reservaciones en línea.
+
+|Incluye
+|Ninguno.
+
+|Extiende
+|CU-09 Registrar check-in de huésped.
+
+|===
