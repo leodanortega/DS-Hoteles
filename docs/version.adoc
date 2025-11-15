@@ -108,27 +108,41 @@
 [cols="1,1,1,1"]
 
 |===
-<<<<<<< HEAD
-
-[cols="1,1,1,1"]
-
-|===
-=======
->>>>>>> f74201974ec2c83a84bb6aaad5cbda4bf3a90806
 |Versión
 |Fecha
 |Autor
 |Cambios significativos
 
 |0.0.8
-<<<<<<< HEAD
-|14/11/2025
-|Carlos Castillo
-|Se refactorizan y corrigen algunas descripciones de casos de uso, así como la corrección de los respectivos diagramas.
-
-=======
 |02/11/2025
 |Leonardo Daniel
 |Se añaden los diagramas de comunicación y se actualiza el documento principal
->>>>>>> f74201974ec2c83a84bb6aaad5cbda4bf3a90806
+|===
+
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.0.9
+|14/11/2025
+|Carlos Castillo
+|Se refactorizan y corrigen algunas descripciones de casos de uso, así como la corrección de los respectivos diagramas
+|===
+
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.1.0
+|15/11/2025
+|Carlos Castillo
+|Refactorización en los diagramas de interfaces
 |===
