@@ -1,0 +1,207 @@
+== Vista de Interfaces (CBSE)
+A continuación, se especifican los componentes formales del sistema, sus responsabilidades, interfaces, invariantes relevantes (reglas de negocio) y manejo de errores (excepciones).
+
+---
+
+=== Componente: Inventario
+image::../images/components/Inventario.jpeg[Diagrama del componente Inventario, width=600, align=center]
+
+==== Responsabilidad Gestiona el catálogo de hoteles, tipos de habitación y su disponibilidad en tiempo real. Es la fuente de verdad para la ocupación del hotel.
+
+==== Interfaces
+
+IInventario
+
+==== Invariantes Relevantes (Reglas de Negocio)
+
+Actualización en Tiempo Real: El inventario debe actualizarse en tiempo real con cada operación de check-in, check-out o mantenimiento.
+
+Acceso a Catálogo: Los datos del catálogo deben estar disponibles para consulta en tiempo real por otros módulos del sistema.
+
+Integridad de Catálogo (Habitación): Cada habitación debe estar asociada a un hotel existente.
+
+Integridad de Catálogo (Hotel): No se puede eliminar un hotel si tiene habitaciones activas o reservas pendientes.
+
+Acceso Global: Solo los administradores con permisos globales pueden acceder al inventario completo de la cadena.
+
+Alertas de Ocupación: Las alertas de sobreocupación deben activarse automáticamente si se supera el 95% de ocupación en cualquier categoría.
+
+==== Manejo de Errores (Excepciones)
+
+Falla del Servicio (Consulta): Si el servicio de inventario no responde durante una consulta de disponibilidad (CU-01), el sistema debe mostrar resultados desde la última caché válida y advertir al usuario que los datos pueden no estar actualizados.
+
+Falla del Servicio (Escritura): Si falla el sistema de inventario durante una cancelación (CU-04), se debe mostrar el mensaje: "No hemos podido procesar tu solicitud en este momento. Por favor, intenta de nuevo más tarde".
+
+Falla del Servicio (Reportes): Si hay un error de conexión al consultar el inventario global (CU-19) o el monitoreo de ocupación (CU-20), el sistema debe informar: "No se pudo cargar la información...".
+
+=== Componente: Reservaciones
+image::../images/components/Reservaciones.jpeg[Diagrama del componente Reservaciones, width=600, align=center]
+
+==== Responsabilidad Orquesta el ciclo de vida completo de una reserva (creación, modificación, cancelación) y aplica las políticas de negocio correspondientes.
+
+==== Interfaces
+
+IGestionReservacion
+
+IConsultaReservacion
+
+==== Invariantes Relevantes (Reglas de Negocio)
+
+Bloqueo Temporal: Al iniciar una reserva (CU-02), se debe bloquear temporalmente la habitación en el inventario por 10 minutos para evitar dobles reservas.
+
+Autorización de Consulta: El sistema solo debe mostrar las reservaciones asociadas directamente a la cuenta del huésped autenticado (CU-05).
+
+Integridad de Modificación: Cualquier modificación (CU-06) está sujeta a la disponibilidad y a las políticas de la tarifa original.
+
+Integridad de Cancelación: Una cancelación (CU-04) solo puede procesarse si la reserva existe, tiene estado "Confirmada" y está dentro del período permitido por las políticas.
+
+==== Manejo de Errores (Excepciones)
+
+Falla de Base de Datos (Creación): Si no hay conexión con la BD al guardar una reserva (CU-02), mostrar: "Sus datos no se pudieron guardar, por favor inténtelo más tarde".
+
+Falla de Base de Datos (Consulta): Si no hay conexión con la BD al consultar (CU-05), mostrar: "No se pudieron encontrar sus reservaciones, por favor inténtelo más tarde".
+
+Falla de Cálculo (Modificación): Si falla el cálculo de la nueva tarifa durante una modificación (CU-06), mostrar: "no se pudo calcular la diferencia de las tarifas, por favor contacta con soporte".
+
+=== Componente: Pagos
+image::../images/components/Pagos.jpeg[Diagrama del componente Pagos, width=600, align=center]
+
+==== Responsabilidad Se integra con la pasarela de pagos certificada (CON-03) para procesar cobros y gestionar reembolsos.
+
+==== Interfaces
+
+IPago (incluye procesarCobro y procesarReembolso)
+
+IReembolsos (identificada en ComponentArchitectureDiagram.jpeg y IReembolsos.png, aunque lógicamente agrupada en IPago en interfaces.adoc)
+
+Dependencia externa: IPasarelaExterna
+
+==== Invariantes Relevantes (Reglas de Negocio)
+
+No Almacenamiento de Datos Sensibles: El sistema nunca debe almacenar datos sensibles de tarjetas de crédito (número completo, CVV).
+
+Pasarela Obligatoria: Todas las transacciones con tarjeta deben ser procesadas a través del Proveedor de Servicios de Pago (PSP) certificado (CON-03).
+
+Métodos de Pago: Solo se aceptarán los métodos de pago configurados por la administración.
+
+Integridad de Reembolso: Un reembolso solo puede procesarse si la transacción original existe y está "APROBADA".
+
+==== Manejo de Errores (Excepciones)
+
+Falla de Pasarela (Proveedor): Si el proveedor de la pasarela de pagos no está disponible (CU-03), mostrar: "El servicio de pago no está disponible. Por favor, intente más tarde".
+
+Extensión de Bloqueo por Falla: Si la pasarela falla (CU-03), el sistema debe mantener el bloqueo de la habitación y permitir al usuario reintentar el pago por 5 minutos adicionales.
+
+Pago Rechazado (Recepción): Si el pago es rechazado durante una reserva en recepción (CU-14), el sistema debe informar: "El pago fue rechazado. Solicite otro método de pago".
+
+=== Componente: Notificaciones
+image::../images/components/Notificaciones.jpeg[Diagrama del componente Notificaciones, width=600, align=center]
+
+==== Responsabilidad Gestiona el envío de comunicaciones (emails, notificaciones push) de forma asíncrona, desacoplando esta lógica del flujo principal de negocio.
+
+==== Interfaces
+
+INotificaciones
+
+Dependencia externa: IServicioEmail
+
+==== Invariantes Relevantes (Reglas de Negocio)
+
+Velocidad de Confirmación: La confirmación de reserva (email) debe enviarse en menos de 1 minuto tras el pago exitoso (CU-07).
+
+Recordatorios: Los recordatorios de check-in se envían 24 horas antes de la fecha de llegada (CU-07).
+
+Consentimiento: Se debe haber proporcionado un correo válido y el huésped debe haber aceptado recibir notificaciones (CU-07).
+
+==== Manejo de Errores (Excepciones)
+
+Falla del Servicio Externo: Si el servicio de notificaciones externo no está disponible (CU-07), mostrar: "Nuestro servicio de notificaciones no está disponible...".
+
+Alerta de Operaciones: Si el fallo del servicio de notificaciones persiste, se debe generar una alerta para el equipo de operaciones.
+
+Manejo de Rebote: Si un correo electrónico rebota (CU-07), el sistema debe marcar ese correo como inválido en el perfil del huésped y notificar a soporte.
+
+=== Componente: GestionEstancias
+image::../images/components/GestionEstancias.jpeg[Diagrama del componente GestionEstancias, width=600, align=center]
+
+==== Responsabilidad Encapsula la lógica de negocio para las operaciones en sitio (Recepción), gestionando el ciclo de vida de la estancia de un huésped.
+
+==== Interfaces
+
+IGestionEstancia
+
+IConsultaEstancia
+
+==== Invariantes Relevantes (Reglas de Negocio)
+
+Precondición de Check-in: El check-in (CU-09) solo puede realizarse en reservas "Confirmadas" para el día actual.
+
+Precondición de Check-out: El check-out (CU-10) requiere que exista una Estancia en estado "ACTIVA".
+
+Precondición de Cambio: El cambio de habitación (CU-11) requiere una Estancia "ACTIVA" y solo puede hacerse a una habitación "DISPONIBLE".
+
+Estado Post-Check-out: Al realizar el check-out (CU-10), la habitación debe pasar a estado "MANTENIMIENTO" (para limpieza), no a "DISPONIBLE".
+
+==== Manejo de Errores (Excepciones)
+
+Manejo de Overbooking (Check-in): Si no hay habitaciones disponibles del tipo reservado durante el check-in (CU-09), el sistema debe mostrar una alerta de "¡SOBREVENTA!" y forzar la búsqueda de una alternativa (extendiendo CU-11).
+
+Manejo de Cargos Pendientes (Check-out): Si el huésped tiene cargos pendientes en el check-out (CU-10) y no puede pagar, el recepcionista debe marcar la factura como "Pendiente de pago" y el sistema debe registrar una deuda y generar una alerta administrativa.
+
+=== Componente: Administracion
+image::../images/components/Administracion.jpeg[Diagrama del componente Administracion, width=600, align=center]
+
+==== Responsabilidad Agrupa la lógica de negocio para la configuración global de la cadena, incluyendo la gestión de catálogos, tarifas, promociones y políticas.
+
+==== Interfaces
+
+ITarifas
+
+IPoliticas
+
+ICatalogos
+
+IGestionUsuarios
+
+==== Invariantes Relevantes (Reglas de Negocio)
+
+Integridad de Tarifas: Cada tarifa debe estar asociada a un tipo de habitación válido (CU-16).
+
+Unicidad de Tarifas: No se pueden definir tarifas con fechas duplicadas para el mismo tipo de habitación (CU-16).
+
+Propagación en Tiempo Real: Las tarifas (CU-16) y las políticas (CU-18) deben reflejarse en tiempo real en el motor de reservaciones.
+
+Límite de Overbooking: El porcentaje máximo de overbooking permitido por el sistema es del 10% por tipo de habitación (CU-17).
+
+==== Manejo de Errores (Excepciones)
+
+Validación de Límite (Overbooking): Si el administrador ingresa un porcentaje que excede el límite del sistema (CU-17), se debe mostrar: "El porcentaje ingresado excede el máximo permitido. Ajuste el valor".
+
+Falla de Base de Datos (Genérica): Si ocurre un error de conexión de BD al guardar políticas, tarifas o catálogos (CU-15, CU-16, CU-18, etc.), el sistema debe informar: "No se pudo guardar la política/tarifa/promoción. Intente más tarde...".
+
+=== Componente: Autenticacion
+image::../images/components/Autenticacion.jpeg[Diagrama del componente Autenticacion, width=600, align=center]
+
+==== Responsabilidad Gestiona la identidad y el acceso del personal (Administradores, Recepcionistas). Se integra con el Proveedor de Identidad (IdP) corporativo para validar credenciales (CON-05) y emite tokens de sesión (TokenDTO) para el personal autorizado. Además, valida la autenticidad de los tokens en cada solicitud y verifica los roles para la autorización de operaciones.
+
+==== Interfaces
+
+IAutenticacion (Interfaz proporcionada)
+
+IGestionUsuarios (Dependencia)
+
+==== Invariantes Relevantes (Reglas de Negocio)
+
+Autenticación Centralizada: La autenticación de todo el personal (Recepción, Administración, Auditoría) debe realizarse a través del Proveedor de Identidad (IdP) corporativo, que utiliza el protocolo SAML 2.0.
+
+Gestión de Sesión: Tras una autenticación exitosa con el IdP, este componente es responsable de generar y entregar un TokenDTO (ej. JWT) que representa la sesión del usuario.
+
+Autorización Basada en Roles: El componente debe verificar el rol del usuario (obtenido de IGestionUsuarios o contenido en el token) antes de permitir el acceso a operaciones restringidas (como se ve en gestionarTarifaDiaria.png y gestionarPromocion.png).
+
+==== Manejo de Errores (Excepciones)
+
+Falla del IdP Externo: Si el IdP corporativo (CON-05) no está disponible o rechaza la validación SAML, la operación iniciarSesion debe fallar y devolver un error de autenticación.
+
+Token Inválido o Expirado: Si la operación validarToken recibe un token que es inválido, malformado o ha expirado, debe devolver false (o una excepción de "No Autorizado"), bloqueando la operación solicitada.
+
+Falla de Permisos (Rol): Si el token es válido pero el rol del usuario no es suficiente para la operación (ej. un Recepcionista intentando gestionarTarifaDiaria), el componente debe denegar el acceso (visto como la respuesta "no autorizado" en los diagramas de comunicación).

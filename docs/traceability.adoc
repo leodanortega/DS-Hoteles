@@ -1,0 +1,108 @@
+*Matriz de Trazabilidad de Arquitectura*
+[width="100%", cols="2,3,4,1", options="header"]
+|===
+| Driver (ID y Tipo)
+| Decisión de Diseño (Táctica / Patrón)
+| Artefactos Afectados
+| Estado
+
+a|*CRN-02* (Disponibilidad) +
+*CRN-05* (Escalabilidad) +
+*CRN-07* (Mantenibilidad)
+a|*Estilo Arquitectónico: Microservicios*. +
+Descomposición del sistema en servicios cohesivos y débilmente acoplados.
+a|*Vista Lógica:* Paquete "Capa de Negocio (Microservicios)". +
+*Vista de Implementación:* Componentes independientes (Inventario, Reservaciones, Pagos, Notificaciones, GestionEstancias, AdministracionCentral).
+| Cumple
+
+a|*CRN-01* (Seguridad) +
+*CON-05* (Autenticación Centralizada)
+a|*Patrón: API Gateway*. +
+Punto único de entrada que centraliza el enrutamiento, la seguridad y la autenticación.
+a|*Vista Lógica:* Paquete "Capa de Acceso", Elemento "API Gateway". +
+*Vista de Implementación:* Componente Autenticacion, Interfaz IAutenticacion.
+| Cumple
+
+a|*CRN-07* (Mantenibilidad) +
+*CRN-10* (Experiencia de Usuario Fluida)
+a|*Patrón: Backend for Frontend (BFF)*. +
+APIs especializadas para cada tipo de cliente (Huésped, Recepción, Admin).
+a|*Vista Lógica:* Paquete "Capa de Acceso", Elemento "Backends for Frontend (BFFs)". +
+Paquete "Clientes" (Portal de Huéspedes, Sistema de Recepción, Panel de Administración).
+| Cumple
+
+a|*CRN-02* (Disponibilidad) +
+*CRN-05* (Escalabilidad) +
+*CU-07* (Recibir Notificaciones)
+a|*Táctica: Comunicación Asíncrona (Broker de Mensajes)*. +
+Desacopla servicios no críticos (como notificaciones) del flujo principal.
+a|*Vista Lógica:* Paquete "Infraestructura", Elemento "Bus de Mensajes". +
+*Vista de Implementación:* Componente Notificaciones, Interfaz INotificaciones. +
+*Diagramas de comunicación:* enviarConfirmacionReservacion, enviarAvisoCancelacion.
+| Cumple
+
+a|*CRN-03* (Consistencia del Inventario) +
+*QAS-02* (Rendimiento en alta demanda)
+a|*Táctica: Bloqueo Optimista* y *Caché Distribuida*. +
+Maneja la concurrencia y reduce la carga en BD para consultas.
+a|*Vista de Implementación:* Componente Inventario. +
+*Interfaces:* IInventario (op: consultarDisponibilidad). +
+*Diagramas de comunicación:* consultarDisponibilidad,hacerReservacion (msg: bloquearHabitacion).
+| Cumple
+
+a|*CRN-03* (Consistencia en Concurrencia) +
+*CU-02* (Reservar) +
+*CU-04* (Cancelar)
+a|*Patrón: Saga*. +
+Gestiona transacciones distribuidas que abarcan múltiples servicios (Reserva, Pago, Inventario).
+a|*Vista Lógica:* Paquete "Infraestructura", Elemento "Bus de Mensajes" (para coordinación). +
+*Diagramas de comunicación:* hacerReservacion, cancelarReservacion.
+| Cumple
+
+a|*CRN-10* (Experiencia de Usuario Fluida) +
+*QAS-01* (Usabilidad - Reserva < 5 min) +
+*CON-01* (Stack: React)
+a|*Patrón: Single-Page Application (SPA)*. +
+Mejora la percepción de rendimiento al evitar recargas de página.
+a|*Vista Lógica:* Paquete "Clientes", Elemento "Portal de Huéspedes (SPA)".
+| Cumple
+
+a|*CON-03* (Pasarela de Pagos Certificada) +
+*CU-03* (Realizar Pago)
+a|*Táctica: Integración de Servicios*. +
+Aísla la lógica del PSP externo en un componente dedicado.
+a|*Vista Lógica:* Paquete "Capa de Negocio", Elemento "Servicio de Pagos". +
+*Vista de Implementación:* Componente Pagos, Interfaces IPago e IPasarelaExterna. +
+*Diagrama de comunicación:* procesarCobro.
+| Cumple
+
+a|*CU-09* (Registrar Check-in) +
+*CU-10* (Registrar Check-out) +
+*CU-11* (Registrar Cambio Hab.)
+a|*Patrón: Componente de Negocio (CBSE)*. +
+Encapsula la lógica de "Gestión de Estancia" (flujo de recepción).
+a|*Vista Lógica:* Paquete "Clientes" (Elem: Sistema de Recepción). +
+*Vista de Implementación:* Componente GestionEstancias, Interfaz IGestionEstancia. +
+*Diagramas de comunicación:* registrarCheckIn, registrarCheckOut.
+| Cumple
+
+a|*CU-15* (Gestionar Catálogo) +
+*CU-16* (Gestionar Tarifas) +
+*CU-21* (Reporte Ingresos)
+a|*Patrón: Componente de Negocio (CBSE)*. +
+Encapsula la lógica de "Administración Central".
+a|*Vista Lógica:* Paquete "Clientes" (Elem: Panel de Administración). +
+*Vista de Implementación:* Comp. AdministracionCentral, Interfaz ITarifas. +
+*Diagramas de comunicación:* gestionarCatalogo, gestionarTarifaDiaria.
+| Cumple
+
+a|*CRN-11* (Inteligencia de Negocio) +
+*CU-19* (Inventario Global) +
+*CU-20* (Monitorear Ocupación)
+a|*Táctica: Consolidación de Datos*. +
+Operaciones que agregan datos de múltiples fuentes (hoteles) para reporteo.
+a|*Vista de Implementación:* Componente Inventario. +
+*Interfaces:* IInventario (ops: consultarInventarioGlobal, monitorearOcupacion). +
+*Diagramas de comunicación:* consultarInventarioGlobal, monitorearOcupacion.
+| Cumple
+|===
