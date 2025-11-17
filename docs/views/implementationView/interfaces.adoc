@@ -16,7 +16,7 @@ image::../images/components/Inventario.jpeg[Diagrama de componente de Inventario
 ==== Interfaz: IInventario
 
 .Diagrama de Interfaz de Inventario
-image::../images/interfaceDiagrams/IInventario.jpeg[Diagrama de Interfaz de Inventario, width=600, align=center]
+image::../images/interfaceDiagrams/IInventario.png[Diagrama de Interfaz de Inventario, width=600, align=center]
 
 
 
@@ -70,7 +70,7 @@ image::../images/components/Reservaciones.jpeg[Diagrama de componente de Reserva
 ==== Interfaz: IGestionReservacion
 
 .Diagrama de Interfaz de Gestión de reservaciones
-image::../images/interfaceDiagrams/IGestionReservacion.jpeg[Diagrama de interfaz de Gestión de Reservaciones, width=600, align=center]
+image::../images/interfaceDiagrams/IGestionReservacion.png[Diagrama de interfaz de Gestión de Reservaciones, width=600, align=center]
 
 [options="header", cols="1,2,2"]
 |===
@@ -116,7 +116,7 @@ image::../images/comunication/modificarReservacion.png[Diagrama de comunicación
 ==== Interfaz: IConsultaReservacion
 
 .Diagrama de Interfaz de Consulta de reservaciones
-image::../images/interfaceDiagrams/IConsultaReservacion.jpeg[Diagrama de interfaz de Consulta de Reservaciones, width=600, align=center]
+image::../images/interfaceDiagrams/IConsultaReservacion.png[Diagrama de interfaz de Consulta de Reservaciones, width=600, align=center]
 
 [options="header", cols="1,2,2"]
 |===
@@ -147,7 +147,7 @@ image::../images/components/Pagos.jpeg[Diagrama de componente de Pagos, width=60
 ==== Interfaz: IPago
 
 .Diagrama de Interfaz de Pagos
-image::../images/interfaceDiagrams/IPago.jpeg[Diagrama de interfaz de Pagos, width=600, align=center]
+image::../images/interfaceDiagrams/IPago.png[Diagrama de interfaz de Pagos, width=600, align=center]
 
 [options="header", cols="1,2,2"]
 |===
@@ -185,7 +185,7 @@ image::../images/components/Notificaciones.jpeg[Diagrama de componente de Notifi
 ==== Interfaz: INotificaciones
 
 .Diagrama de Interfaz de Notificaciones
-image::../images/interfaceDiagrams/INotificaciones.jpeg[Diagrama de interfaz de Notificaciones, width=600, align=center]
+image::../images/interfaceDiagrams/INotificaciones.png[Diagrama de interfaz de Notificaciones, width=600, align=center]
 
 [options="header", cols="1,2,2"]
 |===
@@ -216,7 +216,7 @@ image::../images/components/GestionEstancias.jpeg[Diagrama de componente de Gest
 ==== Interfaz: IGestionEstancia
 
 .Diagrama de Interfaz de Gestión de Estancias
-image::../images/interfaceDiagrams/IGestionEstancia.jpeg[Diagrama de interfaz de Gestión de Estancias, width=600, align=center]
+image::../images/interfaceDiagrams/IGestionEstancia.png[Diagrama de interfaz de Gestión de Estancias, width=600, align=center]
 
 [options="header", cols="1,2,2"]
 |===
@@ -262,7 +262,7 @@ image::../images/components/Administracion.jpeg[Diagrama de componente de Admini
 ==== Interfaz: ITarifas
 
 .Diagrama de Interfaz de Tarifas
-image::../images/interfaceDiagrams/ITarifas.jpeg[Diagrama de interfaz de Tarifas, width=600, align=center]
+image::../images/interfaceDiagrams/ITarifas.png[Diagrama de interfaz de Tarifas, width=600, align=center]
 
 [options="header", cols="1,2,2"]
 |===

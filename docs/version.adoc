@@ -160,3 +160,16 @@
 |Carlos Castillo
 |Se agrega la matriz de trazabilidad y especificación completa de componentes e interfaces
 |===
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.1.2
+|16/11/2025
+|Leonardo Daniel
+|Se actualiza el documento principal y se añaden los diagramas de comunicación restantes
+|===
