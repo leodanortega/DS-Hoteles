@@ -2,7 +2,7 @@
 
 A continuación se describe el proceso racional, iterativo e incremental seguido para derivar la arquitectura del Sistema de Gestión Hotelera (SGH) a partir de sus impulsores. Este enfoque garantiza que cada decisión de diseño esté directamente justificada por su contribución a los objetivos de negocio y a los atributos de calidad.
 
-== 1. Proceso Híbrido: Attribute-Driven Design (ADD) y CBSE
+=== ADD y CBSE
 
 Para la creación de la arquitectura del SGH, se adoptó un proceso híbrido que combina la guía estratégica del método Attribute-Driven Design (ADD) con las prácticas de especificación del Component-Based Software Engineering (CBSE), siguiendo el enfoque de Cheesman & Daniels.
 
@@ -16,11 +16,11 @@ Interacción: Modelamos cómo estos componentes interactúan para realizar las o
 
 Este ciclo de descomposición (ADD) y especificación (CBSE) se repite en cada iteración, permitiendo un diseño incremental y refinado.
 
-== 2. Ejecución del Diseño por Iteraciones
+=== Diseño por iteraciones
 
 El diseño se ejecutó en dos iteraciones principales, cada una con un objetivo claro y enfocada en un conjunto de impulsores priorizados.
 
-=== Iteración 1: Núcleo Transaccional y de Disponibilidad
+==== Iteración 1: Núcleo Transaccional y de Disponibilidad
 
 El objetivo primordial de esta primera iteración fue diseñar el esqueleto arquitectónico del sistema, enfocado en los flujos de negocio más críticos y los atributos de calidad más desafiantes: la consulta de disponibilidad y la creación de una reserva. La meta era asegurar que el núcleo del sistema fuera robusto, seguro, escalable y consistente desde su concepción.
 
@@ -32,7 +32,7 @@ Para garantizar la disponibilidad (CRN-02) y el rendimiento (CRN-04), se diseñ�
 
 Finalmente, para la seguridad (CRN-01) y la gestión centralizada de las interacciones, se adoptó el patrón API Gateway. Este componente actúa como el único punto de entrada para todas las solicitudes del cliente, encargándose de la autenticación (CON-05), la autorización, el enrutamiento a los servicios internos y la aplicación de políticas de limitación de tasa (rate limiting) para prevenir abusos.
 
-=== Cierre de la Iteración 1
+==== Cierre de la Iteración 1
 [cols="1,3", options="header"]
 |===
 |Elemento |Descripción
@@ -61,7 +61,7 @@ Introducción de una caché distribuida para optimizar las consultas de disponib
 |===
 
 
-=== Iteración 2: Experiencia de Usuario y Operaciones del Hotel
+==== Iteración 2: Experiencia de Usuario y Operaciones del Hotel
 
 Con el núcleo transaccional definido, la segunda iteración se centró en la Experiencia de Usuario (CRN-10) y la Mantenibilidad (CRN-07) de las aplicaciones cliente y los servicios de soporte operativo.
 
@@ -71,7 +71,7 @@ Al analizar los flujos de trabajo del personal de recepción y de los administra
 
 Finalmente, para la gestión de notificaciones (confirmaciones de reserva, cancelaciones, etc.), y para mejorar la escalabilidad (CRN-05) y la resiliencia (CRN-02), se decidió desacoplar este proceso. Se introdujo un broker de mensajes (táctica de comunicación asíncrona). Cuando ocurre un evento como "reserva_confirmada", el servicio de reservas publica un mensaje en una cola. Un servicio de notificaciones, separado e independiente, consume este mensaje y se encarga de enviar el correo o la notificación push. Si el servicio de notificaciones falla, los mensajes permanecen en la cola y pueden ser procesados más tarde, sin afectar el flujo de reserva principal.
 
-=== Cierre de la Iteración 2
+==== Cierre de la Iteración 2
 [cols="1,3", options="header"]
 |===
 |Elemento |Descripción
@@ -94,3 +94,21 @@ Uso de un broker de mensajes para la comunicación asíncrona y el desacoplamien
 
 Separación de las aplicaciones frontend en al menos tres bases de código distintas: Huésped, Recepción y Administración.
 |===
+
+== Especificacion
+
+=== Identificación de Core Types
+
+image::IdentificacionDeCores.jpg[Identificación de core types, width=600, align=center]
+
+=== Especificación inicial de interfaces de negocio
+
+image::DiagramaInterfaces.jpg[Identificación inicial de interfaces, width=60, align=center]
+
+=== Justificación
+
+Para comprender adecuadamente la justificación del diseño propuesto, es necesario recordar qué implica trabajar con una arquitectura en capas. Este tipo de arquitectura se fundamenta en la división del sistema en capas bien definidas, independientes y especializadas, que colaboran entre sí mediante interfaces claramente establecidas.
+
+En el diagrama correspondiente a esta sección del proyecto se representarán los distintos componentes del sistema mediante bloques o unidades funcionales, con el fin de ilustrar de forma general la estructura prevista y las relaciones entre sus capas principales.
+
+Falta explicación de los distintos sistemas identificados, propósito y responsabilidad, métodos de los sistemas

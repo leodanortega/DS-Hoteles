@@ -1,0 +1,47 @@
+== Aspectos transversales
+
+=== Seguridad
+Para proteger la información sensible que circula dentro del sistema hotelero —especialmente durante los procesos de cobro— se aplicarán distintas estrategias y mecanismos orientados a fortalecer la comunicación, el control de acceso y el manejo interno de datos. Las decisiones tomadas se distribuyen por vistas:
+
+* Vista lógica
+** Incorporar un *Componente Intermediario* que regule todas las interacciones entre el sistema interno y el módulo encargado de gestionar los pagos, actuando como punto centralizado de verificación de credenciales y permisos.
+* Vista de proceso
+** Asegurar toda transmisión de datos hacia servicios externos mediante el uso de *TLS* en los canales de comunicación.
+** Emplear un esquema de autorización temporal basado en *OAuth 2.0*, utilizando tokens con vigencia corta para minimizar el riesgo de uso indebido.
+** Implementar la táctica de *limpieza segura de memoria*, eliminando inmediatamente cualquier dato financiero o personal que ya no sea necesario en el flujo.
+* Vista de implementación
+** Configurar políticas estrictas en los encabezados HTTP con el soporte de herramientas como *Helmet*, reduciendo riesgos comunes asociados a ataques web.
+* Vista física
+** Aislar el servicio que se comunica con la pasarela de pagos dentro de una *zona protegida*, controlada por reglas de firewall restrictivas y listas de acceso depuradas.
+
+---
+
+=== Integridad de Datos
+La operación del hotel depende de que las reservas, pagos y cambios de estado en habitaciones se mantengan correctos a lo largo de todas las capas del sistema. Para evitar inconsistencias, se recurrirá a tácticas que refuercen la precisión y la atomicidad de las operaciones:
+
+* Vista lógica
+** Aplicar verificaciones de *estado válido* antes de realizar ajustes en habitaciones o estancias, asegurando que ningún cambio contradiga las reglas del negocio.
+** Emplear operaciones *idempotentes* en reservas y procesos de pago, evitando que acciones repetidas produzcan resultados duplicados.
+* Vista de proceso
+** Utilizar *bloqueo pesimista* en las transacciones más sensibles, reduciendo la probabilidad de conflictos cuando múltiples usuarios intenten reservar la misma habitación.
+* Vista física
+** Para evitar desactualizaciones en el inventario de habitaciones, adoptar políticas de *consistencia estricta* que garanticen que todos los nodos empleen datos sincronizados.
+** Utilizar un *motor de base de datos relacional* que proporcione transacciones ACID estables y seguras.
+
+---
+
+=== Disponibilidad
+El sistema debe permanecer funcional incluso ante picos de carga, fallos parciales o demoras en servicios externos. Para ello se adoptarán tácticas orientadas a mantener el servicio operativo en escenarios adversos:
+
+* Vista lógica
+** Integrar el patrón *Circuit Breaker* para impedir que fallos recurrentes en servicios dependientes afecten al rendimiento del sistema completo.
+** Utilizar el patrón *Bulkhead* para segmentar los recursos de cada módulo, evitando que la saturación de uno comprometa a los demás.
+* Vista de proceso
+** Incluir un mecanismo de *nivelación de carga mediante colas*, que permita absorber picos de solicitudes sin sobrecargar la base de datos.
+** Configurar *watchdogs* capaces de detectar fallas en los servicios y reiniciarlos de forma automatizada.
+* Vista física
+** Emplear un *balanceador de carga* para repartir solicitudes entre varias instancias y detectar servidores inactivos.
+** Utilizar *redundancia activa N+1* para asegurar que exista al menos un nodo disponible cuando otro falle.
+** distribuir la infraestructura en *múltiples zonas de disponibilidad* a fin de mantener el servicio operativo si un centro de datos experimenta una interrupción total.
+** Habilitar *escalado automático* para aumentar la capacidad de cómputo cuando el uso de CPU o memoria alcance umbrales críticos.
+** Gestionar los servicios mediante una *plataforma de orquestación de contenedores*, facilitando el despliegue, la replicación y la recuperación automática de componentes según la demanda.

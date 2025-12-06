@@ -1,6 +1,0 @@
-== Definición de requerimientos
-
-include::requirements/problem.adoc[]
-
-include::requirements/ScopeAndPurpose.adoc[]
-

@@ -1,7 +1,7 @@
-image::images/PortadaDocumento.jpg[Portada, align=center, width=800]
 
 :doctype: book
-:toc: left
+:toc: macro
+:toc-title: Contenido
 :sectnums:
 :icons: font
 :source-highlighter: highlight.js
@@ -21,25 +21,24 @@ image::images/PortadaDocumento.jpg[Portada, align=center, width=800]
 :tip-caption: Consejo
 :warning-caption: Advertencia
 
-include::version.adoc[]
-include::introduction.adoc[]
-include::glosary.adoc[]
-include::requirements.adoc[]
-include::usecases.adoc[]
-include::qualities.adoc[]
+image::PortadaDocumento.jpg[Portada, align=center, width=800]
+toc::[]
 
-include::views/context.adoc[]
-include::views/functional.adoc[]
-include::views/information.adoc[]
-include::views/concurrency.adoc[]
+include::version.adoc[]
+include::contextreach.adoc[]
+include::stakeholders.adoc[]
+include::problem.adoc[]
+include::views/context.adoc[] 
+include::usecases.adoc[]
+include::asrs.adoc[]
+include::priorization.adoc[]
+include::designMethod.adoc[]
+include::views/logic.adoc[]
+include::views/implementation.adoc[]
+
+include::views/process.adoc[]
 include::views/deployment.adoc[]
-include::views/operational.adoc[]
-include::views/appendix.adoc[]
-include::architectureDrivers/constrains.adoc[]
-include::architectureDrivers/concerns.adoc[]
-include::designMethod/ADD-CBSE.adoc[]
-include::businessConceptModel/justification.adoc[]
-include::views/logicalView/justification.adoc[]
-include::views/implementationView/interfaces.adoc[]
+
 include::views/deploymentView/components.adoc[]
+include::views/transversal.adoc[]
 include::traceability.adoc[]

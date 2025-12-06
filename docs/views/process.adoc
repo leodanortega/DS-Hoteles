@@ -1,0 +1,22 @@
+
+== Vista de Proceso
+
+Esta vista describe cómo el sistema opera durante la ejecución, poniendo énfasis en la interacción dinámica entre los elementos de la Capa de Negocio. El objetivo principal es mostrar cómo estos componentes colaboran para cumplir con los atributos de calidad relacionados con el **Rendimiento** y la **Disponibilidad**. Debido a que se utiliza una arquitectura en capas, el modelo de ejecución adoptado corresponde al enfoque **Thread-per-Request**, donde cada solicitud del cliente es atendida mediante un hilo independiente.
+
+En este esquema, cada petición avanza de manera ordenada a través de las capas de negocio y persistencia. Para reducir esperas innecesarias, se emplea un **Pool de Conexiones** hacia la base de datos, garantizando un uso eficiente de los recursos. En esta sección se describen los dos procesos más importantes del sistema: `solicitarReservacion` y `checkOut`, debido a su relevancia en las operaciones del hotel y a su impacto directo en la gestión económica del establecimiento.
+
+=== Flujos críticos 
+*Solicitar Reservación*
+
+Este flujo representa uno de los ejes centrales del sistema hotelero, ya que combina la verificación del inventario con la confirmación de un pago. Para preservar la exactitud del inventario y la coherencia del sistema, el proceso se ejecuta siguiendo lineamientos de **Consistencia Fuerte** y se mantiene dentro de una transacción con propiedades **ACID**.
+
+* *Secuencia y Coordinación:*  
+El diagrama correspondiente refleja una interacción totalmente **sincrónica**. El `SistemaReservacion` funge como coordinador de la operación y mantiene el control del hilo a medida que realiza cada verificación: primero consulta la disponibilidad mediante `getHabitacion`, después obtiene la información del huésped con `getHuesped`, y finalmente establece contacto con la pasarela de pagos.
+
+* *Integridad mediante Transacción ACID:*  
+El bloque marcado como *critical* representa la transacción que encapsula toda la operación. Desde el momento en que se recupera la habitación, se aplica un **bloqueo pesimista** para garantizar que no pueda ser reservada por otro usuario en paralelo. La transacción se confirma únicamente cuando la pasarela de pagos responde de forma exitosa y se actualiza la habitación a estado “Reservada” mediante `editarHabitacion`. Si ocurre algún fallo, se ejecuta un *rollback* que libera la habitación de inmediato.
+
+* *Disponibilidad frente a servicios externos:*  
+Para evitar que el sistema quede esperando indefinidamente la respuesta del servicio de pagos, se establece un **timeout de 30 segundos** en `procesarPago`. Si este límite se supera, la operación se cancela, la transacción se reversa y los recursos de servidor se liberan, evitando que otros usuarios experimenten degradación del rendimiento.
+
+image:../images/Secuencia/solicitarReservacion.png[Diagrama de Secuencia mostrando la transacción]

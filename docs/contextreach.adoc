@@ -1,0 +1,35 @@
+== Introducción
+Este sistema tiene como objetivo centralizar y optimizar el proceso de reservaciones en todos los hoteles de la cadena, mediante una plataforma tecnológica escalable, segura y de alto rendimiento. Se busca mejorar la eficiencia operativa, ofrecer una experiencia consistente al cliente y facilitar la administración desde una única interfaz. La solución propuesta permitirá integrar múltiples servicios, adaptarse a distintos entornos y crecer conforme lo haga la red hotelera.
+
+=== Contexto y Alcance del Sistema
+El sistema se desarrollará para centralizar y gestionar las reservaciones de todos los hoteles pertenecientes a la cadena. Su implementación abarcará desde la recepción de reservas hasta la administración de disponibilidad, permitiendo una operación unificada en múltiples ubicaciones. Se contempla la integración con sistemas existentes y la adaptación a distintos entornos tecnológicos dentro de los hoteles.
+
+==== Visión del Sistema
+Para los huéspedes, el equipo administrativo y operativo de la cadena hotelera, que requieren una solución centralizada para gestionar inventario, reservaciones, estancias y servicios, el Sistema de Reservaciones tiene como propósito modernizar la experiencia de alojamiento mediante una plataforma en línea con pago anticipado. Esta plataforma permitirá realizar reservaciones de forma rápida, intuitiva, segura y satisfactoria.
+
+Además, incluirá un sistema integral de gestión hotelera que facilite el control de inventario de habitaciones, registro de entradas y salidas (check-in/check-out), asignación y cambio de habitaciones, cargos por servicios adicionales y consumos del huésped, así como la configuración de políticas como tarifas de cancelación o modificación de reservas. Finalmente, el sistema proporcionará métricas de rendimiento y trazabilidad de cada transacción para respaldar los procesos de auditoría.
+
+A diferencia de las soluciones actuales utilizadas por la cadena, que presentan problemas de compatibilidad, errores frecuentes y una curva de aprendizaje elevada, nuestra propuesta ofrece una administración unificada de inventario y operaciones. Esto garantiza la consistencia de los datos, reduce los errores en la gestión de estancias y facilita la implementación de políticas comerciales, lo que se traduce en una mayor eficiencia operativa, incremento en los ingresos por ocupación, mejor respuesta ante cambios del mercado y una experiencia superior para el huésped.
+
+==== Alcance
+El sistema incluirá funcionalidades como registro de huéspedes, gestión de habitaciones, control de disponibilidad, procesamiento de pagos, generación de reportes y administración de usuarios. No contempla módulos externos como contabilidad o recursos humanos. Su uso estará limitado a personal autorizado dentro de la cadena hotelera, y se diseñará para escalar conforme crezca la red de hoteles.
+
+==== Audiencia del documento
+Este documento está dirigido a los desarrolladores del sistema de gestión hotelera, así como a cualquier persona interesada en comprender el funcionamiento y alcance de la solución propuesta.
+
+==== Glosario
+*Huésped:* Persona que contrata el servicio de alojamiento en un hotel, departamento o casa vacacional. Su experiencia abarca desde el proceso de reserva hasta su salida, incluyendo todas las interacciones con el personal y los servicios ofrecidos por el establecimiento.
+
+*Recepcionista:* Encargado de recibir y atender a los huéspedes en su llegada, gestionar el check-in y check-out, entregar llaves, realizar reservas por distintos medios (teléfono, correo electrónico o sistema interno), emitir comprobantes de pago y atender cualquier solicitud, queja o inconveniente que surja durante la estancia.
+
+*Administrador:* Profesional con habilidades técnicas y sociales que lidera la operación del hotel. Su rol incluye coordinar los servicios, resolver conflictos, garantizar el cumplimiento de normas internas y externas, y mantener la calidad operativa. Representa la imagen institucional del establecimiento ante clientes y colaboradores.
+
+*Auditor:* Responsable de revisar y validar los procesos financieros del hotel. Evalúa informes contables, gastos, ingresos y transacciones para asegurar el cumplimiento de normativas fiscales y políticas internas. Además, analiza indicadores financieros, detecta irregularidades y asesora a la administración en la toma de decisiones estratégicas.
+
+*Auditor nocturno:* Opera durante el turno nocturno, combinando funciones administrativas y contables. Atiende consultas de huéspedes, gestiona reservas fuera del horario habitual y prepara los reportes financieros y operativos que resumen las actividades del día, asegurando una transición ordenada hacia el siguiente turno.
+
+*Habitación:* Espacio privado dentro del hotel destinado al alojamiento de huéspedes. Está equipada con cama, baño y servicios básicos que permiten descansar, asearse y disfrutar de una estancia confortable.
+
+*Reservación:* Proceso mediante el cual un huésped solicita alojamiento por un periodo determinado. Incluye la asignación de habitaciones, confirmación de disponibilidad y pago anticipado o garantizado según las políticas del hotel.
+
+*Sistema de pago:* Plataforma tecnológica que permite realizar transacciones económicas entre el huésped y el hotel. Incluye métodos como tarjetas bancarias, transferencias electrónicas, pagos móviles y otros mecanismos que aseguran la eficiencia y seguridad en el cobro de servicios.

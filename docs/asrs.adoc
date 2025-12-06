@@ -1,7 +1,20 @@
-== Impulsores Arquitectónicos (ASRs) y Priorización
-=== Escenarios de Atributo de Calidad: 
 
-*Usabilidad (Primer Escenario)*
+== Impulsores Arquitectónicos
+
+=== Atributos de Calidad Principales
+
+Con base en los intereses prioritarios de los interesados y en la funcionalidad esencial del sistema, se identificaron los atributos de calidad más relevantes. A continuación, se describen dichos atributos, los cuales servirán como referencia para el desarrollo del proyecto.
+
+Aquí irían las definiciones de los atributos con su referencia ISO
+
+== Utility tree
+
+.Utility tree
+image::../images/UtilityTree.png[Utility tree, width=600, align=center]
+
+== Escenarios de atributos de calidad
+
+=== Usabilidad
 
 [width="100%", cols="1,3", options="header"]
 |===
@@ -41,7 +54,7 @@
 |El 95% de los nuevos usuarios deben poder completar una reserva exitosa en menos de 5 minutos sin abandonar el proceso ni utilizar la sección de ayuda. La tasa de error en la introducción de datos no supera el 5%.
 |===
 
-*Desempeño (Primer Escenario)*
+=== Desempeño 
 
 [width="100%", cols="1,3", options="header"]
 |===
@@ -80,8 +93,3 @@
 |Medida de la respuesta
 |El 99% de las consultas de disponibilidad deben ser resueltas y mostrar resultados al usuario en menos de 1.5 segundos, medido del lado del servidor. El sistema no debe generar más de un 0.1% de errores por timeout.
 |===
-
-== Utility tree
-
-.Utility tree
-image::../images/UtilityTree.png[Utility tree, width=600, align=center]

@@ -1,10 +1,11 @@
+
 === Digramas de caso de uso
 
-.Casos de uso del Huesped
-image::../images/Huesped.jpg[Use Case Diagram, width=600, align=center]
+.Diagrama de casos de uso del Huesped
+image::../images/Huesped.jpg[Diagrama de caso de uso del huesped, width=600, align=center]
 
-.Casos de uso del Recepcionista
-image::../images/packageDiagram.jpg[Use Case Diagram, width=600, align=center]
+.Diagrama de casos de uso del Recepcionista
+image::../images/packageDiagram.jpg[Diagrama de casos de uso del recepcionista, width=600, align=center]
 
 .Casos de uso del Administrador
 image::../images/CU_Administrador.png[Use Case Diagram, width=600, align=center]
@@ -21,6 +22,12 @@ include::useCases/descriptions/CU-05_ConsultarReservaciones.adoc[]
 include::useCases/descriptions/CU-06_ModificarReservación.adoc[]
 include::useCases/descriptions/CU-07_RecibirNotificaciones.adoc[]
 include::useCases/descriptions/CU-08_AccederAPolíticasDeTarifasYCancelación.adoc[]
+include::useCases/descriptions/CU-09_RegistrarCheck-inDeHuésped.adoc[]
+include::useCases/descriptions/CU-10_RegistrarCheck-outDeHuésped.adoc[]
+include::useCases/descriptions/CU-11_RegistrarCambioDeHabitación.adoc[]
+include::useCases/descriptions/CU-12_ConsultarReservaciones.adoc[]
+include::useCases/descriptions/CU-13_VerificarEstadoDehabitaciones.adoc[]
+include::useCases/descriptions/CU-14_RegistrarReservación.adoc[]
 include::useCases/descriptions/CU-15_GestionarCatálogoDeHotelesYHabitaciones.adoc[]
 include::useCases/descriptions/CU-16_GestionarTarifasDiarias.adoc[]
 include::useCases/descriptions/CU-17_DefinirYAplicarPolíticasDeOverbooking.adoc[]

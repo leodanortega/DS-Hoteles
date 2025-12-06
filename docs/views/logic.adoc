@@ -1,3 +1,4 @@
+
 == Vista Lógica
 
 Esta vista describe la estructura estática del sistema y la organización de sus responsabilidades funcionales. Se enfoca en la descomposición del sistema en sus elementos lógicos principales (paquetes o subsistemas), la responsabilidad asignada a cada uno y las relaciones más importantes entre ellos.
@@ -51,7 +52,7 @@ Servicio de Identidad y Acceso: Se integra con el IdP corporativo (CON-05) y emi
 Servicio de Observabilidad: Centraliza logs, métricas y trazas de todos los componentes para el monitoreo y diagnóstico de problemas.
 |===
 
-== Relaciones y Dependencias Clave
+=== Relaciones y Dependencias Clave
 
 Los paquetes Clientes dependen exclusivamente de la Capa de Acceso. No tienen conocimiento directo de los microservicios internos.
 
@@ -62,3 +63,56 @@ Los servicios de la Capa de Negocio son en su mayoría independientes entre sí,
 
 .Diagrama de Paquetes
 image::../images/packageDiagram.jpg[Package Diagram, width=600, align=center]
+
+== Trade-Offs
+
+Como se mencionó anteriormente, el principal trade-off de esta iteración consistió en priorizar la escalabilidad —junto con la posibilidad de incorporar mejoras de seguridad en el futuro— y facilitar el despliegue de dichos cambios. Esto implicó aceptar una reducción en el rendimiento. Sin embargo, se procuró mantener la usabilidad en un nivel óptimo, ya que un sistema lento afecta directamente la experiencia del usuario y podría alejar potenciales clientes, lo cual es contrario a los objetivos del negocio.
+
+== Modelo de Conceptos de Negocio
+
+Esta sección clarifica y define las entidades principales del dominio del problema. Sirve como un vocabulario común para todos los interesados y actúa como la fuente de verdad para el diseño de la capa de negocio, la identificación de componentes CBSE y la posterior vista de datos. El modelo es puramente conceptual, omitiendo detalles de implementación como métodos.
+
+=== Descripción de Conceptos Principales
+
+[cols="1,3", options="header"]
+|===
+|Concepto |Descripción
+
+|Hotel
+|Representa una sucursal física de la cadena. Contiene información como nombre, dirección y un conjunto de habitaciones.
+
+|Habitación
+|Es una instancia física de un cuarto en un hotel, caracterizada por un número o identificador único. Pertenece a un Tipo de Habitación.
+
+|Tipo de Habitación
+|Define una categoría de habitación según sus características (ej. "Doble", "Suite Presidencial"), como capacidad, amenidades y descripción. Las tarifas se asocian a este concepto.
+
+|Huésped
+|Es la persona que realiza y se beneficia de una reserva. Contiene sus datos personales de contacto.
+
+|Reservación
+|Es el concepto central que formaliza el acuerdo de alojamiento. Vincula a un Huésped con un Hotel y un Tipo de Habitación para un período específico. Se le asocian un Pago, una Tarifa y una Política.
+
+|Pago
+|Representa una transacción financiera asociada a una reserva. Incluye el monto, la fecha y el estado del pago.
+
+|Tarifa
+|Define el precio de un Tipo de Habitación para un período de tiempo determinado (ej. tarifa de fin de semana, tarifa de temporada alta).
+
+|Política
+|Establece las reglas de negocio que aplican a una reserva, principalmente las condiciones de cancelación y modificación.
+|===
+
+=== Relaciones y Dependencias Clave
+
+Un Hotel está compuesto por una o más Habitaciones (Composición).
+
+Cada Habitación es de un solo Tipo de Habitación. Varios cuartos pueden ser del mismo tipo.
+
+Un Huésped puede realizar cero o muchas Reservas. Cada Reserva pertenece a un solo Huésped.
+
+Una Reserva se realiza sobre un Tipo de Habitación en un Hotel específico y está asociada a una Tarifa, un Pago y una Política para darle contexto completo.
+
+
+.Diagrama de Negocios
+image::../images/businessConceptModel.jpg[Modelo de conceptos de negocio, width=600, align=center]

@@ -1,0 +1,8 @@
+
+== Vista de implementación
+
+=== Descripción general
+
+La vista de implementación expone la estructura física del sistema y la forma en que sus componentes se organizan e interrelacionan dentro del entorno de ejecución. Dado que se utiliza una arquitectura basada en capas, esta vista permite apreciar cómo se distribuyen los módulos de software en cada nivel y cómo se integran para conformar el sistema completo.
+
+=== Conenido semántico 

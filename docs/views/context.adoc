@@ -1,0 +1,50 @@
+
+[[context-view]]
+== Vista de Contexto
+
+La vista de contexto muestra el sistema como una caja negra. Este diagrama nos servirá más adelante para hacer un DFD.
+
+image::../images/context.png[Context Diagram, width=600, align=center]
+
+
+[[dfd-view]]
+== Diagramas de Flujo de Datos
+
+
+=== DFD del Administrador
+
+.DFD Administrador N1 (Gestión Hotel)
+image::../images/DFD/DFD_administrador1.png[DFD Administrador 1, width=600, align=center]
+
+.DFD Administrador N2 (Gestión Admin y Categorías)
+image::../images/DFD/DFD_administrador2.png[DFD Administrador 2, width=600, align=center]
+
+.DFD Administrador N4 (Gestión Hotel)
+image::../images/DFD/DFD_administrador4.png[DFD Administrador 4, width=600, align=center]
+
+=== DFD del Administrador de Hotel
+
+.DFD AdministradorHotel N1 (Gestión Productos y Categorías de Productos)
+image::../images/DFD/DFD_administradorhotel1.png[DFD AdministradorHotel 1, width=600, align=center]
+
+.DFD AdministradorHotel N2 (Gestión Servicios y Categorías de Servicio)
+image::../images/DFD/DFD_administradorhotel2.png[DFD AdministradorHotel 2, width=600, align=center]
+
+.DFD AdministradorHotel N3 (Gestión Empleados)
+image::../images/DFD/DFD_administradorhotel3.png[DFD AdministradorHotel 3, width=600, align=center]
+
+=== DFD del Huésped
+
+.Diagrama de flujo de datos del Huésped
+image::../images/DFD/huesped.png[DFD Huesped, width=600, align=center]
+
+=== DFD del Recepcionista
+
+.Diagrama de flujo de datos del Recepcionista
+image::../images/DFD/recepcionista.png[DFD Recepcionista, width=600, align=center]
+
+
+=== DFD del Auditor
+
+.Diagrama de flujo de datos del Auditor
+image::../images/DFD/auditor.png[DFD Auditor, width=600, align=center]
