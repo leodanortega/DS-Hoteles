@@ -6,7 +6,7 @@ Esta vista describe cómo el sistema opera durante la ejecución, enfocándose e
 
 Dado que se utiliza una arquitectura de microservicios, el modelo de ejecución base es **Thread-per-Request** (un hilo por petición).
 * Cada solicitud HTTP entrante en el API Gateway o BFF asigna un hilo de procesamiento aislado.
-* Para evitar el agotamiento de recursos, se implementan **Pools de Conexiones** hacia las bases de datos y **Timeouts** estrictos (Circuit Breaker) en las llamadas entre servicios (ej. `SistemaReservaciones` -> `SistemaPagos`).
+* Para evitar el agotamiento de recursos, se implementan **Pools de Conexiones** hacia las bases de datos y **Timeouts** estrictos (Circuit Breaker) en las llamadas entre servicios (ej. SistemaReservaciones -> SistemaPagos).
 
 A continuación, se detallan los dos procesos de negocio más críticos por su impacto en la integridad de los datos y la experiencia del usuario.
 
@@ -14,9 +14,9 @@ A continuación, se detallan los dos procesos de negocio más críticos por su i
 
 Este proceso es transaccional y requiere consistencia fuerte. El sistema debe asegurar que no se vendan habitaciones indisponibles (Overbooking no controlado) y que el pago se asegure antes de confirmar.
 
-* **Sincronización:** El flujo es orquestado de manera síncrona por el `SistemaReservaciones`.
-* **Gestión de Concurrencia:** Se utiliza **Bloqueo Pesimista** (o serialización de transacciones) en el registro de la habitación durante la ventana de pago para evitar condiciones de carrera.
-* **Manejo de Fallos:** Si el `SistemaPagos` no responde en 30 segundos, la transacción se aborta (Rollback) y la habitación se libera inmediatamente.
+* **Sincronización:** El flujo es orquestado de manera síncrona por el SistemaReservaciones.
+* **Gestión de Concurrencia:** Se utiliza **Bloqueo Optimista** en el registro de la habitación durante la ventana de pago para permitir que múltiples usuarios intenten reservar, y solo al final validar la versión del registro.
+* **Manejo de Fallos:** Si el SistemaPagos no responde en 30 segundos, la transacción se aborta (Rollback) y la habitación se libera inmediatamente.
 
 .Diagrama de Secuencia: Solicitar Reservación
 image::../images/Secuencia/solicitarReservacion.png[Diagrama de Secuencia Reservación, width=800, align=center]
