@@ -187,3 +187,17 @@
 |Leonardo Daniel
 |Se actualiza el documento principal y se actualizan las vistas
 |===
+
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.1.4
+|7/12/2025
+|Carlos Castillo
+|Refactorización en la vista de implementación y modelo de tipos de negocio
+|===

@@ -16,6 +16,26 @@ Interacción: Modelamos cómo estos componentes interactúan para realizar las o
 
 Este ciclo de descomposición (ADD) y especificación (CBSE) se repite en cada iteración, permitiendo un diseño incremental y refinado.
 
+=== Priorización de Atributos y Backlog
+
+Para guiar las decisiones arquitectónicas, primero definimos cuáles atributos de calidad son los más críticos. Utilizamos una matriz de priorización donde comparamos los atributos entre sí.
+
+.Matriz de priorización de atributos
+image::../images/priorizacionAtributos.png[Priorización de atributos, width=600, align=center]
+
+El resultado indica que la **Seguridad** es el atributo dominante, seguido de la **Disponibilidad**. Esto se justifica dado que manejamos datos sensibles de tarjetas de crédito y operamos en tiempo real.
+
+==== Backlog de Impulsores Arquitectónicos (Drivers)
+
+A partir de la priorización, formalizamos el backlog de impulsores que moldearán la arquitectura:
+
+* **Seguridad (Confidencialidad - CRN-01):** Proteger los datos de pago y personales. Una brecha aquí es fatal para la reputación y legalidad del negocio.
+* **Disponibilidad (Resiliencia - CRN-02):** El sistema debe tolerar fallos en servicios externos (como la pasarela de pagos) y picos de demanda sin caerse.
+* **Consistencia de Datos (Integridad - CRN-03):** Evitar estrictamente el *overbooking*. El inventario debe ser consistente entre consultas y reservas.
+* **Rendimiento (Tiempo de Respuesta - CRN-04):** Respuestas en < 2 segundos para búsquedas. Vital para la retención del cliente en el portal web.
+* **Usabilidad (Eficiencia - CRN-10):** Minimizar la curva de aprendizaje para los recepcionistas (alta rotación de personal) y facilitar la reserva al huésped.
+* **Escalabilidad (CRN-05):** Soportar el crecimiento horizontal de la cadena hotelera sin rediseñar el sistema.
+
 === Diseño por iteraciones
 
 El diseño se ejecutó en dos iteraciones principales, cada una con un objetivo claro y enfocada en un conjunto de impulsores priorizados.
@@ -95,7 +115,40 @@ Uso de un broker de mensajes para la comunicación asíncrona y el desacoplamien
 Separación de las aplicaciones frontend en al menos tres bases de código distintas: Huésped, Recepción y Administración.
 |===
 
+==== Iteración 3: Especificación de Interfaces y Flujos Guiados
+
+Objetivo de la iteración: Definir los contratos exactos de comunicación entre los BFFs y los clientes, y refinar la usabilidad para tareas complejas del personal, cerrando la brecha entre la arquitectura y la implementación.
+
+Drivers Atendidos: #5 (Usabilidad) y #6 (Interoperabilidad/Mantenibilidad).
+
+Decisiones de Diseño (Tácticas y Patrones):
+
+Diseño de Contratos Primero (API First): Antes de codificar, se definen las interfaces usando la especificación OpenAPI. Esto permite que los equipos de Frontend y Backend trabajen en paralelo.
+Flujos Guiados: Para el driver de Usabilidad del recepcionista (QAS05), se decidió implementar patrones de "Mago" en la interfaz. En lugar de un formulario gigante para el Check-In, el sistema divide el proceso en pasos pequeños y validados secuencialmente.
+Validación en Cliente y Servidor: Se especifica que las reglas de negocio críticas se validen en el frontend para feedback inmediato, pero se re-validen obligatoriamente en el backend por seguridad.
+
+Criterios de "Suficiente":
+La iteración concluye cuando los diagramas de secuencia de las operaciones críticas (Check-in, Pago) coinciden con los contratos OpenAPI definidos y los prototipos de UI son aprobados.
+
+==== Cierre de la Iteración 3
+
+[cols="1,3", options="header"]
+|===
+|Elemento |Descripción
+
+|Drivers Atendidos
+|Primarios: CRN-10 (Usabilidad). Secundarios: CRN-07 (Mantenibilidad).
+
+|Decisiones Registradas
+|
+Uso de OpenAPI para contratos estrictos entre BFF y Clientes.
+Implementación de Flujos Guiados para procesos operativos complejos.
+Estrategia de doble validación para UX y Seguridad.
+|===
+
 == Especificacion
+
+Esta sección detalla los componentes lógicos que resultaron del proceso de diseño por iteraciones.
 
 === Identificación de Core Types
 
@@ -105,10 +158,27 @@ image::IdentificacionDeCores.jpg[Identificación de core types, width=600, align
 
 image::DiagramaInterfaces.jpg[Identificación inicial de interfaces, width=60, align=center]
 
-=== Justificación
+=== Justificación de la Descomposición del Sistema
 
-Para comprender adecuadamente la justificación del diseño propuesto, es necesario recordar qué implica trabajar con una arquitectura en capas. Este tipo de arquitectura se fundamenta en la división del sistema en capas bien definidas, independientes y especializadas, que colaboran entre sí mediante interfaces claramente establecidas.
+La arquitectura resultante se basa en la descomposición del dominio en sistemas autónomos (Microservicios de grano grueso), cada uno con una responsabilidad clara y delimitada. Esta estructura modular permite que cada sistema evolucione, escale y se despliegue de forma independiente, cumpliendo directamente con los atributos de **Escalabilidad** y **Mantenibilidad** definidos en el backlog.
 
-En el diagrama correspondiente a esta sección del proyecto se representarán los distintos componentes del sistema mediante bloques o unidades funcionales, con el fin de ilustrar de forma general la estructura prevista y las relaciones entre sus capas principales.
+1.  **SistemaCadenaHotel**
+    * Propósito: Gestión corporativa y estratégica.
+    * Responsabilidad: Centraliza la configuración global de la cadena (nuevos hoteles, políticas generales). Es el punto de control para el `AdministradorDeLaCadena`. No participa en la operación día a día de un hotel específico.
 
-Falta explicación de los distintos sistemas identificados, propósito y responsabilidad, métodos de los sistemas
+2.  **SistemaHotel**
+    * Propósito: Gestión operativa local.
+    * Responsabilidad: Administra el inventario físico (habitaciones), servicios, productos y empleados de una sede específica. Es la fuente de verdad sobre "qué tiene el hotel".
+
+3.  **SistemaHuesped**
+    * Propósito: Gestión de identidad y perfiles (CRM).
+    * Responsabilidad: Almacena y protege los datos personales y preferencias de los clientes. Centraliza la autenticación y el historial del cliente para ofrecer una experiencia personalizada.
+
+4.  **SistemaReservacionEstancia**
+    * Propósito: Núcleo transaccional del negocio.
+    * Responsabilidad: Orquesta el ciclo de vida principal: Reservar -> Check-In -> Estancia -> Check-Out.
+    * Complejidad: Es el sistema que más interactúa con los demás, validando disponibilidad con `SistemaHotel` y datos con `SistemaHuesped`. Garantiza la integridad de las fechas y evita el overbooking.
+
+5.  **SistemaPagos (PasarelaPagos)**
+    * Propósito: Gestión financiera segura.
+    * Responsabilidad: Encapsula la complejidad de comunicarse con proveedores externos (bancos/Stripe/PayPal). Provee una interfaz unificada para realizar cargos y reembolsos, aislando al resto del sistema de los detalles de cumplimiento PCI-DSS.

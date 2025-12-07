@@ -1,15 +1,38 @@
-
 [[context-view]]
 == Vista de Contexto
 
-La vista de contexto muestra el sistema como una caja negra. Este diagrama nos servirá más adelante para hacer un DFD.
+La vista de contexto delimita las fronteras del sistema, identificando qué es parte del sistema y qué es externo a él (actores y sistemas vecinos). Esta vista es crucial para entender el alcance y las interacciones de alto nivel.
 
-image::../images/context.png[Context Diagram, width=600, align=center]
+=== Diagrama de Contexto
+
+El siguiente diagrama muestra al Sistema de Gestión Hotelera como una caja negra en el centro, rodeado por los actores humanos y sistemas externos con los que interactúa.
+
+image::../images/Diagrama de contexto.jpg[Diagrama de Contexto, width=700, align=center]
+
+=== Actores y Casos de Uso Principales
+
+A continuación se detallan las funcionalidades principales agrupadas por actor, lo que nos permite entender los requisitos funcionales desde la perspectiva de quien interactúa con el sistema.
+
+==== 1. Actor: Huésped
+El cliente final del hotel. Sus interacciones se centran en la autosuficiencia (reserva, consulta y pago).
+
+image::../images/CU_Huesped.png[Casos de Uso Huésped, width=600, align=center]
+
+==== 2. Actor: Recepcionista
+Personal operativo encargado de la gestión presencial y telefónica. Sus casos de uso requieren eficiencia y acceso rápido a la información de estancias.
+
+image::../images/CU_Recepcionista.png[Casos de Uso Recepcionista, width=600, align=center]
+
+==== 3. Actor: Administrador
+Encargado de la configuración estratégica del negocio (tarifas, catálogo, usuarios).
+
+image::../images/CU_Administrador.png[Casos de Uso Administrador, width=600, align=center]
 
 
 [[dfd-view]]
-== Diagramas de Flujo de Datos
+== Diagramas de Flujo de Datos (DFD)
 
+Los DFDs ilustran cómo fluye la información a través de los procesos del sistema, mostrando las entradas, salidas y almacenes de datos.
 
 === DFD del Administrador
 
@@ -42,7 +65,6 @@ image::../images/DFD/huesped.png[DFD Huesped, width=600, align=center]
 
 .Diagrama de flujo de datos del Recepcionista
 image::../images/DFD/recepcionista.png[DFD Recepcionista, width=600, align=center]
-
 
 === DFD del Auditor
 

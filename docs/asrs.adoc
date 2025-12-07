@@ -1,11 +1,24 @@
-
 == Impulsores Arquitectónicos
 
 === Atributos de Calidad Principales
 
 Con base en los intereses prioritarios de los interesados y en la funcionalidad esencial del sistema, se identificaron los atributos de calidad más relevantes. A continuación, se describen dichos atributos, los cuales servirán como referencia para el desarrollo del proyecto.
 
-Aquí irían las definiciones de los atributos con su referencia ISO
+*Seguridad* +
+Capacidad de protección de la información y los datos de forma que personas o sistemas tengan el grado de acceso a los datos adecuado para sus tipos y niveles de autorización, y para defenderse de los patrones de ataque de agentes malintencionados. +
+- ISO/IEC 25010
+
+*Disponibilidad* +
+Propiedad del software para estar disponible y listo para realizar su tarea cuando se necesita, la capacidad para recuperarse tras una falla, y la capacidad del sistema para arreglar o enmascarar los defectos de tal forma que no se manifiesten como una falla. +
+- Software Architecture in Practice, L. Bass, P. Clements R. Kazman
+
+*Rendimiento* +
+Grado en el que un producto realiza sus funciones dentro de parámetros de tiempo y rendimiento especificados y hace uso eficiente de los recursos bajo condiciones específicas. +
+- ISO/IEC 25010
+
+*Usabilidad* +
+Grado en el que un sistema, producto o servicio puede ser usado por usuarios específicos para conseguir objetivos específicos con eficacia, eficiencia y satisfacción en un contexto de uso especificado. +
+- ISO 9241-11:2018
 
 == Utility tree
 
@@ -54,7 +67,45 @@ image::../images/UtilityTree.png[Utility tree, width=600, align=center]
 |El 95% de los nuevos usuarios deben poder completar una reserva exitosa en menos de 5 minutos sin abandonar el proceso ni utilizar la sección de ayuda. La tasa de error en la introducción de datos no supera el 5%.
 |===
 
-=== Desempeño 
+[width="100%", cols="1,3", options="header"]
+|===
+|Atributo |Descripción
+
+|ID y descripción corta
+|QAS05. Eficiencia del personal (Recepcionista).
+
+|Escenario
+|Asegurar que un recepcionista con capacitación básica pueda realizar el Check-In de un huésped rápidamente para evitar filas en el lobby.
+
+|Atributo
+|Usabilidad
+
+|Preocupación del atributo
+|Eficiencia de uso y facilidad de aprendizaje.
+
+|Refinamiento del escenario
+|Productividad del usuario experto.
+
+|Fuente del estímulo
+|Recepcionista.
+
+|Estímulo
+|El recepcionista necesita registrar la llegada (Check-In) de un huésped con reservación previa.
+
+|Ambiente
+|Operación normal en horario pico de llegadas (12:00 PM - 3:00 PM).
+
+|Artefacto
+|Módulo de Gestión de Estancias (Interfaz de Recepción).
+
+|Respuesta
+|El sistema presenta los datos de la reserva pre-cargados y guía los pasos de validación de identidad y asignación de habitación mediante un flujo optimizado (wizard).
+
+|Medida de la respuesta
+|El proceso de Check-In debe completarse en menos de 2 minutos para el 90% de los casos donde la reserva ya existe.
+|===
+
+=== Desempeño
 
 [width="100%", cols="1,3", options="header"]
 |===
@@ -73,7 +124,7 @@ image::../images/UtilityTree.png[Utility tree, width=600, align=center]
 |La capacidad del sistema para responder a eventos dentro de un tiempo determinado.
 
 |Refinamiento del escenario
-|Tiempo de respuesta
+|Tiempo de respuesta.
 
 |Fuente del estímulo
 |Múltiples huéspedes (hasta 100,000 usuarios concurrentes).
@@ -92,4 +143,84 @@ image::../images/UtilityTree.png[Utility tree, width=600, align=center]
 
 |Medida de la respuesta
 |El 99% de las consultas de disponibilidad deben ser resueltas y mostrar resultados al usuario en menos de 1.5 segundos, medido del lado del servidor. El sistema no debe generar más de un 0.1% de errores por timeout.
+|===
+
+=== Seguridad
+
+[width="100%", cols="1,3", options="header"]
+|===
+|Atributo |Descripción
+
+|ID y descripción corta
+|QAS03. Protección de Datos de Pago.
+
+|Escenario
+|Proteger la confidencialidad de la información sensible del cliente durante el proceso de pago para evitar robos o intercepciones.
+
+|Atributo
+|Seguridad
+
+|Preocupación del atributo
+|Confidencialidad de los datos.
+
+|Refinamiento del escenario
+|Protección contra ataques de red (Sniffing/Man-in-the-Middle).
+
+|Fuente del estímulo
+|Atacante externo / Sistema automatizado malicioso.
+
+|Estímulo
+|Intento de interceptar la comunicación durante la transacción de pago (CU-03 Realizar Pago).
+
+|Ambiente
+|Sistema en operación expuesto a internet pública.
+
+|Artefacto
+|Módulo de Pagos y canales de comunicación (API).
+
+|Respuesta
+|El sistema fuerza el uso de canales cifrados (HTTPS/TLS 1.3), no almacena datos de tarjetas (PCI-DSS compliance) y detecta conexiones inseguras rechazándolas.
+
+|Medida de la respuesta
+|El 100% de las transacciones financieras viajan cifradas. 0 incidentes de filtración de datos de tarjetas desde la base de datos local (al no almacenarse).
+|===
+
+=== Disponibilidad
+
+[width="100%", cols="1,3", options="header"]
+|===
+|Atributo |Descripción
+
+|ID y descripción corta
+|QAS04. Falla de Proveedor de Pagos.
+
+|Escenario
+|Garantizar que el sistema maneje adecuadamente la indisponibilidad de la pasarela de pagos externa sin colapsar ni dejar transacciones en estados inconsistentes.
+
+|Atributo
+|Disponibilidad
+
+|Preocupación del atributo
+|Tolerancia a fallos de dependencias externas.
+
+|Refinamiento del escenario
+|Manejo de excepciones y degradación elegante.
+
+|Fuente del estímulo
+|Pasarela de Pagos Externa.
+
+|Estímulo
+|La pasarela de pagos deja de responder o devuelve errores de tiempo de espera (timeout) durante el pago de una reserva.
+
+|Ambiente
+|Operación normal del hotel, falla en servicio de terceros.
+
+|Artefacto
+|Servicio de Reservaciones y Adaptador de Pagos.
+
+|Respuesta
+|El sistema detecta el timeout (máx 30s), cancela la transacción localmente para liberar la habitación reservada temporalmente, y muestra un mensaje de error amigable al usuario sugiriendo intentar más tarde, sin bloquear el resto del portal.
+
+|Medida de la respuesta
+|El usuario recibe notificación del fallo en menos de 35 segundos totales. La habitación se libera en el inventario en menos de 1 segundo tras el fallo.
 |===

@@ -1,8 +1,260 @@
+== Vista de Implementación
 
-== Vista de implementación
+La vista de implementación describe la estructura física del sistema, la organización de sus componentes de software y los contratos de interfaz que permiten su interoperabilidad. Esta vista es fundamental para comprender cómo se ensamblan las piezas del diseño arquitectónico en unidades desplegables.
 
-=== Descripción general
+=== Estructura de Componentes
 
-La vista de implementación expone la estructura física del sistema y la forma en que sus componentes se organizan e interrelacionan dentro del entorno de ejecución. Dado que se utiliza una arquitectura basada en capas, esta vista permite apreciar cómo se distribuyen los módulos de software en cada nivel y cómo se integran para conformar el sistema completo.
+El sistema se ha descompuesto en una arquitectura de microservicios de grano grueso (Sistemas), donde cada unidad encapsula una capacidad de negocio específica y expone su funcionalidad a través de interfaces bien definidas.
 
-=== Conenido semántico 
+.Arquitectura de Componentes del Sistema
+image::../images/components/ComponentArchitectureDiagram.jpeg[Diagrama de Arquitectura, width=700, align=center]
+
+A continuación, se detalla la especificación de cada componente, sus responsabilidades y las interfaces que provee (Managers).
+
+==== 1. Sistema de Administración
+Componente estratégico encargado de la configuración global de la cadena hotelera.
+
+[width="100%", cols="2,4", options="header"]
+|===
+|Propiedad |Especificación
+
+|Responsabilidades
+|Gestión del catálogo maestro de hoteles, definición de tipos de habitación, administración de tarifas base y configuración de políticas comerciales (cancelación, overbooking).
+
+|Restricciones
+|Acceso restringido al rol `AdministradorCadena`. Las modificaciones en tarifas deben auditarse.
+
+|Dependencias
+|Requiere `IAutentication` para validar sesiones administrativas.
+|===
+
+**Manifestación e Interfaces:**
+El componente expone interfaces separadas para la gestión de catálogo, tarifas y políticas, permitiendo una evolución independiente de cada submódulo.
+
+[cols="1,1", frame=none, grid=none]
+|===
+| image::../images/components/Administracion.jpeg[Componente Administración, width=350]
+| image::../images/interfaceDiagrams/ICatalogo.png[Interfaz Catálogo, width=300] +
+image::../images/interfaceDiagrams/ITarifas.png[Interfaz Tarifas, width=300] +
+image::../images/interfaceDiagrams/IPoliticas.png[Interfaz Políticas, width=300]
+|===
+
+==== 2. Sistema de Inventario
+El "Source of Truth" del estado físico del hotel.
+
+[width="100%", cols="2,4", options="header"]
+|===
+|Propiedad |Especificación
+
+|Responsabilidades
+|Mantiene el estado en tiempo real de cada habitación (Disponible, Ocupada, Sucia, Mantenimiento). Gestiona el bloqueo de habitaciones para evitar conflictos.
+
+|Restricciones
+|Debe garantizar consistencia fuerte en operaciones de escritura concurrentes (Bloqueo Optimista).
+
+|Dependencias
+|No posee dependencias de negocio síncronas hacia otros microservicios (es un componente base).
+|===
+
+**Manifestación e Interfaces:**
+La interfaz `IInventario` actúa como el Manager central para consultar disponibilidad y modificar estados de habitaciones.
+
+[cols="1,1", frame=none, grid=none]
+|===
+| image::../images/components/Inventario.jpeg[Componente Inventario, width=350]
+| image::../images/interfaceDiagrams/IInventario.png[Interfaz Inventario, width=350]
+|===
+
+==== 3. Sistema de Reservaciones
+Orquestador del ciclo de vida de la venta anticipada.
+
+[width="100%", cols="2,4", options="header"]
+|===
+|Propiedad |Especificación
+
+|Responsabilidades
+|Creación, modificación y cancelación de reservas. Coordinación del pago inicial y aplicación de penalizaciones.
+
+|Restricciones
+|No puede confirmar una reserva sin un código de autorización de pago válido.
+
+|Dependencias
+|`IInventario` (Verificar disponibilidad), `IPago` (Cobros), `INotificaciones` (Confirmaciones).
+|===
+
+**Manifestación e Interfaces:**
+Separa claramente las operaciones de escritura (`IGestionReservacion`) de las consultas masivas (`IConsultaReservacion`) y la gestión de devoluciones (`IReembolsos`).
+
+[cols="1,1", frame=none, grid=none]
+|===
+| image::../images/components/Reservaciones.jpeg[Componente Reservaciones, width=350]
+| image::../images/interfaceDiagrams/IGestionReservacion.png[Interfaz Gestión, width=300] +
+image::../images/interfaceDiagrams/IConsultaReservacion.png[Interfaz Consulta, width=300] +
+image::../images/interfaceDiagrams/IReembolsos.png[Interfaz Reembolsos, width=300]
+|===
+
+==== 4. Sistema de Gestión de Estancias
+Controlador de la operación in-situ (Front Desk).
+
+[width="100%", cols="2,4", options="header"]
+|===
+|Propiedad |Especificación
+
+|Responsabilidades
+|Ejecución de Check-in y Check-out. Registro de consumos (servicios/productos) durante la estadía. Cálculo de la cuenta final.
+
+|Restricciones
+|El Check-in requiere una reserva confirmada o creación "Walk-in". El Check-out no se permite con saldo pendiente.
+
+|Dependencias
+|`IInventario` (Ocupar/Liberar cuarto), `IGestionReservacion` (Obtener datos previos), `IPago`.
+|===
+
+**Manifestación e Interfaces:**
+Gestiona el ciclo de vida activo del huésped mediante `IGestionEstancia` y permite consultas de estado (`IConsultaEstancia`).
+
+[cols="1,1", frame=none, grid=none]
+|===
+| image::../images/components/GestionEstancias.jpeg[Componente Estancias, width=350]
+| image::../images/interfaceDiagrams/IGestionEstancia.png[Interfaz Gestión Estancia, width=300] +
+image::../images/interfaceDiagrams/IConsultaEstancia.png[Interfaz Consulta Estancia, width=300]
+|===
+
+==== 5. Sistema de Pagos
+Fachada de seguridad financiera y adaptador PCI-DSS.
+
+[width="100%", cols="2,4", options="header"]
+|===
+|Propiedad |Especificación
+
+|Responsabilidades
+|Procesamiento seguro de transacciones (Cobros y Reembolsos). Abstracción del proveedor externo.
+
+|Restricciones
+|No almacenamiento de PAN (Primary Account Number). Comunicación cifrada obligatoria (TLS 1.3).
+
+|Dependencias
+|Proveedor externo (Pasarela Bancaria).
+|===
+
+**Manifestación e Interfaces:**
+Expone `IPago` para uso interno del sistema y utiliza `IPasarelaExterna` como adaptador hacia el proveedor financiero.
+
+[cols="1,1", frame=none, grid=none]
+|===
+| image::../images/components/Pagos.jpeg[Componente Pagos, width=350]
+| image::../images/interfaceDiagrams/IPago.png[Interfaz Pago Interna, width=300] +
+image::../images/interfaceDiagrams/IPasarelaExterna.png[Interfaz Pasarela Externa, width=300]
+|===
+
+==== 6. Sistema de Autenticación y Usuarios
+Gestor de Identidad y Acceso (IAM).
+
+[width="100%", cols="2,4", options="header"]
+|===
+|Propiedad |Especificación
+
+|Responsabilidades
+|Gestión del ciclo de vida de usuarios (Alta/Baja/Modificación). Autenticación y emisión de tokens de sesión.
+
+|Restricciones
+|Contraseñas almacenadas con Hash+Salt. Tokens con tiempo de vida limitado.
+|===
+
+**Manifestación e Interfaces:**
+Centraliza la seguridad (`IAutentication`) y la administración de perfiles (`IGestionUsuarios`).
+
+[cols="1,1", frame=none, grid=none]
+|===
+| image::../images/components/Autenticacion.jpeg[Componente Autenticación, width=350]
+| image::../images/interfaceDiagrams/IAutentication.png[Interfaz Autenticación, width=300] +
+image::../images/interfaceDiagrams/IGestionUsuarios.png[Interfaz Usuarios, width=300]
+|===
+
+==== 7. Sistema de Notificaciones
+Servicio de mensajería asíncrona.
+
+[width="100%", cols="2,4", options="header"]
+|===
+|Propiedad |Especificación
+
+|Responsabilidades
+|Envío de correos electrónicos transaccionales (confirmaciones, facturas, alertas).
+
+|Restricciones
+|Operación asíncrona (Fire-and-forget desde la perspectiva del emisor).
+|===
+
+**Manifestación e Interfaces:**
+Expone `INotificaciones` para disparar eventos y utiliza `IServicioEmail` para conectar con proveedores SMTP/API.
+
+[cols="1,1", frame=none, grid=none]
+|===
+| image::../images/components/Notificaciones.jpeg[Componente Notificaciones, width=350]
+| image::../images/interfaceDiagrams/INotificaciones.png[Interfaz Notificaciones, width=300] +
+image::../images/interfaceDiagrams/IServicioEmail.png[Interfaz Email, width=300]
+|===
+
+=== Interacción de Componentes
+
+En esta sección se documentan los diagramas de comunicación que validan la colaboración entre los componentes para satisfacer los casos de uso críticos.
+
+==== 1. Proceso de Reservación (CU-02)
+Este flujo coordina la venta, validando disponibilidad y asegurando el pago.
+
+.Diagrama de Comunicación: Hacer Reservación
+image::../images/comunication/hacerReservacion.png[Hacer Reservación, width=800, align=center]
+
+**Descripción del flujo:**
+1.  El cliente solicita una reserva a través del BFF.
+2.  `Reservaciones` consulta disponibilidad a `Inventario`.
+3.  Se valida la tarifa vigente con `Administracion`.
+4.  `Reservaciones` solicita el bloqueo temporal del recurso.
+5.  Se invoca a `Pagos` para procesar el cargo inicial.
+6.  Si es exitoso, se confirma la reserva y se notifica vía Email.
+
+==== 2. Proceso de Check-In (CU-09)
+Formalización de la llegada del huésped y asignación física de la habitación.
+
+.Diagrama de Comunicación: Registrar Check-In
+image::../images/comunication/registrarCheckIn.png[Registrar Check-In, width=800, align=center]
+
+**Descripción del flujo:**
+1.  Recepción busca la reserva activa.
+2.  `Estancias` valida que no existan adeudos pendientes en `Reservaciones`.
+3.  Se registra el Check-in y se solicita a `Inventario` cambiar el estado de la habitación a "Ocupada".
+
+==== 3. Cancelación de Reserva (CU-04)
+Gestión de anulaciones y política de reembolsos.
+
+.Diagrama de Comunicación: Cancelar Reservación
+image::../images/comunication/cancelarReservacion.png[Cancelar Reservación, width=800, align=center]
+
+**Descripción del flujo:**
+1.  El usuario solicita cancelación.
+2.  `Reservaciones` consulta las `Politicas` para determinar penalización.
+3.  Si aplica reembolso, se invoca la interfaz `IReembolsos` del sistema de `Pagos`.
+4.  Se libera la habitación en `Inventario` inmediatamente.
+
+==== 4. Proceso de Check-Out (CU-10)
+Cierre de cuenta y liberación del recurso.
+
+.Diagrama de Comunicación: Registrar Check-Out
+image::../images/comunication/registrarCheckOut.png[Registrar Check-Out, width=800, align=center]
+
+**Descripción del flujo:**
+1.  `Estancias` consolida todos los cargos (habitación + consumos).
+2.  Se procesa el cobro final con `Pagos`.
+3.  Al confirmar saldo cero, se notifica a `Inventario` para marcar la habitación como "Sucia" (lista para limpieza).
+
+==== 5. Cambio de Habitación (CU-11)
+Flujo operativo para incidencias durante la estancia.
+
+.Diagrama de Comunicación: Registrar Cambio de Habitación
+image::../images/comunication/registrarCambioHabitacion.png[Registrar Cambio de Habitación, width=800, align=center]
+
+**Descripción del flujo:**
+1.  Se solicita cambio por incidencia.
+2.  `Estancias` busca nueva disponibilidad en `Inventario`.
+3.  Se ejecuta una transacción atómica: Liberar habitación A y Ocupar habitación B.
+4.  Se actualiza la referencia en la Estancia activa.

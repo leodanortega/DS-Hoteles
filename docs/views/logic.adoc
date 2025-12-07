@@ -1,4 +1,3 @@
-
 == Vista Lógica
 
 Esta vista describe la estructura estática del sistema y la organización de sus responsabilidades funcionales. Se enfoca en la descomposición del sistema en sus elementos lógicos principales (paquetes o subsistemas), la responsabilidad asignada a cada uno y las relaciones más importantes entre ellos.
@@ -60,9 +59,42 @@ La Capa de Acceso (específicamente los BFFs) depende de los servicios en la Cap
 
 Los servicios de la Capa de Negocio son en su mayoría independientes entre sí, comunicándose de forma asíncrona a través de la Infraestructura para mantener la cohesión y minimizar el acoplamiento.
 
-
 .Diagrama de Paquetes
 image::../images/packageDiagram.jpg[Package Diagram, width=600, align=center]
+
+=== Estructura de Componentes del Sistema
+
+El sistema se estructura en componentes funcionales de alto nivel que colaboran entre sí. La siguiente vista ilustra la arquitectura general y sus interacciones.
+
+image::../images/components/ComponentArchitectureDiagram.jpeg[Diagrama de Arquitectura de Componentes, width=700, align=center]
+
+==== Descripción de Componentes Principales
+
+A continuación se detallan las responsabilidades de los subsistemas identificados:
+
+* **Sistema de Administración** (`Administracion`):
+Responsable de la configuración global de la cadena y la gestión corporativa.
+image::../images/components/Administracion.jpeg[Componente Administración, width=500]
+
+* **Sistema de Inventario** (`Inventario`):
+Gestiona la disponibilidad física de las habitaciones y los catálogos de servicios. Es la fuente de verdad para el estado del hotel.
+image::../images/components/Inventario.jpeg[Componente Inventario, width=500]
+
+* **Sistema de Reservaciones** (`Reservaciones`):
+Orquesta el proceso de reserva anticipada, validando disponibilidad con Inventario y precios.
+image::../images/components/Reservaciones.jpeg[Componente Reservaciones, width=500]
+
+* **Sistema de Gestión de Estancias** (`GestionEstancias`):
+Maneja las operaciones en tiempo real dentro del hotel: Check-in, consumos durante la estadía y Check-out.
+image::../images/components/GestionEstancias.jpeg[Componente Estancias, width=500]
+
+* **Sistema de Pagos** (`Pagos`):
+Actúa como fachada segura para la comunicación con pasarelas bancarias externas, encapsulando la complejidad financiera.
+image::../images/components/Pagos.jpeg[Componente Pagos, width=500]
+
+* **Sistema de Autenticación** (`Autenticacion`):
+Servicio transversal encargado de la identidad, emisión de tokens y validación de credenciales para huéspedes y empleados.
+image::../images/components/Autenticacion.jpeg[Componente Autenticación, width=500]
 
 == Trade-Offs
 
@@ -116,3 +148,31 @@ Una Reserva se realiza sobre un Tipo de Habitación en un Hotel específico y es
 
 .Diagrama de Negocios
 image::../images/businessConceptModel.jpg[Modelo de conceptos de negocio, width=600, align=center]
+
+== Modelo de Tipos de Negocio (MTN)
+
+Siguiendo la metodología de Cheesman & Daniels, el Modelo de Conceptos de Negocio se refina para producir el Modelo de Tipos de Negocio. Este modelo formaliza las definiciones de los datos y las interfaces que el sistema expondrá, estableciendo una distinción clara entre los objetos de valor, los objetos de negocio con identidad y las interfaces encargadas de su gestión.
+
+Para mayor precisión semántica, se utilizan los siguientes estereotipos estándar de la metodología:
+
+* **<<core>>**: Representa los tipos de negocio principales que poseen identidad propia y ciclo de vida independiente. Estos tipos son gestionados directamente por un componente.
+* **<<type>>**: Representa tipos de datos o valores que no tienen identidad independiente y solo existen como atributos de un tipo núcleo.
+* **<<interface type>>**: Define el contrato abstracto de los objetos de negocio que son expuestos a otros componentes.
+
+=== Estructura de Gestión (Managers y Core Types)
+
+En lugar de exponer las relaciones de negocio como simples asociaciones directas, el diseño introduce **Interfaces de Gestión (Managers)**. Cada <<core>> type es administrado por una interfaz Manager específica, la cual encapsula la lógica de creación, búsqueda y mantenimiento (relación de composición).
+
+A continuación se describen las transformaciones clave aplicadas al modelo:
+
+1.  **Gestión de Reservaciones:**
+    El tipo `Reservacion` (<<core>>) no es accesible globalmente de forma directa, sino que es gestionado por la interfaz IReservacionManager. El Manager actúa como la raíz de composición, garantizando que toda operación sobre una reserva pase por las reglas de negocio del componente.
+
+2.  **Inventario y Catálogo:**
+    Los tipos Hotel y Habitacion (<<core>>) son administrados por IHotelManager e IInventarioManager respectivamente. La relación de composición indica que el ciclo de vida de una habitación está ligado a la gestión del inventario del hotel.
+
+3.  **Tipos de Valor:**
+    Elementos como Tarifa o Politica se modelan como <<type>>, indicando que son objetos de valor inmutables o dependientes que se transmiten a través de las interfaces de los Core Types.
+
+.Modelo de Tipos de Negocio (Con Estereotipos y Managers)
+image::../images/modeloTiposNegocio.png[Modelo de Tipos de Negocio, width=700, align=center]

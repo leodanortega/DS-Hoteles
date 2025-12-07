@@ -1,22 +1,36 @@
-
 == Vista de Proceso
 
-Esta vista describe cómo el sistema opera durante la ejecución, poniendo énfasis en la interacción dinámica entre los elementos de la Capa de Negocio. El objetivo principal es mostrar cómo estos componentes colaboran para cumplir con los atributos de calidad relacionados con el **Rendimiento** y la **Disponibilidad**. Debido a que se utiliza una arquitectura en capas, el modelo de ejecución adoptado corresponde al enfoque **Thread-per-Request**, donde cada solicitud del cliente es atendida mediante un hilo independiente.
+Esta vista describe cómo el sistema opera durante la ejecución, enfocándose en la interacción dinámica entre los componentes, el manejo de la concurrencia y la sincronización. El objetivo es demostrar cómo se satisfacen los atributos de **Rendimiento** (tiempos de respuesta) y **Disponibilidad** (tolerancia a fallos) bajo carga.
 
-En este esquema, cada petición avanza de manera ordenada a través de las capas de negocio y persistencia. Para reducir esperas innecesarias, se emplea un **Pool de Conexiones** hacia la base de datos, garantizando un uso eficiente de los recursos. En esta sección se describen los dos procesos más importantes del sistema: `solicitarReservacion` y `checkOut`, debido a su relevancia en las operaciones del hotel y a su impacto directo en la gestión económica del establecimiento.
+=== Modelo de Ejecución y Concurrencia
 
-=== Flujos críticos 
-*Solicitar Reservación*
+Dado que se utiliza una arquitectura de microservicios, el modelo de ejecución base es **Thread-per-Request** (un hilo por petición).
+* Cada solicitud HTTP entrante en el API Gateway o BFF asigna un hilo de procesamiento aislado.
+* Para evitar el agotamiento de recursos, se implementan **Pools de Conexiones** hacia las bases de datos y **Timeouts** estrictos (Circuit Breaker) en las llamadas entre servicios (ej. `SistemaReservaciones` -> `SistemaPagos`).
 
-Este flujo representa uno de los ejes centrales del sistema hotelero, ya que combina la verificación del inventario con la confirmación de un pago. Para preservar la exactitud del inventario y la coherencia del sistema, el proceso se ejecuta siguiendo lineamientos de **Consistencia Fuerte** y se mantiene dentro de una transacción con propiedades **ACID**.
+A continuación, se detallan los dos procesos de negocio más críticos por su impacto en la integridad de los datos y la experiencia del usuario.
 
-* *Secuencia y Coordinación:*  
-El diagrama correspondiente refleja una interacción totalmente **sincrónica**. El `SistemaReservacion` funge como coordinador de la operación y mantiene el control del hilo a medida que realiza cada verificación: primero consulta la disponibilidad mediante `getHabitacion`, después obtiene la información del huésped con `getHuesped`, y finalmente establece contacto con la pasarela de pagos.
+=== Flujo Crítico 1: Solicitar Reservación
 
-* *Integridad mediante Transacción ACID:*  
-El bloque marcado como *critical* representa la transacción que encapsula toda la operación. Desde el momento en que se recupera la habitación, se aplica un **bloqueo pesimista** para garantizar que no pueda ser reservada por otro usuario en paralelo. La transacción se confirma únicamente cuando la pasarela de pagos responde de forma exitosa y se actualiza la habitación a estado “Reservada” mediante `editarHabitacion`. Si ocurre algún fallo, se ejecuta un *rollback* que libera la habitación de inmediato.
+Este proceso es transaccional y requiere consistencia fuerte. El sistema debe asegurar que no se vendan habitaciones indisponibles (Overbooking no controlado) y que el pago se asegure antes de confirmar.
 
-* *Disponibilidad frente a servicios externos:*  
-Para evitar que el sistema quede esperando indefinidamente la respuesta del servicio de pagos, se establece un **timeout de 30 segundos** en `procesarPago`. Si este límite se supera, la operación se cancela, la transacción se reversa y los recursos de servidor se liberan, evitando que otros usuarios experimenten degradación del rendimiento.
+* **Sincronización:** El flujo es orquestado de manera síncrona por el `SistemaReservaciones`.
+* **Gestión de Concurrencia:** Se utiliza **Bloqueo Pesimista** (o serialización de transacciones) en el registro de la habitación durante la ventana de pago para evitar condiciones de carrera.
+* **Manejo de Fallos:** Si el `SistemaPagos` no responde en 30 segundos, la transacción se aborta (Rollback) y la habitación se libera inmediatamente.
 
-image:../images/Secuencia/solicitarReservacion.png[Diagrama de Secuencia mostrando la transacción]
+.Diagrama de Secuencia: Solicitar Reservación
+image::../images/Secuencia/solicitarReservacion.png[Diagrama de Secuencia Reservación, width=800, align=center]
+
+=== Flujo Crítico 2: Registrar Check-Out
+
+El cierre de la estancia es crítico para la rotación del inventario. Involucra la conciliación financiera y la actualización del estado físico de la habitación para limpieza.
+
+* **Secuencia Lógica:**
+    1.  Cálculo final de consumos (Minibar, Servicios).
+    2.  Cobro mandatorio del saldo pendiente.
+    3.  Liberación de la habitación (Marcado como "SUCIA").
+* **Integridad:** El sistema impide el Check-out si el `SistemaPagos` rechaza la transacción, evitando que el huésped se vaya con deuda (Deuda Técnica vs Deuda Financiera).
+* **Actualización de Inventario:** A diferencia de la reserva, la actualización al `SistemaInventario` es el paso final y no requiere bloqueo complejo, ya que la habitación estaba ocupada por el mismo usuario.
+
+.Diagrama de Secuencia: Registrar Check-Out
+image::../images/Secuencia/registrarCheckOut.png[Diagrama de Secuencia Check-Out, width=800, align=center]
