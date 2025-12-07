@@ -1,0 +1,53 @@
+== Conclusiones y Análisis de Riesgos
+
+=== Conclusiones de la Arquitectura
+
+El diseño arquitectónico propuesto para el Sistema de Gestión Hotelero (SGH) representa una transformación fundamental desde un modelo operativo fragmentado hacia una plataforma centralizada de clase mundial. A través de la aplicación rigurosa del método ADD (Attribute-Driven Design) y la especificación CBSE, se ha logrado una solución que equilibra la alta demanda transaccional con la necesidad de una experiencia de usuario fluida.
+
+Los logros arquitectónicos clave incluyen:
+
+1.  **Escalabilidad Diferenciada:** La adopción de **Microservicios** permite que el subsistema de "Búsqueda e Inventario" (lectura intensiva) escale independientemente del subsistema de "Pagos" o "Administración", optimizando costos operativos en la nube.
+2.  **Experiencia de Usuario Optimizada:** La implementación del patrón **Backend for Frontend (BFF)** asegura que tanto el huésped (Móvil/Web) como el recepcionista (Desktop) reciban exactamente los datos que necesitan, sin sobrecarga de red, cumpliendo con el driver de Usabilidad (CRN-10).
+3.  **Integridad Financiera:** La segregación del **Sistema de Pagos** como un componente aislado y seguro, junto con el uso de transacciones distribuidas (Sagas), garantiza la consistencia de los datos financieros sin acoplarse rígidamente al núcleo de reservas.
+4.  **Resiliencia Operativa:** La estrategia de **comunicación asíncrona** para procesos no bloqueantes (notificaciones, reportes) asegura que el sistema permanezca responsivo incluso si los servicios satélites fallan.
+
+=== Análisis de Riesgos Residuales
+
+A pesar de la robustez del diseño, toda arquitectura conlleva riesgos inherentes. A continuación, se detallan los riesgos residuales identificados y las estrategias de mitigación recomendadas para la fase de implementación.
+
+[width="100%", cols="1,2,2,1", options="header"]
+|===
+|ID |Riesgo |Estrategia de Mitigación |Impacto
+
+|**RSK-01**
+|**Complejidad en Transacciones Distribuidas** +
+El uso de Sagas y microservicios aumenta la complejidad para mantener la consistencia de datos en caso de fallos en cascada (ej. Pago exitoso pero fallo al actualizar inventario).
+|**Mitigación:** Implementar un orquestador de Sagas robusto (ej. MassTransit o NServiceBus) con lógica de compensación (Rollback) automatizada y pruebas exhaustivas de escenarios de fallo (Chaos Engineering).
+|Alto
+
+|**RSK-02**
+|**Latencia de Red en BFF** +
+La orquestación de múltiples microservicios por parte del BFF puede introducir latencia acumulativa, poniendo en riesgo el ASR de respuesta < 1.5s (QAS-02).
+|**Mitigación:** Uso agresivo de caché distribuida (Redis) en la capa de lectura de Inventario y paralelización de llamadas a microservicios donde sea posible. Implementación de CDN para contenido estático.
+|Medio
+
+|**RSK-03**
+|**Curva de Aprendizaje del Equipo** +
+El salto tecnológico de sistemas legados a una arquitectura de microservicios, React y Event-Driven puede saturar al equipo de desarrollo interno (Restricción CON-10).
+|**Mitigación:** Invertir en capacitación temprana y establecer una arquitectura de referencia ("Walking Skeleton") antes del desarrollo masivo. Contratación de consultoría especializada para el setup inicial de DevOps.
+|Medio
+
+|**RSK-04**
+|**Consistencia Eventual en Reportes** +
+Dado que los reportes se alimentan de eventos asíncronos, existe un leve retraso entre la operación real y su aparición en los dashboards administrativos.
+|**Mitigación:** Educar a los stakeholders sobre la naturaleza "casi real-time" de los reportes operativos o implementar vistas materializadas síncronas solo para KPIs críticos financieros.
+|Bajo
+|===
+
+=== Próximos Pasos
+
+Para garantizar el éxito en la fase de construcción, se recomienda:
+
+1.  **Prueba de Concepto (PoC):** Implementar el "Flujo Crítico 1" (Búsqueda -> Reserva -> Pago) para validar la latencia real de la comunicación entre microservicios.
+2.  **Definición de Infraestructura:** Seleccionar y configurar el proveedor de nube (AWS/Azure) y el orquestador de contenedores (Kubernetes) para soportar el escalado elástico definido.
+3.  **Estrategia de Observabilidad:** Implementar desde el día 1 un sistema de Tracing Distribuido (OpenTelemetry) para no perder visibilidad sobre las transacciones que atraviesan múltiples servicios.

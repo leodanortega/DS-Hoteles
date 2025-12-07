@@ -46,4 +46,6 @@ include::views/deployment.adoc[]
 include::views/transversal.adoc[]
 include::traceability.adoc[]
 
+include::conclusions.adoc[]
+
 include::glosary.adoc[]

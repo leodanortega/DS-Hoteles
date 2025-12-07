@@ -201,3 +201,17 @@
 |Carlos Castillo
 |Refactorización en la vista de implementación y modelo de tipos de negocio
 |===
+
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.1.5
+|7/12/2025
+|Carlos Castillo
+|Se agregaron conclusiones y riesgos al documento, así como la actualización del índice para una mejor lectura
+|===
