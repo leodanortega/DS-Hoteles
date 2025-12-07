@@ -1,4 +1,3 @@
-
 :doctype: book
 :toc: macro
 :toc-title: Contenido
@@ -29,16 +28,22 @@ include::contextreach.adoc[]
 include::stakeholders.adoc[]
 include::problem.adoc[]
 include::views/context.adoc[] 
+
 include::usecases.adoc[]
 include::asrs.adoc[]
 include::priorization.adoc[]
+
 include::designMethod.adoc[]
+
 include::views/logic.adoc[]
 include::views/implementation.adoc[]
+include::views/deploymentView/components.adoc[] 
 
 include::views/process.adoc[]
+
 include::views/deployment.adoc[]
 
-include::views/deploymentView/components.adoc[]
 include::views/transversal.adoc[]
 include::traceability.adoc[]
+
+include::glosary.adoc[]

@@ -1,184 +1,138 @@
-== Método de Diseño Arquitectónico
+=== Método de diseño
 
-A continuación se describe el proceso racional, iterativo e incremental seguido para derivar la arquitectura del Sistema de Gestión Hotelera (SGH) a partir de sus impulsores. Este enfoque garantiza que cada decisión de diseño esté directamente justificada por su contribución a los objetivos de negocio y a los atributos de calidad.
 
-=== ADD y CBSE
+El diseño arquitectónico del Sistema Hotelero se desarrolló siguiendo el método Attribute-Driven Design (ADD) complementado con el enfoque Component-Based Software Engineering (CBSE) descrito por Cheesman & Daniels.
+Este método garantiza que la arquitectura resultante no sea producto de decisiones arbitrarias, sino una respuesta racional, trazable y justificada a los impulsores arquitectónicos identificados (drivers), entre los cuales se incluyen los atributos de calidad priorizados —usabilidad, disponibilidad, seguridad y rendimiento—, además de las restricciones y preocupaciones del proyecto.
+El propósito del método fue traducir los escenarios de calidad y casos de uso en una estructura arquitectónica modular, capaz de sostener las operaciones críticas del sistema, asegurar la mantenibilidad y facilitar la validación futura del diseño mediante vistas y diagramas coherentes.
 
-Para la creación de la arquitectura del SGH, se adoptó un proceso híbrido que combina la guía estratégica del método Attribute-Driven Design (ADD) con las prácticas de especificación del Component-Based Software Engineering (CBSE), siguiendo el enfoque de Cheesman & Daniels.
+==== Enfoque general del proceso ADD
 
-El método ADD se utilizó como el marco principal para la toma de decisiones. Este enfoque asegura que la arquitectura sea moldeada por sus impulsores más críticos: los atributos de calidad (refinados a partir de las preocupaciones), las restricciones y los requisitos funcionales. El proceso de ADD nos obliga a justificar cada decisión importante en función de cómo ayuda a satisfacer uno o más de estos impulsores, evitando así un diseño arbitrario. Partimos de los impulsores de más alta prioridad para realizar una descomposición inicial del sistema, eligiendo patrones y tácticas arquitectónicas que los satisfagan.
+El proceso ADD se basa en construir la arquitectura a partir de los atributos de calidad y no exclusivamente de las funcionalidades.
+El diseño se desarrolla en iteraciones donde cada ciclo busca satisfacer un conjunto de drivers arquitectónicos priorizados, refinando el modelo con nuevas decisiones estructurales o tácticas.
+El procedimiento aplicado constó de las siguientes fases:
 
-Una vez que ADD nos proporciona una descomposición de alto nivel, utilizamos el proceso de especificación de CBSE para refinar y detallar los componentes identificados:
+*Identificación de drivers arquitectónicos:*
+Se elaboró un backlog que incluía los Casos de Uso, los escenarios de atributos de calidad (QAS) y las restricciones técnicas.
+Los atributos priorizados fueron:
 
-Identificación: A partir de los casos de uso y el modelo de dominio del negocio (Hoteles, Habitaciones, Reservaciones, Huéspedes), identificamos los componentes de negocio candidatos que encapsulan la lógica y los datos relacionados.
+- *Usabilidad*: facilidad de uso, simplicidad de interfaz y eficiencia operativa.
+- *Disponibilidad*: tolerancia a fallos y continuidad del servicio.
+- *Seguridad*: autenticación, integridad de pagos y trazabilidad.
+- *Rendimiento*: latencia reducida y optimización de consultas.
 
-Interacción: Modelamos cómo estos componentes interactúan para realizar las operaciones del sistema (ej. ReservarHabitación). Esto nos permite refinar sus responsabilidades y definir las interfaces preliminares que necesitarán para colaborar.
+*Selección de los drivers para la iteración inicial:*
+En la primera iteración se atendieron los drivers usabilidad y disponibilidad, enfocados en la interacción con el usuario y la robustez operativa.
+Después, se atendieron los drivers de seguridad y rendimiento, para garantizar la operación confiable del sistema.
 
-Este ciclo de descomposición (ADD) y especificación (CBSE) se repite en cada iteración, permitiendo un diseño incremental y refinado.
+*Descomposición del sistema en elementos lógicos:*
+Se definió la arquitectura cliente-servidor en capas, separando responsabilidades de presentación, lógica de negocio y persistencia.
+Este estilo fue elegido por su alineación con los QAS y por ofrecer un marco modular y escalable.
 
-=== Priorización de Atributos y Backlog
+*Asignación de responsabilidades a componentes:*
+Cada caso de uso fue analizado para identificar las operaciones de sistema requeridas, las clases participantes y las interfaces involucradas.
+Las responsabilidades fueron distribuidas jerárquicamente desde las interfaces de usuario hasta las entidades de datos.
 
-Para guiar las decisiones arquitectónicas, primero definimos cuáles atributos de calidad son los más críticos. Utilizamos una matriz de priorización donde comparamos los atributos entre sí.
+*Evaluación de suficiencia (“suficiente”):*
+Cada iteración se cerró cuando las decisiones arquitectónicas satisfacían adecuadamente los escenarios de calidad sin introducir complejidad innecesaria.
+Esto permitió mantener un equilibrio entre funcionalidad y mantenibilidad.
 
-.Matriz de priorización de atributos
-image::../images/priorizacionAtributos.png[Priorización de atributos, width=600, align=center]
 
-El resultado indica que la **Seguridad** es el atributo dominante, seguido de la **Disponibilidad**. Esto se justifica dado que manejamos datos sensibles de tarjetas de crédito y operamos en tiempo real.
+==== Iteraciones del proceso ADD
 
-==== Backlog de Impulsores Arquitectónicos (Drivers)
+===== Iteración 1: Usabilidad
 
-A partir de la priorización, formalizamos el backlog de impulsores que moldearán la arquitectura:
+*Drivers atendidos:*
 
-* **Seguridad (Confidencialidad - CRN-01):** Proteger los datos de pago y personales. Una brecha aquí es fatal para la reputación y legalidad del negocio.
-* **Disponibilidad (Resiliencia - CRN-02):** El sistema debe tolerar fallos en servicios externos (como la pasarela de pagos) y picos de demanda sin caerse.
-* **Consistencia de Datos (Integridad - CRN-03):** Evitar estrictamente el *overbooking*. El inventario debe ser consistente entre consultas y reservas.
-* **Rendimiento (Tiempo de Respuesta - CRN-04):** Respuestas en < 2 segundos para búsquedas. Vital para la retención del cliente en el portal web.
-* **Usabilidad (Eficiencia - CRN-10):** Minimizar la curva de aprendizaje para los recepcionistas (alta rotación de personal) y facilitar la reserva al huésped.
-* **Escalabilidad (CRN-05):** Soportar el crecimiento horizontal de la cadena hotelera sin rediseñar el sistema.
+QAS de usabilidad (simplicidad de interfaz, eficiencia operativa).
+Concern de capacitación mínima del usuario.
 
-=== Diseño por iteraciones
+*Decisiones tomadas:*
 
-El diseño se ejecutó en dos iteraciones principales, cada una con un objetivo claro y enfocada en un conjunto de impulsores priorizados.
+Se aplicó el patrón MVC (Model-View-Controller) en el cliente, dividiendo la presentación (UI), el control (Controller) y la comunicación (ClientService).
+Las interfaces gráficas se diseñarían con flujos directos y mensajes claros, reduciendo la carga cognitiva del usuario.
+Se crearían controladores especializados por caso de uso (ReservaController, PagoController, etc.), facilitando así la localización y mantenimiento del código.
 
-==== Iteración 1: Núcleo Transaccional y de Disponibilidad
+*Resultado:*
+La arquitectura resultante mejora la experiencia del usuario final, permitiendo que el cliente, el personal de recepción y administración operen el sistema con una curva de aprendizaje mínima.
+La separación entre vista y lógica también incrementó la mantenibilidad y la capacidad de evolución del software.
 
-El objetivo primordial de esta primera iteración fue diseñar el esqueleto arquitectónico del sistema, enfocado en los flujos de negocio más críticos y los atributos de calidad más desafiantes: la consulta de disponibilidad y la creación de una reserva. La meta era asegurar que el núcleo del sistema fuera robusto, seguro, escalable y consistente desde su concepción.
+===== Iteración 2: Disponibilidad y confiabilidad
 
-La alta prioridad de impulsores como la Consistencia del Inventario (CRN-03), la Alta Disponibilidad (CRN-02) y el Rendimiento Bajo Carga (CRN-04) nos llevó a tomar la decisión fundamental de adoptar un estilo arquitectónico de microservicios. Esta decisión, aunque introduce complejidad, es una táctica que nos permite abordar múltiples preocupaciones simultáneamente: permite que los componentes escalen de forma independiente (CRN-05), que un fallo en un servicio no afecte a todo el sistema (CRN-02) y fomenta la mantenibilidad a largo plazo (CRN-07).
+*Drivers atendidos:*
 
-Para la consistencia del inventario (CRN-03), se decidió utilizar una combinación de tácticas. Se optó por un bloqueo optimista en la base de datos del servicio de inventario. Cuando un usuario inicia una reserva, el sistema verifica la versión del registro de la habitación; si al momento de confirmar la reserva la versión ha cambiado, significa que otro proceso la modificó, la transacción falla y se le notifica al usuario. Para transacciones que abarcan múltiples servicios (reserva, pago, notificación), se adoptará el patrón Saga para gestionar la consistencia distribuida y asegurar que una reserva fallida pueda ser revertida limpiamente en todos los sistemas implicados.
+QAS de disponibilidad (continuidad del servicio, recuperación ante fallos).
+QAS de confiabilidad (consistencia de datos, precisión de resultados).
 
-Para garantizar la disponibilidad (CRN-02) y el rendimiento (CRN-04), se diseñó el despliegue con redundancia de componentes, con múltiples instancias de cada microservicio corriendo detrás de un balanceador de carga. Además, se introdujo una capa de caché distribuida (táctica de rendimiento) para las consultas de disponibilidad, reduciendo la carga sobre la base de datos principal y mejorando drásticamente los tiempos de respuesta para las búsquedas comunes.
+*Decisiones tomadas:*
 
-Finalmente, para la seguridad (CRN-01) y la gestión centralizada de las interacciones, se adoptó el patrón API Gateway. Este componente actúa como el único punto de entrada para todas las solicitudes del cliente, encargándose de la autenticación (CON-05), la autorización, el enrutamiento a los servicios internos y la aplicación de políticas de limitación de tasa (rate limiting) para prevenir abusos.
+Se establecería un manejo controlado de excepciones en todas las capas, permitiendo la recuperación ante errores sin comprometer la integridad de los datos.
+Los Managers se consolidaron como capa de negocio, controlando la secuencia de operaciones y validarían los estados de las entidades antes de realizar transacciones.
+Se implementó el patrón Service Layer, donde los servicios (*ServiceImp) encapsulan los flujos de negocio expuestos al cliente.
 
-==== Cierre de la Iteración 1
-[cols="1,3", options="header"]
-|===
-|Elemento |Descripción
+*Resultado:*
+La arquitectura asegura una disponibilidad estable mediante la separación de responsabilidades y una capa de control bien definida.
+La confiabilidad del sistema se ve reforzada por la validación de datos y la trazabilidad de las operaciones críticas.
 
-|Drivers Atendidos
-|
+===== Iteración 3: Seguridad y rendimiento
 
-Primarios: CRN-01 (Seguridad), CRN-02 (Disponibilidad), CRN-03 (Consistencia), CRN-04 (Rendimiento).
+*Drivers atendidos:*
 
-Secundarios: CRN-06 (Auditabilidad - sentando las bases), CON-01 (Stack Tecnológico), CON-02 (Nube), CON-03 (Pasarela de Pagos), CON-05 (Autenticación).
+QAS de seguridad (autenticación, trazabilidad, integridad de pagos).
+QAS de rendimiento (latencia y eficiencia de consultas).
 
-|Decisiones Registradas
-|
+*Decisiones tomadas:*
 
-Adopción del estilo arquitectónico de Microservicios como macro-patrón.
+Se estableció el patrón cliente-servidor distribuido, separando la lógica de negocio de la interfaz gráfica.
+Se definieron los servicios remotos (interfaces) (ILoginService, IReservaService, etc.) y sus implementaciones en el servidor, reduciendo la exposición de datos y mejorando el control de acceso.
+Se diseñaría la clase ConexionDB bajo el patrón Singleton, asegurando una única conexión activa y mejorando así la eficiencia en la gestión de recursos.
+Se adoptó el patrón DAO (Data Access Object) para encapsular la lógica de persistencia, minimizando el acoplamiento entre la lógica de negocio y la base de datos.
 
-Implementación de un API Gateway para centralizar la seguridad y el enrutamiento.
+*Resultado:*
+El sistema alcanzó un nivel de seguridad controlada mediante autenticación y una capa de datos aislada, junto con rendimiento optimizado por la reutilización de conexiones y consultas específicas.
 
-Uso de bloqueo optimista para la gestión de concurrencia en el inventario.
+===== Iteración 4: Integración de reportes y trazabilidad
 
-Adopción del patrón Saga para transacciones distribuidas.
+*Drivers atendidos:*
 
-Diseño de despliegue con redundancia de componentes y balanceo de carga.
+QAS de seguridad (trazabilidad de operaciones, integridad de registros).
+QAS de disponibilidad (acceso consolidado a información histórica).
 
-Introducción de una caché distribuida para optimizar las consultas de disponibilidad.
-|===
+*Decisiones tomadas:*
 
+Se agregó la clase ReporteManager con dependencias hacia ReservaDAO, PagoDAO y HabitacionDAO, integrando información de distintas fuentes.
+Se definió el servicio IReporteService y su implementación (ReporteServiceImp) para permitir la generación remota de reportes por parte del administrador o auditor.
+Se garantizó que los reportes se basaran en datos consistentes y verificables, fortaleciendo la integridad del sistema.
 
-==== Iteración 2: Experiencia de Usuario y Operaciones del Hotel
+*Resultado:*
+El sistema logra visibilidad total sobre su operación, habilitando auditorías y revisiones de desempeño sin afectar la disponibilidad ni el rendimiento del sistema principal.
 
-Con el núcleo transaccional definido, la segunda iteración se centró en la Experiencia de Usuario (CRN-10) y la Mantenibilidad (CRN-07) de las aplicaciones cliente y los servicios de soporte operativo.
+==== Enfoque CBSE (Cheesman & Daniels)
 
-El impulsor de ofrecer una experiencia de usuario fluida (CRN-10) y la restricción de usar React (CON-01) nos llevaron a diseñar el portal de huéspedes como una Single-Page Application (SPA). Esta táctica mejora la percepción del rendimiento al evitar recargas completas de la página, comunicándose con el backend a través de llamadas asíncronas.
+El método Component-Based Software Engineering (CBSE) se aplicó en paralelo al ADD para formalizar la especificación de componentes e interfaces.
+El proceso siguió tres fases:
 
-Al analizar los flujos de trabajo del personal de recepción y de los administradores, se hizo evidente que sus necesidades de datos y funcionalidades eran muy diferentes a las de un huésped. Para evitar la creación de una API monolítica y compleja, y para fomentar la mantenibilidad (CRN-07), se adoptó el patrón Backend for Frontend (BFF). Se diseñaron tres APIs distintas: una para el frontend de huéspedes, una para el sistema de recepción y otra para el panel de administración. Cada BFF es responsable de agregar y adaptar los datos de los microservicios del backend para servir eficientemente a su cliente específico.
+*Identificación:*
+A partir de los casos de uso y del modelo de conceptos de negocio, se identificaron los componentes principales del dominio: Reserva, Habitación, Pago, Usuario y Reporte.
+Cada uno fue representado como un componente lógico con responsabilidades bien definidas.
 
-Finalmente, para la gestión de notificaciones (confirmaciones de reserva, cancelaciones, etc.), y para mejorar la escalabilidad (CRN-05) y la resiliencia (CRN-02), se decidió desacoplar este proceso. Se introdujo un broker de mensajes (táctica de comunicación asíncrona). Cuando ocurre un evento como "reserva_confirmada", el servicio de reservas publica un mensaje en una cola. Un servicio de notificaciones, separado e independiente, consume este mensaje y se encarga de enviar el correo o la notificación push. Si el servicio de notificaciones falla, los mensajes permanecen en la cola y pueden ser procesados más tarde, sin afectar el flujo de reserva principal.
+*Interacción:*
+Se desarrollaron diagramas del sistema para refinar cómo los componentes colaboran entre sí.
+Por ejemplo, la operación “Registrar Reserva” implica la interacción entre ReservaServiceImp, ReservaManager, ReservaDAO y HabitacionDAO.
+Este análisis permitió definir las interfaces provistas y requeridas entre componentes.
 
-==== Cierre de la Iteración 2
-[cols="1,3", options="header"]
-|===
-|Elemento |Descripción
+*Especificación:*
+Las interfaces IReservaService, IPagoService, etc., representan las interfaces provistas del sistema, mientras que los DAO y Managers actúan como componentes requeridos dentro de la especificación.
 
-|Drivers Atendidos
-|
+El resultado del CBSE fue una arquitectura orientada a componentes reutilizables y sustituibles, con fronteras bien definidas y bajo acoplamiento entre capas.
 
-Primarios: CRN-10 (Experiencia de Usuario), CRN-07 (Mantenibilidad).
+==== Cierre del proceso
 
-Secundarios: CRN-05 (Escalabilidad), CRN-08 (Observabilidad - al desacoplar flujos), CRN-12 (Interoperabilidad - mediante APIs bien definidas).
+El método ADD garantizó que cada iteración atendiera drivers específicos, mientras que CBSE proporcionó la estructura técnica para documentar las decisiones tomadas y formalizar las interfaces entre componentes.
+Los criterios de “suficiencia” se aplicaron cuando los escenarios de atributos de calidad fueron satisfechos sin comprometer simplicidad o mantenibilidad.
+En conjunto, ambos métodos produjeron una arquitectura robusta, trazable y alineada con los impulsores arquitectónicos, permitiendo que cada vista del documento se derive lógicamente del proceso de diseño y no de decisiones improvisadas.
 
-|Decisiones Registradas
-|
+=== Decisiones Arquitectónicas Significativas (ADR)
 
-Diseño del portal de huéspedes como una Single-Page Application (SPA).
+A continuación se resumen las decisiones clave que han dado forma a la arquitectura del sistema, extraídas y consolidadas a partir del proceso de diseño.
 
-Adopción del patrón Backend for Frontend (BFF) para crear APIs especializadas.
-
-Uso de un broker de mensajes para la comunicación asíncrona y el desacoplamiento de notificaciones.
-
-Separación de las aplicaciones frontend en al menos tres bases de código distintas: Huésped, Recepción y Administración.
-|===
-
-==== Iteración 3: Especificación de Interfaces y Flujos Guiados
-
-Objetivo de la iteración: Definir los contratos exactos de comunicación entre los BFFs y los clientes, y refinar la usabilidad para tareas complejas del personal, cerrando la brecha entre la arquitectura y la implementación.
-
-Drivers Atendidos: #5 (Usabilidad) y #6 (Interoperabilidad/Mantenibilidad).
-
-Decisiones de Diseño (Tácticas y Patrones):
-
-Diseño de Contratos Primero (API First): Antes de codificar, se definen las interfaces usando la especificación OpenAPI. Esto permite que los equipos de Frontend y Backend trabajen en paralelo.
-Flujos Guiados: Para el driver de Usabilidad del recepcionista (QAS05), se decidió implementar patrones de "Mago" en la interfaz. En lugar de un formulario gigante para el Check-In, el sistema divide el proceso en pasos pequeños y validados secuencialmente.
-Validación en Cliente y Servidor: Se especifica que las reglas de negocio críticas se validen en el frontend para feedback inmediato, pero se re-validen obligatoriamente en el backend por seguridad.
-
-Criterios de "Suficiente":
-La iteración concluye cuando los diagramas de secuencia de las operaciones críticas (Check-in, Pago) coinciden con los contratos OpenAPI definidos y los prototipos de UI son aprobados.
-
-==== Cierre de la Iteración 3
-
-[cols="1,3", options="header"]
-|===
-|Elemento |Descripción
-
-|Drivers Atendidos
-|Primarios: CRN-10 (Usabilidad). Secundarios: CRN-07 (Mantenibilidad).
-
-|Decisiones Registradas
-|
-Uso de OpenAPI para contratos estrictos entre BFF y Clientes.
-Implementación de Flujos Guiados para procesos operativos complejos.
-Estrategia de doble validación para UX y Seguridad.
-|===
-
-== Especificacion
-
-Esta sección detalla los componentes lógicos que resultaron del proceso de diseño por iteraciones.
-
-=== Identificación de Core Types
-
-image::IdentificacionDeCores.jpg[Identificación de core types, width=600, align=center]
-
-=== Especificación inicial de interfaces de negocio
-
-image::DiagramaInterfaces.jpg[Identificación inicial de interfaces, width=60, align=center]
-
-=== Justificación de la Descomposición del Sistema
-
-La arquitectura resultante se basa en la descomposición del dominio en sistemas autónomos (Microservicios de grano grueso), cada uno con una responsabilidad clara y delimitada. Esta estructura modular permite que cada sistema evolucione, escale y se despliegue de forma independiente, cumpliendo directamente con los atributos de **Escalabilidad** y **Mantenibilidad** definidos en el backlog.
-
-1.  **SistemaCadenaHotel**
-    * Propósito: Gestión corporativa y estratégica.
-    * Responsabilidad: Centraliza la configuración global de la cadena (nuevos hoteles, políticas generales). Es el punto de control para el `AdministradorDeLaCadena`. No participa en la operación día a día de un hotel específico.
-
-2.  **SistemaHotel**
-    * Propósito: Gestión operativa local.
-    * Responsabilidad: Administra el inventario físico (habitaciones), servicios, productos y empleados de una sede específica. Es la fuente de verdad sobre "qué tiene el hotel".
-
-3.  **SistemaHuesped**
-    * Propósito: Gestión de identidad y perfiles (CRM).
-    * Responsabilidad: Almacena y protege los datos personales y preferencias de los clientes. Centraliza la autenticación y el historial del cliente para ofrecer una experiencia personalizada.
-
-4.  **SistemaReservacionEstancia**
-    * Propósito: Núcleo transaccional del negocio.
-    * Responsabilidad: Orquesta el ciclo de vida principal: Reservar -> Check-In -> Estancia -> Check-Out.
-    * Complejidad: Es el sistema que más interactúa con los demás, validando disponibilidad con `SistemaHotel` y datos con `SistemaHuesped`. Garantiza la integridad de las fechas y evita el overbooking.
-
-5.  **SistemaPagos (PasarelaPagos)**
-    * Propósito: Gestión financiera segura.
-    * Responsabilidad: Encapsula la complejidad de comunicarse con proveedores externos (bancos/Stripe/PayPal). Provee una interfaz unificada para realizar cargos y reembolsos, aislando al resto del sistema de los detalles de cumplimiento PCI-DSS.
+include::adrs.adoc[]

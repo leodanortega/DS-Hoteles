@@ -1,0 +1,55 @@
+= Registros de Decisión de Arquitectura (ADR)
+
+[cols="1,2,2,3,1", options="header"]
+|===
+| ID | Título (Decisión) | Alternativas Consideradas | Justificación y Drivers Asociados | Estado
+
+| **ADR-01**
+| **Estilo de Microservicios**
+| Monolito Modular, SOA
+| Se requiere escalar servicios críticos (Búsqueda) independientemente de otros (Pagos). Aumenta la tolerancia a fallos parciales. +
+**Drivers:** CRN-05 (Escalabilidad), CRN-02 (Disponibilidad).
+| **Aceptado**
+
+| **ADR-02**
+| **Base de Datos Relacional (PostgreSQL)**
+| NoSQL (MongoDB, Cassandra)
+| Se requiere integridad referencial estricta y transacciones ACID robustas para el manejo financiero y de inventario. Cumple con el stack tecnológico definido. +
+**Drivers:** CRN-03 (Consistencia), CON-01 (Stack).
+| **Aceptado**
+
+| **ADR-03**
+| **Bloqueo Optimista para Inventario**
+| Bloqueo Pesimista
+| Maximiza el rendimiento bajo alta concurrencia de lectura (búsquedas). Evita retener conexiones de BD durante el tiempo de "pensamiento" del usuario. +
+**Drivers:** CRN-03 (Consistencia), QAS-02 (Rendimiento).
+| **Aceptado**
+
+| **ADR-04**
+| **Backend for Frontend (BFF)**
+| API REST Genérica (One-size-fits-all)
+| Distintos clientes (Web Huésped vs. Desktop Recepción) requieren datos y formatos muy diferentes. El BFF optimiza la carga de datos para cada UX. +
+**Drivers:** CRN-10 (UX), CRN-07 (Mantenibilidad).
+| **Aceptado**
+
+| **ADR-05**
+| **Frontend SPA (Single Page Application)**
+| Server-Side Rendering (JSP/Thymeleaf)
+| Necesario para una experiencia de usuario fluida sin recargas de página, desacoplando el frontend del backend para desarrollo paralelo. +
+**Drivers:** CRN-10 (UX), CON-01 (React).
+| **Aceptado**
+
+| **ADR-06**
+| **Comunicación Asíncrona para Notificaciones**
+| Llamada Síncrona (REST directo)
+| El envío de correos es lento y propenso a fallos. Desacoplarlo evita que un error en el servidor de correo bloquee la confirmación de la reserva. +
+**Drivers:** CRN-02 (Resiliencia), CRN-04 (Rendimiento).
+| **Aceptado**
+
+| **ADR-07**
+| **API Gateway como Punto de Entrada**
+| Exposición directa de Microservicios
+| Centraliza preocupaciones transversales como autenticación, SSL, y rate limiting, reduciendo la complejidad de cada microservicio. +
+**Drivers:** CRN-01 (Seguridad), CON-05 (Autenticación).
+| **Aceptado**
+|===
