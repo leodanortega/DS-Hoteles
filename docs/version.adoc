@@ -243,3 +243,17 @@
 |Carlos Castillo
 |Se corrigió el Utility Tree agregando atributos de calidad claves
 |===
+
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.1.8
+|16/12/2025
+|Carlos Castillo
+|Se actualizó el diagrama de paquetes reflejando el enfoque de microservicios adecuadamente
+|===

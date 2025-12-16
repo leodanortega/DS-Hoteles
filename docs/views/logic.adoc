@@ -59,6 +59,43 @@ La Capa de Acceso (específicamente los BFFs) depende de los servicios en la Cap
 
 Los servicios de la Capa de Negocio son en su mayoría independientes entre sí, comunicándose de forma asíncrona a través de la Infraestructura para mantener la cohesión y minimizar el acoplamiento.
 
+==== Convención de Estereotipos UML de Capas Arquitectónicas
+
+UML no define estereotipos estándar para representar capas arquitectónicas ni estilos arquitectónicos específicos como microservicios, capas lógicas o arquitecturas hexagonales. Sin embargo, el lenguaje proporciona el mecanismo de estereotipos para extender su semántica y adaptar los modelos a dominios específicos.
+
+Siguiendo las recomendaciones de la literatura de arquitectura de software —principalmente Pattern-Oriented Software Architecture (POSA) y Software Architecture in Practice—, este diseño adopta un conjunto de estereotipos personalizados para mejorar la expresividad del modelo y comunicar claramente las responsabilidades de cada capa lógica del sistema.
+
+Estos estereotipos no representan decisiones de despliegue físico ni dependencias tecnológicas concretas, sino roles arquitectónicos y responsabilidades lógicas dentro de la Vista Lógica.
+
+==== Estereotipos Adoptados
+
+[cols="1,3", options="header"]
+|===
+| Estereotipo | Significado Arquitectónico
+
+| presentation
+| Representa la capa de presentación, responsable de la interacción directa con el usuario final. Incluye interfaces gráficas y clientes que consumen APIs, sin contener lógica de negocio ni reglas de dominio. Este estereotipo está alineado con el concepto de Presentation Layer descrito en POSA y con la User Interface Layer en Software Architecture in Practice.
+
+| application
+| Representa la capa de aplicación, encargada de coordinar y orquestar los casos de uso del sistema. Esta capa no implementa reglas de negocio centrales, sino que actúa como intermediaria entre la presentación y el dominio. En este sistema, encapsula componentes como el API Gateway y los Backends for Frontend (BFF), siguiendo los patrones Application Layer (SAIP) y Gateway (POSA).
+
+| domain
+| Representa la capa de dominio o negocio, donde residen las reglas de negocio, invariantes y políticas fundamentales del sistema. Esta capa constituye el núcleo del sistema y está alineada con los principios de Domain-Driven Design, así como con la Domain Layer descrita en POSA. Cada sub-paquete dentro de esta capa corresponde a un microservicio que representa un Bounded Context independiente.
+
+| infrastructure
+| Representa la capa de infraestructura, que provee servicios técnicos transversales como mensajería, autenticación, persistencia y observabilidad. Esta capa no contiene lógica de negocio y su función es soportar técnicamente a la capa de dominio. El estereotipo está alineado con la Infrastructure Layer descrita en DDD y con los Technical Services en POSA.
+|===
+
+==== Uso de Estereotipos en la Vista Lógica
+
+Los estereotipos definidos se aplican a los paquetes principales del diagrama de la Vista Lógica con el objetivo de:
+
+* Clarificar las responsabilidades arquitectónicas de cada capa.
+* Facilitar la comprensión del diseño por parte de audiencias técnicas y no técnicas.
+* Mantener coherencia entre el modelo UML, las decisiones arquitectónicas documentadas (ADR) y el proceso ADD seguido.
+
+La aplicación de estos estereotipos refuerza la trazabilidad entre los impulsores arquitectónicos identificados (escalabilidad, mantenibilidad y disponibilidad) y la estructura modular resultante del sistema, sin introducir dependencias innecesarias ni comprometer la flexibilidad del diseño.
+
 .Diagrama de Paquetes
 image::../images/packageDiagram.jpg[Package Diagram, width=600, align=center]
 
