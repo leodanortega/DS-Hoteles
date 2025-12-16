@@ -22,6 +22,11 @@ Grado en el que un sistema, producto o servicio puede ser usado por usuarios esp
 
 == Utility tree
 
+Para la priorización de los escenarios se utiliza una escala cualitativa basada en dos dimensiones: **(Importancia para el Negocio, Dificultad Técnica)**.
+
+* **Importancia (Impacto):** H (High) - Crítico para el éxito; M (Medium) - Importante; L (Low) - Deseable.
+* **Dificultad (Riesgo):** H (High) - Alto costo/riesgo arquitectónico; M (Medium) - Esfuerzo considerable; L (Low) - Estándar.
+
 .Utility tree
 image::../images/UtilityTree.png[Utility tree, width=600, align=center]
 
@@ -34,7 +39,7 @@ image::../images/UtilityTree.png[Utility tree, width=600, align=center]
 |Atributo |Descripción
 
 |ID y descripción corta
-|QAS01. Nuevo huésped.
+|(H, L) QAS01. Nuevo huésped.
 
 |Escenario
 |Garantizar que un huésped que utiliza el sistema por primera vez pueda completar el proceso de reserva de una habitación sin asistencia externa y en un tiempo razonable.
@@ -72,7 +77,7 @@ image::../images/UtilityTree.png[Utility tree, width=600, align=center]
 |Atributo |Descripción
 
 |ID y descripción corta
-|QAS05. Eficiencia del personal (Recepcionista).
+|(M, L) QAS05. Eficiencia del personal (Recepcionista).
 
 |Escenario
 |Asegurar que un recepcionista con capacitación básica pueda realizar el Check-In de un huésped rápidamente para evitar filas en el lobby.
@@ -112,7 +117,7 @@ image::../images/UtilityTree.png[Utility tree, width=600, align=center]
 |Atributo |Descripción
 
 |ID y descripción corta
-|QAS02. Búsqueda en alta demanda.
+|(H, M) QAS02. Búsqueda en alta demanda.
 
 |Escenario
 |Asegurar que el sistema pueda procesar las consultas de disponibilidad de habitaciones y devolver resultados de manera rápida, incluso durante picos de alta demanda.
@@ -124,7 +129,7 @@ image::../images/UtilityTree.png[Utility tree, width=600, align=center]
 |La capacidad del sistema para responder a eventos dentro de un tiempo determinado.
 
 |Refinamiento del escenario
-|Tiempo de respuesta.
+|Tiempo de respuesta (Latencia).
 
 |Fuente del estímulo
 |Múltiples huéspedes (hasta 100,000 usuarios concurrentes).
@@ -142,47 +147,45 @@ image::../images/UtilityTree.png[Utility tree, width=600, align=center]
 |El sistema procesa la consulta, verifica la disponibilidad y las tarifas en tiempo real y devuelve una lista de habitaciones disponibles al usuario.
 
 |Medida de la respuesta
-|El 99% de las consultas de disponibilidad deben ser resueltas y mostrar resultados al usuario en menos de 1.5 segundos, medido del lado del servidor. El sistema no debe generar más de un 0.1% de errores por timeout.
+|El 99% de las consultas de disponibilidad deben ser resueltas y mostrar resultados al usuario en menos de 800 ms (lado servidor) usando estrategias de caché.
 |===
-
-=== Seguridad
 
 [width="100%", cols="1,3", options="header"]
 |===
 |Atributo |Descripción
 
 |ID y descripción corta
-|QAS03. Protección de Datos de Pago.
+|(H, H) QAS06. Confirmación de Reserva.
 
 |Escenario
-|Proteger la confidencialidad de la información sensible del cliente durante el proceso de pago para evitar robos o intercepciones.
+|Asegurar que el proceso de confirmación de reserva (que implica bloqueo de inventario y cobro) sea atómico y rápido para evitar inconsistencias o "doble booking".
 
 |Atributo
-|Seguridad
+|Desempeño
 
 |Preocupación del atributo
-|Confidencialidad de los datos.
+|Latencia y Consistencia de datos.
 
 |Refinamiento del escenario
-|Protección contra ataques de red (Sniffing/Man-in-the-Middle).
+|Tiempo de procesamiento de transacciones críticas.
 
 |Fuente del estímulo
-|Atacante externo / Sistema automatizado malicioso.
+|Huésped.
 
 |Estímulo
-|Intento de interceptar la comunicación durante la transacción de pago (CU-03 Realizar Pago).
+|El usuario hace clic en "Confirmar y Pagar" después de seleccionar habitación y método de pago.
 
 |Ambiente
-|Sistema en operación expuesto a internet pública.
+|Operación normal con concurrencia media en la base de datos.
 
 |Artefacto
-|Módulo de Pagos y canales de comunicación (API).
+|Orquestador de Reservas y Base de Datos Transaccional.
 
 |Respuesta
-|El sistema fuerza el uso de canales cifrados (HTTPS/TLS 1.3), no almacena datos de tarjetas (PCI-DSS compliance) y detecta conexiones inseguras rechazándolas.
+|El sistema inicia una transacción distribuida, verifica el bloqueo final del inventario, procesa el pago y confirma la reserva persistiendo los datos.
 
 |Medida de la respuesta
-|El 100% de las transacciones financieras viajan cifradas. 0 incidentes de filtración de datos de tarjetas desde la base de datos local (al no almacenarse).
+|La transacción completa (escritura en BD) debe completarse en menos de 3 segundos. Si excede este tiempo, se debe revertir (rollback) y notificar al usuario.
 |===
 
 === Disponibilidad
@@ -192,7 +195,7 @@ image::../images/UtilityTree.png[Utility tree, width=600, align=center]
 |Atributo |Descripción
 
 |ID y descripción corta
-|QAS04. Falla de Proveedor de Pagos.
+|(M, M) QAS04. Falla de Pasarela de Pagos.
 
 |Escenario
 |Garantizar que el sistema maneje adecuadamente la indisponibilidad de la pasarela de pagos externa sin colapsar ni dejar transacciones en estados inconsistentes.
@@ -219,8 +222,398 @@ image::../images/UtilityTree.png[Utility tree, width=600, align=center]
 |Servicio de Reservaciones y Adaptador de Pagos.
 
 |Respuesta
-|El sistema detecta el timeout (máx 30s), cancela la transacción localmente para liberar la habitación reservada temporalmente, y muestra un mensaje de error amigable al usuario sugiriendo intentar más tarde, sin bloquear el resto del portal.
+|El sistema detecta el timeout (máx 10s), abre el circuito para evitar saturación, cancela la transacción localmente y muestra un mensaje amigable al usuario.
 
 |Medida de la respuesta
-|El usuario recibe notificación del fallo en menos de 35 segundos totales. La habitación se libera en el inventario en menos de 1 segundo tras el fallo.
+|El usuario recibe notificación del fallo en menos de 15 segundos totales. La habitación se libera en el inventario inmediatamente.
+|===
+
+[width="100%", cols="1,3", options="header"]
+|===
+|Atributo |Descripción
+
+|ID y descripción corta
+|(H, H) QAS07. Caída de Base de Datos.
+
+|Escenario
+|Garantizar la continuidad del negocio en caso de un fallo catastrófico en la infraestructura de datos principal.
+
+|Atributo
+|Disponibilidad
+
+|Preocupación del atributo
+|Tolerancia a fallos de infraestructura crítica.
+
+|Refinamiento del escenario
+|Recuperación ante fallos (Failover).
+
+|Fuente del estímulo
+|Fallo de Hardware / Error de Sistema.
+
+|Estímulo
+|La instancia primaria de la base de datos deja de responder (crash).
+
+|Ambiente
+|Producción, durante operaciones de escritura activas.
+
+|Artefacto
+|Cluster de Base de Datos y Sistema de Monitoreo.
+
+|Respuesta
+|El sistema de monitoreo detecta la caída, promueve automáticamente una réplica de lectura a maestra (Primary) y redirige el tráfico de escritura.
+
+|Medida de la respuesta
+|El servicio de escritura se restaura en menos de 60 segundos. El RPO (Recovery Point Objective) es 0 para transacciones confirmadas.
+|===
+
+=== Seguridad
+
+[width="100%", cols="1,3", options="header"]
+|===
+|Atributo |Descripción
+
+|ID y descripción corta
+|(H, M) QAS03. Protección de Datos de Pago.
+
+|Escenario
+|Proteger la confidencialidad de la información sensible del cliente durante el proceso de pago para evitar robos o intercepciones.
+
+|Atributo
+|Seguridad
+
+|Preocupación del atributo
+|Confidencialidad de los datos.
+
+|Refinamiento del escenario
+|Protección contra ataques de red y cumplimiento PCI-DSS.
+
+|Fuente del estímulo
+|Atacante externo / Sistema automatizado malicioso.
+
+|Estímulo
+|Intento de interceptar la comunicación durante la transacción de pago (CU-03 Realizar Pago).
+
+|Ambiente
+|Sistema en operación expuesto a internet pública.
+
+|Artefacto
+|Módulo de Pagos y canales de comunicación (API).
+
+|Respuesta
+|El sistema fuerza el uso de canales cifrados (HTTPS/TLS 1.3) y utiliza tokenización para no almacenar datos de tarjetas reales.
+
+|Medida de la respuesta
+|El 100% de las transacciones financieras viajan cifradas. 0 incidentes de almacenamiento de PANs (Primary Account Numbers) en la BD local.
+|===
+
+[width="100%", cols="1,3", options="header"]
+|===
+|Atributo |Descripción
+
+|ID y descripción corta
+|(H, M) QAS08. Protección contra amenazas internas (Integridad).
+
+|Escenario
+|Mitigar el riesgo de fuga de información sensible (PII) por parte de personal técnico con acceso privilegiado a los servidores.
+
+|Atributo
+|Seguridad
+
+|Preocupación del atributo
+|Confidencialidad e Integridad de datos.
+
+|Refinamiento del escenario
+|Protección de datos en reposo.
+
+|Fuente del estímulo
+|Administrador de Base de Datos (DBA) o atacante interno.
+
+|Estímulo
+|Acceso directo a las tablas de la base de datos mediante consultas SQL directas (bypass de la aplicación).
+
+|Ambiente
+|Entorno de base de datos de producción.
+
+|Artefacto
+|Motor de Base de Datos (Persistencia).
+
+|Respuesta
+|Los datos sensibles (Pasaportes, Emails, Tokens) están cifrados a nivel de columna o mediante TDE, impidiendo su lectura en texto plano.
+
+|Medida de la respuesta
+|El 100% de los campos PII son ilegibles sin las llaves de aplicación. Se genera una alerta de auditoría por el acceso directo.
+|===
+
+[width="100%", cols="1,3", options="header"]
+|===
+|Atributo |Descripción
+
+|ID y descripción corta
+|(M, M) QAS09. Resistencia a Ataques DDoS.
+
+|Escenario
+|Mantener la disponibilidad del servicio para usuarios legítimos durante un ataque de denegación de servicio.
+
+|Atributo
+|Seguridad
+
+|Preocupación del atributo
+|Disponibilidad bajo ataque.
+
+|Refinamiento del escenario
+|Resiliencia ante carga maliciosa.
+
+|Fuente del estímulo
+|Botnet / Atacante externo.
+
+|Estímulo
+|Pico de tráfico malicioso (HTTP Flood) superando 5 veces la carga normal.
+
+|Ambiente
+|Gateway de entrada pública (Internet).
+
+|Artefacto
+|WAF (Web Application Firewall) y API Gateway.
+
+|Respuesta
+|El sistema identifica patrones de tráfico anómalos y aplica Rate Limiting por IP o bloqueo geográfico.
+
+|Medida de la respuesta
+|El sistema mantiene la disponibilidad para el 90% de las sesiones de usuarios legítimos durante el ataque.
+|===
+
+=== Mantenibilidad
+
+[width="100%", cols="1,3", options="header"]
+|===
+|Atributo |Descripción
+
+|ID y descripción corta
+|(H, L) QAS10. Modificación de Reglas de Negocio.
+
+|Escenario
+|Permitir cambios operativos frecuentes sin requerir intervención del equipo de ingeniería ni interrupciones del servicio.
+
+|Atributo
+|Mantenibilidad
+
+|Preocupación del atributo
+|Modificabilidad en tiempo de ejecución.
+
+|Refinamiento del escenario
+|Configuración en caliente.
+
+|Fuente del estímulo
+|Gerente de Operaciones.
+
+|Estímulo
+|Necesidad de actualizar el porcentaje de impuestos o reglas de cancelación por cambio de temporada.
+
+|Ambiente
+|Sistema en producción.
+
+|Artefacto
+|Servicio de Configuración Centralizada.
+
+|Respuesta
+|El cambio se aplica mediante una interfaz administrativa y se propaga a los microservicios sin reiniciarlos.
+
+|Medida de la respuesta
+|El cambio es efectivo en menos de 5 minutos. Tiempo de inactividad (Downtime) = 0 segundos.
+|===
+
+[width="100%", cols="1,3", options="header"]
+|===
+|Atributo |Descripción
+
+|ID y descripción corta
+|(M, M) QAS11. Extensibilidad de Métodos de Pago.
+
+|Escenario
+|Facilitar la incorporación de nuevas tecnologías financieras con un esfuerzo de desarrollo predecible.
+
+|Atributo
+|Mantenibilidad
+
+|Preocupación del atributo
+|Acoplamiento y Extensibilidad.
+
+|Refinamiento del escenario
+|Facilidad de cambio (Integración).
+
+|Fuente del estímulo
+|Desarrollador / Negocio.
+
+|Estímulo
+|Requisito de agregar un nuevo proveedor de pagos (ej. PayPal, Cripto).
+
+|Ambiente
+|Fase de desarrollo.
+
+|Artefacto
+|Módulo de Pagos (Strategy Pattern).
+
+|Respuesta
+|La arquitectura permite añadir el nuevo proveedor implementando una interfaz común, sin modificar la lógica central.
+
+|Medida de la respuesta
+|La integración técnica del nuevo proveedor se completa en menos de 1 semana-persona de esfuerzo.
+|===
+
+=== Interoperabilidad
+
+[width="100%", cols="1,3", options="header"]
+|===
+|Atributo |Descripción
+
+|ID y descripción corta
+|(H, H) QAS12. Sincronización con OTAs (Channel Manager).
+
+|Escenario
+|Mantener la integridad del inventario a través de múltiples canales de venta para evitar sobreventas.
+
+|Atributo
+|Interoperabilidad
+
+|Preocupación del atributo
+|Consistencia de datos entre sistemas heterogéneos.
+
+|Refinamiento del escenario
+|Intercambio de información en tiempo casi real.
+
+|Fuente del estímulo
+|Sistema interno (Reserva local completada).
+
+|Estímulo
+|El inventario de una habitación se reduce tras una reserva directa.
+
+|Ambiente
+|Operación normal conectada a canales externos (Booking, Expedia).
+
+|Artefacto
+|Módulo de Integración / Channel Manager.
+
+|Respuesta
+|El sistema emite un evento de actualización de inventario a los canales externos conectados.
+
+|Medida de la respuesta
+|La actualización de disponibilidad en los portales externos se refleja en menos de 1 minuto tras la confirmación local.
+|===
+
+=== Observabilidad
+
+[width="100%", cols="1,3", options="header"]
+|===
+|Atributo |Descripción
+
+|ID y descripción corta
+|(M, M) QAS13. Diagnóstico de Errores.
+
+|Escenario
+|Facilitar la identificación rápida de la causa raíz de fallos en un entorno distribuido para reducir el MTTR (Mean Time To Recovery).
+
+|Atributo
+|Observabilidad
+
+|Preocupación del atributo
+|Analizabilidad y depuración.
+
+|Refinamiento del escenario
+|Rastreo de transacciones distribuidas.
+
+|Fuente del estímulo
+|Equipo de Soporte / DevOps.
+
+|Estímulo
+|Reporte de un error 500 por parte de un usuario.
+
+|Ambiente
+|Entorno de producción microservicios.
+
+|Artefacto
+|Sistema de Logging Centralizado y Tracing.
+
+|Respuesta
+|El equipo utiliza un ID de correlación (Trace ID) para filtrar logs de todos los servicios involucrados.
+
+|Medida de la respuesta
+|El log exacto con la excepción y el servicio causante se localiza en menos de 5 minutos.
+|===
+
+=== Escalabilidad
+
+[width="100%", cols="1,3", options="header"]
+|===
+|Atributo |Descripción
+
+|ID y descripción corta
+|(H, M) QAS14. Elasticidad ante Picos de Demanda.
+
+|Escenario
+|Asegurar que el rendimiento del sistema no se degrade durante eventos comerciales masivos.
+
+|Atributo
+|Escalabilidad
+
+|Preocupación del atributo
+|Elasticidad horizontal (Scale-out).
+
+|Refinamiento del escenario
+|Adaptación a carga variable.
+
+|Fuente del estímulo
+|Campaña de Marketing ("Buen Fin").
+
+|Estímulo
+|Incremento repentino del tráfico del 300% en 10 minutos.
+
+|Ambiente
+|Infraestructura Cloud.
+
+|Artefacto
+|Orquestador de Contenedores y Load Balancer.
+
+|Respuesta
+|El sistema aprovisiona automáticamente nuevas instancias de los servicios críticos.
+
+|Medida de la respuesta
+|El aprovisionamiento es automático y el tiempo de respuesta promedio se mantiene por debajo de 800 ms.
+|===
+
+[width="100%", cols="1,3", options="header"]
+|===
+|Atributo |Descripción
+
+|ID y descripción corta
+|(M, L) QAS15. Eficiencia de Costos.
+
+|Escenario
+|Optimizar los costos operativos liberando recursos infrautilizados cuando baja la demanda.
+
+|Atributo
+|Escalabilidad
+
+|Preocupación del atributo
+|Eficiencia de recursos (Scale-in).
+
+|Refinamiento del escenario
+|Reducción de infraestructura.
+
+|Fuente del estímulo
+|Monitoreo de sistema.
+
+|Estímulo
+|La carga desciende por debajo del 20% durante 30 minutos.
+
+|Ambiente
+|Infraestructura Cloud.
+
+|Artefacto
+|Auto-scaling Group.
+
+|Respuesta
+|El sistema elimina las instancias excedentes de forma segura.
+
+|Medida de la respuesta
+|Reducción automática de costos manteniendo la disponibilidad mínima (2 réplicas).
 |===

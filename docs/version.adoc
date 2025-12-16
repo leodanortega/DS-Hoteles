@@ -229,3 +229,17 @@
 |Carlos Castillo
 |Se corrigieron los diagramas de casos de uso de todos los actores
 |===
+
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.1.7
+|15/12/2025
+|Carlos Castillo
+|Se corrigió el Utility Tree agregando atributos de calidad claves
+|===
