@@ -215,3 +215,17 @@
 |Carlos Castillo
 |Se agregaron conclusiones y riesgos al documento, así como la actualización del índice para una mejor lectura
 |===
+
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.1.6
+|15/12/2025
+|Carlos Castillo
+|Se corrigieron los diagramas de casos de uso de todos los actores
+|===

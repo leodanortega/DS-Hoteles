@@ -20,7 +20,7 @@
 |Como parte del flujo de reserva, el huésped introduce su información de pago en una pasarela segura para completar la transacción y confirmar su estancia.
 
 |Actor(es)
-|Huésped
+|Huésped, Recepcionista
 
 |Disparador
 |El huésped llega al paso de pago durante el flujo del CU-02 "Reservar Habitación".
