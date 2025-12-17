@@ -31,13 +31,13 @@ Componente estratégico encargado de la configuración global de la cadena hotel
 **Manifestación e Interfaces:**
 El componente expone interfaces separadas para la gestión de catálogo, tarifas y políticas, permitiendo una evolución independiente de cada submódulo.
 
-[cols="1,1", frame=none, grid=none]
-|===
-| image::../images/components/Administracion.jpeg[Componente Administración, width=350]
-| image::../images/interfaceDiagrams/ICatalogo.png[Interfaz Catálogo, width=300] +
-image::../images/interfaceDiagrams/ITarifas.png[Interfaz Tarifas, width=300] +
+image::../images/components/Administracion.jpeg[Componente Administración, width=350]
+
+image::../images/interfaceDiagrams/ICatalogo.png[Interfaz Catálogo, width=300]
+
+image::../images/interfaceDiagrams/ITarifas.png[Interfaz Tarifas, width=300]
+
 image::../images/interfaceDiagrams/IPoliticas.png[Interfaz Políticas, width=300]
-|===
 
 ==== 2. Sistema de Inventario
 El "Source of Truth" del estado físico del hotel.
@@ -59,11 +59,9 @@ El "Source of Truth" del estado físico del hotel.
 **Manifestación e Interfaces:**
 La interfaz `IInventario` actúa como el Manager central para consultar disponibilidad y modificar estados de habitaciones.
 
-[cols="1,1", frame=none, grid=none]
-|===
-| image::../images/components/Inventario.jpeg[Componente Inventario, width=350]
-| image::../images/interfaceDiagrams/IInventario.png[Interfaz Inventario, width=350]
-|===
+image::../images/components/Inventario.jpeg[Componente Inventario, width=350]
+
+image::../images/interfaceDiagrams/IInventario.png[Interfaz Inventario, width=350]
 
 ==== 3. Sistema de Reservaciones
 Orquestador del ciclo de vida de la venta anticipada.
@@ -85,13 +83,13 @@ Orquestador del ciclo de vida de la venta anticipada.
 **Manifestación e Interfaces:**
 Separa claramente las operaciones de escritura (`IGestionReservacion`) de las consultas masivas (`IConsultaReservacion`) y la gestión de devoluciones (`IReembolsos`).
 
-[cols="1,1", frame=none, grid=none]
-|===
-| image::../images/components/Reservaciones.jpeg[Componente Reservaciones, width=350]
-| image::../images/interfaceDiagrams/IGestionReservacion.png[Interfaz Gestión, width=300] +
-image::../images/interfaceDiagrams/IConsultaReservacion.png[Interfaz Consulta, width=300] +
+image::../images/components/Reservaciones.jpeg[Componente Reservaciones, width=350]
+
+image::../images/interfaceDiagrams/IGestionReservacion.png[Interfaz Gestión, width=300]
+
+image::../images/interfaceDiagrams/IConsultaReservacion.png[Interfaz Consulta, width=300]
+
 image::../images/interfaceDiagrams/IReembolsos.png[Interfaz Reembolsos, width=300]
-|===
 
 ==== 4. Sistema de Gestión de Estancias
 Controlador de la operación in-situ (Front Desk).
@@ -113,12 +111,11 @@ Controlador de la operación in-situ (Front Desk).
 **Manifestación e Interfaces:**
 Gestiona el ciclo de vida activo del huésped mediante `IGestionEstancia` y permite consultas de estado (`IConsultaEstancia`).
 
-[cols="1,1", frame=none, grid=none]
-|===
-| image::../images/components/GestionEstancias.jpeg[Componente Estancias, width=350]
-| image::../images/interfaceDiagrams/IGestionEstancia.png[Interfaz Gestión Estancia, width=300] +
+image::../images/components/GestionEstancias.jpeg[Componente Estancias, width=350]
+
+image::../images/interfaceDiagrams/IGestionEstancia.png[Interfaz Gestión Estancia, width=300]
+
 image::../images/interfaceDiagrams/IConsultaEstancia.png[Interfaz Consulta Estancia, width=300]
-|===
 
 ==== 5. Sistema de Pagos
 Fachada de seguridad financiera y adaptador PCI-DSS.
@@ -140,12 +137,11 @@ Fachada de seguridad financiera y adaptador PCI-DSS.
 **Manifestación e Interfaces:**
 Expone `IPago` para uso interno del sistema y utiliza `IPasarelaExterna` como adaptador hacia el proveedor financiero.
 
-[cols="1,1", frame=none, grid=none]
-|===
-| image::../images/components/Pagos.jpeg[Componente Pagos, width=350]
-| image::../images/interfaceDiagrams/IPago.png[Interfaz Pago Interna, width=300] +
+image::../images/components/Pagos.jpeg[Componente Pagos, width=350]
+
+image::../images/interfaceDiagrams/IPago.png[Interfaz Pago Interna, width=300]
+
 image::../images/interfaceDiagrams/IPasarelaExterna.png[Interfaz Pasarela Externa, width=300]
-|===
 
 ==== 6. Sistema de Autenticación y Usuarios
 Gestor de Identidad y Acceso (IAM).
@@ -164,12 +160,11 @@ Gestor de Identidad y Acceso (IAM).
 **Manifestación e Interfaces:**
 Centraliza la seguridad (`IAutentication`) y la administración de perfiles (`IGestionUsuarios`).
 
-[cols="1,1", frame=none, grid=none]
-|===
-| image::../images/components/Autenticacion.jpeg[Componente Autenticación, width=350]
-| image::../images/interfaceDiagrams/IAutentication.png[Interfaz Autenticación, width=300] +
+image::../images/components/Autenticacion.jpeg[Componente Autenticación, width=350]
+
+image::../images/interfaceDiagrams/IAutentication.png[Interfaz Autenticación, width=300]
+
 image::../images/interfaceDiagrams/IGestionUsuarios.png[Interfaz Usuarios, width=300]
-|===
 
 ==== 7. Sistema de Notificaciones
 Servicio de mensajería asíncrona.
@@ -188,12 +183,11 @@ Servicio de mensajería asíncrona.
 **Manifestación e Interfaces:**
 Expone `INotificaciones` para disparar eventos y utiliza `IServicioEmail` para conectar con proveedores SMTP/API.
 
-[cols="1,1", frame=none, grid=none]
-|===
-| image::../images/components/Notificaciones.jpeg[Componente Notificaciones, width=350]
-| image::../images/interfaceDiagrams/INotificaciones.png[Interfaz Notificaciones, width=300] +
+image::../images/components/Notificaciones.jpeg[Componente Notificaciones, width=350]
+
+image::../images/interfaceDiagrams/INotificaciones.png[Interfaz Notificaciones, width=300]
+
 image::../images/interfaceDiagrams/IServicioEmail.png[Interfaz Email, width=300]
-|===
 
 === Interacción de Componentes
 

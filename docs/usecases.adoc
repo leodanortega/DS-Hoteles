@@ -1,18 +1,4 @@
-
-=== Digramas de caso de uso
-
-.Diagrama de casos de uso del Huesped
-image::../images/Huesped.jpg[Diagrama de caso de uso del huesped, width=600, align=center]
-
-.Diagrama de casos de uso del Recepcionista
-image::../images/packageDiagram.jpg[Diagrama de casos de uso del recepcionista, width=600, align=center]
-
-.Casos de uso del Administrador
-image::../images/CU_Administrador.png[Use Case Diagram, width=600, align=center]
-
----
-
-=== Descripciones de caso de uso
+== Descripciones de caso de uso
 
 include::useCases/descriptions/CU-01_ConsultarDisponibilidad.adoc[]
 include::useCases/descriptions/CU-02_ReservarHabitación.adoc[]

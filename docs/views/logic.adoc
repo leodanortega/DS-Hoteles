@@ -111,26 +111,32 @@ A continuación se detallan las responsabilidades de los subsistemas identificad
 
 * **Sistema de Administración** (`Administracion`):
 Responsable de la configuración global de la cadena y la gestión corporativa.
+
 image::../images/components/Administracion.jpeg[Componente Administración, width=500]
 
 * **Sistema de Inventario** (`Inventario`):
 Gestiona la disponibilidad física de las habitaciones y los catálogos de servicios. Es la fuente de verdad para el estado del hotel.
+
 image::../images/components/Inventario.jpeg[Componente Inventario, width=500]
 
 * **Sistema de Reservaciones** (`Reservaciones`):
 Orquesta el proceso de reserva anticipada, validando disponibilidad con Inventario y precios.
+
 image::../images/components/Reservaciones.jpeg[Componente Reservaciones, width=500]
 
 * **Sistema de Gestión de Estancias** (`GestionEstancias`):
 Maneja las operaciones en tiempo real dentro del hotel: Check-in, consumos durante la estadía y Check-out.
+
 image::../images/components/GestionEstancias.jpeg[Componente Estancias, width=500]
 
 * **Sistema de Pagos** (`Pagos`):
 Actúa como fachada segura para la comunicación con pasarelas bancarias externas, encapsulando la complejidad financiera.
+
 image::../images/components/Pagos.jpeg[Componente Pagos, width=500]
 
 * **Sistema de Autenticación** (`Autenticacion`):
 Servicio transversal encargado de la identidad, emisión de tokens y validación de credenciales para huéspedes y empleados.
+
 image::../images/components/Autenticacion.jpeg[Componente Autenticación, width=500]
 
 == Trade-Offs
