@@ -150,41 +150,53 @@ Esta sección clarifica y define las entidades principales del dominio del probl
 |Hotel
 |Representa una sucursal física de la cadena. Contiene información como nombre, dirección y un conjunto de habitaciones.
 
-|Habitación
-|Es una instancia física de un cuarto en un hotel, caracterizada por un número o identificador único. Pertenece a un Tipo de Habitación.
-
 |Tipo de Habitación
-|Define una categoría de habitación según sus características (ej. "Doble", "Suite Presidencial"), como capacidad, amenidades y descripción. Las tarifas se asocian a este concepto.
+|Define una categoría de habitación según sus características (ej. "Doble", "Suite Presidencial"). Es el concepto "vendible" al que se asocian los Planes Tarifarios.
+
+|Habitación
+|Es una instancia tangible de un cuarto (ej. "Puerta 305"). Se distingue del Tipo de Habitación porque esta tiene un estado operativo (Sucia, Limpia, Mantenimiento).
 
 |Huésped
-|Es la persona que realiza y se beneficia de una reserva. Contiene sus datos personales de contacto.
+|Es la persona que se aloja. Se diferencia del "Cliente/Titular" (quien paga), aunque a menudo sean la misma persona.
 
 |Reservación
-|Es el concepto central que formaliza el acuerdo de alojamiento. Vincula a un Huésped con un Hotel y un Tipo de Habitación para un período específico. Se le asocian un Pago, una Tarifa y una Política.
+|El acuerdo marco del alojamiento. Actúa como un contenedor que agrupa los detalles de las noches reservadas, la cuenta financiera y los huéspedes asignados.
 
-|Pago
-|Representa una transacción financiera asociada a una reserva. Incluye el monto, la fecha y el estado del pago.
+|Detalle de Reservación
+|Representa el desglose diario de la reserva (ej. "Noche del Lunes"). Es vital porque fija el precio específico de esa fecha y consume el inventario correspondiente.
 
-|Tarifa
-|Define el precio de un Tipo de Habitación para un período de tiempo determinado (ej. tarifa de fin de semana, tarifa de temporada alta).
+|Plan Tarifario
+|Combina un precio base con un conjunto de reglas (políticas de cancelación, régimen de alimentos). Permite vender el mismo Tipo de Habitación a diferentes precios y condiciones.
+
+|Inventario Diario
+|Entidad crítica para el control de disponibilidad. Representa el cupo total vs. ocupado para un Tipo de Habitación en una Fecha específica. Previene el overbooking.
+
+|Cuenta Huésped (Folio)
+|El libro mayor financiero de la reserva. Registra cronológicamente todos los Cargos (noches, consumos) y Abonos (pagos, depósitos). El saldo debe ser cero para permitir el Check-out.
 
 |Política
-|Establece las reglas de negocio que aplican a una reserva, principalmente las condiciones de cancelación y modificación.
+|Regla de negocio abstracta que condiciona la reserva. Se especializa en Política de Cancelación (penalizaciones), Política de Pago (anticipos) y Restricciones (estancia mínima).
 |===
 
 === Relaciones y Dependencias Clave
 
-Un Hotel está compuesto por una o más Habitaciones (Composición).
+1.  **Estructura del Producto:**
+    Un Hotel se compone de Tipos de Habitación (Catálogo) y Habitaciones Físicas (Inventario tangible). Cada Habitación Física pertenece a un solo Tipo.
 
-Cada Habitación es de un solo Tipo de Habitación. Varios cuartos pueden ser del mismo tipo.
+2.  **Venta y Disponibilidad:**
+    Una Reservación se compone de múltiples **Detalles de Reservación** (uno por noche).
+    Cada Detalle de Reservación está vinculado a un **Inventario Diario**, decrementando la disponibilidad para esa fecha y tipo específico.
 
-Un Huésped puede realizar cero o muchas Reservas. Cada Reserva pertenece a un solo Huésped.
+3.  **Integridad Financiera:**
+    Una Reservación tiene asignada una **Cuenta Huésped** única (relación 1 a 1).
+    Los Pagos **NO** se asocian directamente a la reserva, sino que se registran como transacciones de abono dentro de la Cuenta Huésped, afectando su saldo global.
 
-Una Reserva se realiza sobre un Tipo de Habitación en un Hotel específico y está asociada a una Tarifa, un Pago y una Política para darle contexto completo.
+4.  **Reglas de Negocio:**
+    La Reservación está regida por un **Plan Tarifario**, el cual determina el precio diario y las Políticas aplicables (cancelación/garantía) vigentes al momento de la compra.
 
 
-.Diagrama de Negocios
-image::../images/businessConceptModel.jpg[Modelo de conceptos de negocio, width=600, align=center]
+.Modelo de Conceptos de Negocio
+image::../images/ModeloDeConceptosDeNegocio.png[Modelo de conceptos de negocio, width=600, align=center]
 
 == Modelo de Tipos de Negocio (MTN)
 
