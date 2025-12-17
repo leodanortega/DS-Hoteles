@@ -1,4 +1,5 @@
-*Matriz de Trazabilidad de Arquitectura*
+
+=== Matriz de Trazabilidad de Arquitectura
 [width="100%", cols="2,3,4,1", options="header"]
 |===
 | Driver (ID y Tipo)
@@ -47,7 +48,7 @@ a|*Táctica: Bloqueo Optimista* y *Caché Distribuida*. +
 Maneja la concurrencia y reduce la carga en BD para consultas.
 a|*Vista de Implementación:* Componente Inventario. +
 *Interfaces:* IInventario (op: consultarDisponibilidad). +
-*Diagramas de comunicación:* consultarDisponibilidad,hacerReservacion (msg: bloquearHabitacion).
+*Diagramas de comunicación:* consultarDisponibilidad, hacerReservacion (msg: bloquearHabitacion).
 | Cumple
 
 a|*CRN-03* (Consistencia en Concurrencia) +

@@ -271,3 +271,17 @@
 |Leonardo Daniel
 |Se corrigió la referencia a las imagenes de la vista de despliegue y se modifica la vista
 |===
+
+[cols="1,1,1,1"]
+
+|===
+|Versión
+|Fecha
+|Autor
+|Cambios significativos
+
+|0.2.0
+|17/12/2025
+|Leonardo Daniel
+|Se corrigió la visualización de la matriz de trazabilidad y se actualizó su contenido
+|===
